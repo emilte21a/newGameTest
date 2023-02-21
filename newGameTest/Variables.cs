@@ -10,20 +10,23 @@ public class Variable
 
     public static Vector2 gravity = new(0, 0);
 
+    public static bool touchFloor = false;
+
+   
     
 }
 
-
 public class Rectangles
 {
-    public static Rectangle Floor = new Rectangle(0, Variable.screenHeight-170, Variable.screenWidth, 200);
+    TextureClass t = new();
+    public List<Rectangle> floors = new();
+    public static Rectangle Floor = new Rectangle(0, 600, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
 
 }
 
 public class CharProp
 {
 
-    public static Rectangle characterRec = new Rectangle(60, 60, 100, 100);
-
+    public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.backgroundTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
     public static float speed = 4;
 }

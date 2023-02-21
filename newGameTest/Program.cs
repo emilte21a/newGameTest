@@ -25,11 +25,7 @@ enemies.Add(new Enemy() { name = "Joseph" });
 enemies.Add(new Enemy() { name = "Avdol" });
 enemies.Add(new Enemy() { name = "Jean Pierre" });
 
-List<Rectangle> walls = new();
-walls.Add(new Rectangle(800, 700,100, 50));
-walls.Add(new Rectangle(800, 700,100, 50));
-walls.Add(new Rectangle(800, 700,100, 50));
-walls.Add(new Rectangle(800, 700,100, 50));
+
 
 int charVariable;
 
@@ -43,11 +39,11 @@ float enemySpeed = 2;
 
 
 Camera2D camera = new();
-camera.zoom = 1;
+camera.zoom = 0.9f;
 camera.rotation = 0;
 camera.offset = new Vector2(Variable.screenHeight/2, Variable.screenWidth/2);
 
-string currentScene = "Start";
+string currentScene = "start";
 
 while (!Raylib.WindowShouldClose())
 {
@@ -57,23 +53,45 @@ while (!Raylib.WindowShouldClose())
     Vector2 characterPos = new Vector2(CharProp.characterRec.x, CharProp.characterRec.y);
     camera.target = characterPos; //Kamerans target är karaktärens position
 
-    switch (currentScene)
+    
+    if (currentScene =="start")
     {
-        
-        case ("Start"):
-
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE));
+       if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
         {
-            currentScene="Game";
+            currentScene="game";
+        }
+    }    
+    
+      
+    else if (currentScene == "game")
+    {
+        Console.WriteLine(Variable.gravity.Y);
+        Method.gravityMethod();
+
+        if (CharProp.characterRec.y > Variable.screenHeight)
+        {
+            currentScene = "dead";
         }
 
-        break;
-
-        case ("Game"):
-        Method.gravityMethod();
         CharProp.characterRec.x = Method.walkingX(CharProp.characterRec.x, CharProp.speed);
-        break;
+        
+        
     }
+        
+
+    else if (currentScene == "dead")
+    {
+        Method.resetVars();
+
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER));
+        {
+            currentScene="start";
+        }
+    }
+
+
+
+
 
 
     
@@ -89,32 +107,45 @@ while (!Raylib.WindowShouldClose())
 
 Raylib.BeginDrawing();
 
-switch (currentScene)
+if (currentScene == "start")
 {
-        
-case ("Start"):
+    
     Raylib.ClearBackground(Color.WHITE);
+    Raylib.DrawText("Press ENTER to start", Variable.screenWidth/2, Variable.screenHeight/2, 50, Color.GOLD);  
 
-break;
+} 
 
-case ("Game"):
+
+else if (currentScene == "game")
+{
     charVariable = Method.jumpAnim();
-
+    Console.WriteLine(charVariable);
     Raylib.BeginMode2D(camera);
     Raylib.ClearBackground(Color.WHITE);
-    Raylib.DrawRectangle(-100000, -10000, 1000000, 1000000, Color.BLUE);
-    Raylib.DrawTexture(t.backgroundTextures[0], (int)Rectangles.Floor.x, (int)Rectangles.Floor.y, Color.WHITE);
-    Raylib.DrawTexture(t.charTextures[charVariable],(int)CharProp.characterRec.x, (int)CharProp.characterRec.y, Color.WHITE);
+    
+    //Raylib.DrawRectangle((int)Rectangles.Floor.x, (int)Rectangles.Floor.y, (int)Rectangles.Floor.width, (int)Rectangles.Floor.height, Color.BLUE);
+
+    Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor.x, (int)Rectangles.Floor.y, Color.WHITE);
+    
+    Raylib.DrawTexture(TextureClass.charTextures[charVariable],(int)CharProp.characterRec.x, (int)CharProp.characterRec.y, Color.WHITE);
+    
     Raylib.DrawText($"{e.name}", 400, 400, 50, Color.BLACK);
-
-break;
-}
-    Raylib.EndDrawing();
+    Raylib.EndMode2D();
 }
 
+else if(currentScene=="dead")
+{
+
+Raylib.ClearBackground(Color.WHITE);
+Raylib.DrawText("you died", Variable.screenWidth/2, Variable.screenHeight/2, 50, Color.GOLD);      
+}
+
+Raylib.EndDrawing();
 
 
 
+
+}
 
 
 
