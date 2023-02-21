@@ -12,7 +12,7 @@ string[] names = { "mad", "hollo", "wal" };
 TextureClass t = new();
 
 
-Rectangle enemyRec = new Rectangle(900, 900, 100, 100);
+Rectangle enemyRec = new Rectangle(900, 900, 120, 120);
 
 
 Enemy e = new Enemy();
@@ -31,19 +31,7 @@ walls.Add(new Rectangle(800, 700,100, 50));
 walls.Add(new Rectangle(800, 700,100, 50));
 walls.Add(new Rectangle(800, 700,100, 50));
 
-static float walkingX(float characterx, float speed) 
-{
-    if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && characterx > 0)
-    {
-        characterx -= speed;
-    }
-    if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && characterx < Variable.screenWidth - 100)
-    {
-        characterx += speed;
-    }
-    return characterx;
-}
-
+int charVariable;
 
 foreach (Enemy en in enemies)
 {
@@ -59,16 +47,34 @@ camera.zoom = 1;
 camera.rotation = 0;
 camera.offset = new Vector2(Variable.screenHeight/2, Variable.screenWidth/2);
 
-
+string currentScene = "Start";
 
 while (!Raylib.WindowShouldClose())
 {
+
+//Logik====================
+
     Vector2 characterPos = new Vector2(CharProp.characterRec.x, CharProp.characterRec.y);
     camera.target = characterPos; //Kamerans target är karaktärens position
 
-    
+    switch (currentScene)
+    {
+        
+        case ("Start"):
 
-    CharProp.characterRec.x = walkingX(CharProp.characterRec.x, CharProp.speed);
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE));
+        {
+            currentScene="Game";
+        }
+
+        break;
+
+        case ("Game"):
+        Method.gravityMethod();
+        CharProp.characterRec.x = Method.walkingX(CharProp.characterRec.x, CharProp.speed);
+        break;
+    }
+
 
     
 
@@ -79,21 +85,51 @@ while (!Raylib.WindowShouldClose())
     // Vector2 diff = playerPos - fiendePos;
     // Vector2 fiendeDirection = Vector2.Normalize(diff);
 
+//Grafik===========================================
 
-    Raylib.BeginDrawing();
+Raylib.BeginDrawing();
+
+switch (currentScene)
+{
+        
+case ("Start"):
+    Raylib.ClearBackground(Color.WHITE);
+
+break;
+
+case ("Game"):
+    charVariable = Method.jumpAnim();
+
     Raylib.BeginMode2D(camera);
     Raylib.ClearBackground(Color.WHITE);
+    Raylib.DrawRectangle(-100000, -10000, 1000000, 1000000, Color.BLUE);
+    Raylib.DrawTexture(t.backgroundTextures[0], (int)Rectangles.Floor.x, (int)Rectangles.Floor.y, Color.WHITE);
+    Raylib.DrawTexture(t.charTextures[charVariable],(int)CharProp.characterRec.x, (int)CharProp.characterRec.y, Color.WHITE);
     Raylib.DrawText($"{e.name}", 400, 400, 50, Color.BLACK);
-    Raylib.DrawTexture(t.charTextures[0],(int)CharProp.characterRec.x, (int)CharProp.characterRec.y, Color.WHITE);
 
-    //Raylib.DrawRectangle((int)enemyRec.x, (int)enemyRec.y, 60, 60, Color.RED);
-    Raylib.DrawTexture(t.backgroundTextures[0], 0, 800, Color.WHITE); //Ground
-
+break;
+}
     Raylib.EndDrawing();
-
 }
 
 
 
 
 
+
+
+
+//Startskärmen
+
+//En rörande bakgrund där man kan välja att spela, ändra inställningar eller lämna
+
+
+//Spelet
+
+//2D survival-ish spel där man kan gå höger, vänster och hoppa
+//Man ska kunna skapa tools med en crafting table 
+//Kunna hugga träd samt hacka sten och döda monster
+//Försök till day-night time cycle
+
+
+//

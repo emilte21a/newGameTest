@@ -16,7 +16,7 @@ public class Variable
 
 public class Rectangles
 {
-    public static Rectangle Floor = new Rectangle(0, Variable.screenHeight-200, Variable.screenWidth, 200);
+    public static Rectangle Floor = new Rectangle(0, Variable.screenHeight-170, Variable.screenWidth, 200);
 
 }
 
