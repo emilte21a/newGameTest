@@ -12,8 +12,13 @@ public class Variable
 
     public static bool touchFloor = false;
 
+    public static int frame = 1;
    
+    public static int timer = 1;
+
+    public static int way = 1;
     
+    public static bool bothButtonsPressed = false;
 }
 
 public class Rectangles

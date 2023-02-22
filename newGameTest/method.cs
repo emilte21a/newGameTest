@@ -108,4 +108,42 @@ CharProp.characterRec.y = TextureClass.backgroundTextures[0].height;
 CharProp.characterRec.x = Variable.screenWidth / 2;
 }
 
+
+
+public static void runningLogic()
+{
+    
+    int maxFrames = 4;
+    
+
+    Variable.timer+=2;
+    
+
+    if (Variable.timer>20)
+    {
+        Variable.timer=0;
+        Variable.frame++;
+    }
+    Variable.frame = Variable.frame % maxFrames;
+}
+
+
+
+
+public static void bothADdown(){
+    if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && (Raylib.IsKeyDown(KeyboardKey.KEY_A)))
+    {
+        Variable.bothButtonsPressed = true;
+    }
+
+    else
+    {
+        Variable.bothButtonsPressed = false;
+    }
+
+    
+        
+    
+}
+
 }

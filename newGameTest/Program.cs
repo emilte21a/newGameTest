@@ -67,7 +67,6 @@ while (!Raylib.WindowShouldClose())
       
     else if (currentScene == "game")
     {
-        Console.WriteLine(Variable.gravity.Y);
         Method.gravityMethod();
 
         
@@ -126,19 +125,58 @@ if (currentScene == "start")
 else if (currentScene == "game")
 {
     charVariable = Method.jumpAnim();
-    Console.WriteLine(charVariable);
+    
     Raylib.BeginMode2D(camera);
     Raylib.ClearBackground(Color.WHITE);
     
     Rectangles.hitBox.x = CharProp.characterRec.x;
     Rectangles.hitBox.y = CharProp.characterRec.y+180;
 
+    
+
+    
+
     //Raylib.DrawRectangle((int)Rectangles.Floor.x, (int)Rectangles.Floor.y, (int)Rectangles.Floor.width, (int)Rectangles.Floor.height, Color.BLUE);
 
     Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor.x, (int)Rectangles.Floor.y, Color.WHITE);
     
-    Raylib.DrawTexture(TextureClass.charTextures[charVariable],(int)CharProp.characterRec.x, (int)CharProp.characterRec.y, Color.WHITE);
+    
     //Raylib.DrawRectangle((int)Rectangles.hitBox.x, (int)Rectangles.hitBox.y, (int)Rectangles.hitBox.width, (int)Rectangles.hitBox.height, Color.LIME);
+
+    Method.runningLogic();
+    Method.bothADdown();
+
+    
+    if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) || (Raylib.IsKeyDown(KeyboardKey.KEY_D)))
+    {
+        Variable.way = 1;
+    }
+
+    else if (Raylib.IsKeyReleased(KeyboardKey.KEY_A) || (Raylib.IsKeyDown(KeyboardKey.KEY_A)))
+    {
+        Variable.way = -1;
+    }
+
+    Console.WriteLine(Variable.way);
+
+    Rectangle sourceRec1 = new Rectangle(120*Variable.frame, 0, Variable.way*120, 180);
+    Rectangle facing = new Rectangle(0, 0, Variable.way*120, 180);
+
+    
+
+    if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+    {
+        Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+    }
+    else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+    {
+        Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+    }
+
+    else
+    {
+        Raylib.DrawTextureRec(TextureClass.charTextures[charVariable], facing, characterPos, Color.WHITE);
+    }
 
     Raylib.DrawText($"{e.name}", 400, 400, 50, Color.BLACK);
     Raylib.EndMode2D();
