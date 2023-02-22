@@ -20,8 +20,9 @@ public class Rectangles
 {
     TextureClass t = new();
     public List<Rectangle> floors = new();
-    public static Rectangle Floor = new Rectangle(0, 600, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
+    public static Rectangle Floor = new Rectangle(0, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
 
+    public static Rectangle hitBox = new Rectangle(CharProp.characterRec.x, CharProp.characterRec.y+179, CharProp.characterRec.width, 3);
 }
 
 public class CharProp

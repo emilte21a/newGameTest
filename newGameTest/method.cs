@@ -5,31 +5,61 @@ using System;
 
 public class Method
 {
-    public static void gravityMethod(){
+public static void gravityMethod()
+{
+    float gravity = 0.5f;
+    float maxFallSpeed = 15;
+    float minFallSpeed = -15;
     
-    if (!Raylib.CheckCollisionRecs(CharProp.characterRec, Rectangles.Floor))
-    {
-        Variable.touchFloor = false;
-        Variable.gravity.Y -= 0.5f;
-        CharProp.characterRec.y -= Variable.gravity.Y;
+    isColliding();
 
-        if (Variable.gravity.Y < -50)
-        {
-            Variable.gravity.Y = -50;
-        }
-    }
-    
-    if (Raylib.CheckCollisionRecs(CharProp.characterRec, Rectangles.Floor))
+    if(!Variable.touchFloor)
     {
-        Variable.touchFloor = true;
-        Variable.gravity.Y = 0;
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+        Variable.gravity.Y += gravity;
+        CharProp.characterRec.y += Variable.gravity.Y;
+
+        if (Variable.gravity.Y > maxFallSpeed)
         {
-            CharProp.characterRec.y -= 10;
-            Variable.gravity.Y = 15f;
+            Variable.gravity.Y = maxFallSpeed;
         }
     }
+
+    else
+    {
+        Variable.gravity.Y -= 15;
+        if (Variable.gravity.Y < minFallSpeed)
+        {
+            Variable.gravity.Y = minFallSpeed;
+        }
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE)  && Variable.touchFloor==true)
+        {
+            CharProp.characterRec.y += Variable.gravity.Y;
+            Variable.touchFloor= false;
+            Method.jumpMechanics();
+        }
     }
+}
+
+public static void isColliding(){
+
+if(!Raylib.CheckCollisionRecs(Rectangles.hitBox, Rectangles.Floor))
+{
+    Variable.touchFloor = false;
+    
+    }
+
+else
+{
+    Variable.touchFloor = true;
+}
+}
+
+
+public static void jumpMechanics(){
+    
+    Variable.gravity.Y = -15f; 
+        
+}
 
 
     public static float walkingX(float characterx, float speed) 
@@ -57,7 +87,7 @@ if (Variable.touchFloor == true)
 else if (Variable.touchFloor == false)
 {  
 
-    if (Variable.gravity.Y < 0)
+    if (Variable.gravity.Y > 0)
     {
         return 1; //om gravitationens y-värde är mindre än 0 så returnas 1, vilket är ett index för falling texture
     }
@@ -73,7 +103,7 @@ else {
 }
 
 public static void resetVars(){
-
+Variable.gravity.Y = 0;
 CharProp.characterRec.y = TextureClass.backgroundTextures[0].height;
 CharProp.characterRec.x = Variable.screenWidth / 2;
 }
