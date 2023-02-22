@@ -15,6 +15,7 @@ class TextureClass
         charTextures.Add(Raylib.LoadTexture("IMG/charTextureJump.png"));
         charTextures.Add(Raylib.LoadTexture("IMG/charRunningTexture.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/ground.png"));
+        backgroundTextures.Add(Raylib.LoadTexture("IMG/sky.png"));
     }
 }
 

@@ -12,6 +12,8 @@ public class Variable
 
     public static bool touchFloor = false;
 
+    public static float skyPlacementX = 1;
+    public static float skyPlacementY = 1;
     public static int frame = 1;
    
     public static int timer = 1;

@@ -58,7 +58,6 @@ else
 public static void jumpMechanics(){
     
     Variable.gravity.Y = -15f; 
-        
 }
 
 

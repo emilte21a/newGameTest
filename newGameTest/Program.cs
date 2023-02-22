@@ -51,6 +51,8 @@ while (!Raylib.WindowShouldClose())
 //Logik====================
 
     Vector2 characterPos = new Vector2(CharProp.characterRec.x, CharProp.characterRec.y);
+    Vector2 skyPos = new Vector2(-Variable.screenWidth/2, Variable.skyPlacementY*1);
+    
     camera.target = characterPos; //Kamerans target är karaktärens position
 
     
@@ -125,7 +127,15 @@ if (currentScene == "start")
 else if (currentScene == "game")
 {
     charVariable = Method.jumpAnim();
-    
+    Method.runningLogic();
+    Method.bothADdown();
+
+    Rectangle sourceRec1 = new Rectangle(120*Variable.frame, 0, Variable.way*120, 180);
+    Rectangle facing = new Rectangle(0, 0, Variable.way*120, 180);
+    Rectangle skyRec = new Rectangle(Variable.skyPlacementX*1, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
+
+
+
     Raylib.BeginMode2D(camera);
     Raylib.ClearBackground(Color.WHITE);
     
@@ -138,31 +148,40 @@ else if (currentScene == "game")
 
     //Raylib.DrawRectangle((int)Rectangles.Floor.x, (int)Rectangles.Floor.y, (int)Rectangles.Floor.width, (int)Rectangles.Floor.height, Color.BLUE);
 
+    Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], skyRec, skyPos, Color.WHITE);
+
     Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor.x, (int)Rectangles.Floor.y, Color.WHITE);
     
     
     //Raylib.DrawRectangle((int)Rectangles.hitBox.x, (int)Rectangles.hitBox.y, (int)Rectangles.hitBox.width, (int)Rectangles.hitBox.height, Color.LIME);
+    
+    if (!Variable.touchFloor)
+    {
+        Variable.skyPlacementY+=Variable.gravity.Y;
+    }
 
-    Method.runningLogic();
-    Method.bothADdown();
-
+    else
+    {
+        Variable.skyPlacementY = 1;
+    }
     
     if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) || (Raylib.IsKeyDown(KeyboardKey.KEY_D)))
     {
         Variable.way = 1;
+        Variable.skyPlacementX+=0.5f;
     }
 
     else if (Raylib.IsKeyReleased(KeyboardKey.KEY_A) || (Raylib.IsKeyDown(KeyboardKey.KEY_A)))
     {
         Variable.way = -1;
+        Variable.skyPlacementX-=0.5f;
     }
 
     Console.WriteLine(Variable.way);
 
-    Rectangle sourceRec1 = new Rectangle(120*Variable.frame, 0, Variable.way*120, 180);
-    Rectangle facing = new Rectangle(0, 0, Variable.way*120, 180);
-
     
+    
+   
 
     if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
     {
