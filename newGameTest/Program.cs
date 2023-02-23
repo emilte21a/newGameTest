@@ -10,6 +10,7 @@ Raylib.SetTargetFPS(60);
 string[] names = { "mad", "hollo", "wal" };
 
 TextureClass t = new();
+Rectangles r = new();
 
 
 Rectangle enemyRec = new Rectangle(900, 900, 120, 120);
@@ -51,7 +52,7 @@ while (!Raylib.WindowShouldClose())
 //Logik====================
 
     Vector2 characterPos = new Vector2(CharProp.characterRec.x, CharProp.characterRec.y);
-    Vector2 skyPos = new Vector2(-Variable.screenWidth/2, Variable.skyPlacementY*1);
+    Vector2 skyPos = new Vector2(-Variable.screenWidth/2, 0);
     
     camera.target = characterPos; //Kamerans target är karaktärens position
 
@@ -75,17 +76,11 @@ while (!Raylib.WindowShouldClose())
         CharProp.characterRec.x = Method.walkingX(CharProp.characterRec.x, CharProp.speed);
         //&& Rectangles.hitBox.y < Rectangles.Floor.y+100
         
-
         if (CharProp.characterRec.y > Variable.screenHeight)
         {
             currentScene = "dead";
-        }
-
-
-        
-        
+        }        
     }
-        
 
     else if (currentScene == "dead")
     {
@@ -135,9 +130,12 @@ else if (currentScene == "game")
     Rectangle skyRec = new Rectangle(Variable.skyPlacementX*1, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
 
 
-
-    Raylib.BeginMode2D(camera);
     Raylib.ClearBackground(Color.WHITE);
+
+    
+    
+    Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], skyRec, skyPos, Color.WHITE);
+    Raylib.BeginMode2D(camera);
     
     Rectangles.hitBox.x = CharProp.characterRec.x;
     Rectangles.hitBox.y = CharProp.characterRec.y+180;
@@ -148,22 +146,13 @@ else if (currentScene == "game")
 
     //Raylib.DrawRectangle((int)Rectangles.Floor.x, (int)Rectangles.Floor.y, (int)Rectangles.Floor.width, (int)Rectangles.Floor.height, Color.BLUE);
 
-    Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], skyRec, skyPos, Color.WHITE);
 
-    Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor.x, (int)Rectangles.Floor.y, Color.WHITE);
+    Raylib.DrawTexture(TextureClass.backgroundTextures[0],(int)Rectangles.Floor2.x, (int) Rectangles.Floor2.y, Color.WHITE);
+    //Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor2.x, (int)Rectangles.Floor2.y, Color.WHITE);
+    //Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor3.x, (int)Rectangles.Floor3.y, Color.WHITE);
     
     
     //Raylib.DrawRectangle((int)Rectangles.hitBox.x, (int)Rectangles.hitBox.y, (int)Rectangles.hitBox.width, (int)Rectangles.hitBox.height, Color.LIME);
-    
-    if (!Variable.touchFloor)
-    {
-        Variable.skyPlacementY+=Variable.gravity.Y;
-    }
-
-    else
-    {
-        Variable.skyPlacementY = 1;
-    }
     
     if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) || (Raylib.IsKeyDown(KeyboardKey.KEY_D)))
     {
@@ -175,13 +164,7 @@ else if (currentScene == "game")
     {
         Variable.way = -1;
         Variable.skyPlacementX-=0.5f;
-    }
-
-    Console.WriteLine(Variable.way);
-
-    
-    
-   
+    }    
 
     if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
     {

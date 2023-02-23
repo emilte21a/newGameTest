@@ -41,17 +41,21 @@ public static void gravityMethod()
 }
 
 public static void isColliding(){
+Rectangles r = new();
 
-if(!Raylib.CheckCollisionRecs(Rectangles.hitBox, Rectangles.Floor))
-{
-    Variable.touchFloor = false;
+//foreach (var rect in r.floors)
+//{
     
+    if(!Raylib.CheckCollisionRecs(Rectangles.hitBox, Rectangles.Floor2))
+    {
+        Variable.touchFloor = false;
     }
 
-else
-{
-    Variable.touchFloor = true;
-}
+    else
+    {
+        Variable.touchFloor = true;
+    }
+//}
 }
 
 

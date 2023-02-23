@@ -13,7 +13,7 @@ public class Variable
     public static bool touchFloor = false;
 
     public static float skyPlacementX = 1;
-    public static float skyPlacementY = 1;
+
     public static int frame = 1;
    
     public static int timer = 1;
@@ -23,11 +23,21 @@ public class Variable
     public static bool bothButtonsPressed = false;
 }
 
+
 public class Rectangles
 {
-    TextureClass t = new();
+    
     public List<Rectangle> floors = new();
-    public static Rectangle Floor = new Rectangle(0, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
+
+    public Rectangles(){
+        floors.Add(Floor);
+        floors.Add(Floor2);
+        floors.Add(Floor3);
+    }
+
+    public static Rectangle Floor = new Rectangle(-1300, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
+    public static Rectangle Floor2 = new Rectangle(0, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
+    public static Rectangle Floor3 = new Rectangle(1300, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
 
     public static Rectangle hitBox = new Rectangle(CharProp.characterRec.x, CharProp.characterRec.y+179, CharProp.characterRec.width, 3);
 }
