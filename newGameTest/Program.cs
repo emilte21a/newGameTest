@@ -125,19 +125,36 @@ while (!Raylib.WindowShouldClose())
         charVariable = characterMethods.jumpAnim();
         characterMethods.runningLogic();
         characterMethods.bothADdown();
-
-        int punchframe = characterMethods.punchLogic();
+        
+        Console.WriteLine(Variable.whilePunching);
+        Console.WriteLine(Variable.punchFrame);
 
         if (Variable.whilePunching > 0)
         {
             Variable.whilePunching--;
+            characterMethods.punchLogic();
         }
+
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15 && Variable.whilePunching == 0)
+        {
+            
+            Variable.whilePunching = 25;
+            
+        }
+
+        if (Variable.whilePunching == 0)
+        {
+            Variable.punchFrame = 1;
+            Variable.whilePunching = 0;
+        }
+
+
 
         Rectangle sourceRec1 = new Rectangle(120 * Variable.frame, 0, Variable.way * 120, 180);
         Rectangle facing = new Rectangle(0, 0, Variable.way * 120, 180);
         Rectangle skyRec = new Rectangle(Variable.skyPlacementX * 1, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX * 0.5f, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[2].height);
-        Rectangle punchRec = new Rectangle(120* punchframe, 0, Variable.way * 120, 180);
+        Rectangle punchRec = new Rectangle(120* Variable.punchFrame, 0, Variable.way * 120, 180);
 
 
         Raylib.ClearBackground(Color.WHITE);
@@ -192,20 +209,10 @@ while (!Raylib.WindowShouldClose())
 
 
         
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15)
-        {
-            Variable.whilePunching = 120;
-
-            for (var i = 0; i < Variable.whilePunching; i++)
-            {
-                Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
-            }
+        else if (Variable.whilePunching > 0)
+        {            
+            Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
             
-        
-            if (Variable.whilePunching == 0)
-            {
-                Variable.whilePunching = 0;
-            }
         }
             
 

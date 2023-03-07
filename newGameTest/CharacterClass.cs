@@ -135,27 +135,21 @@ public static void runningLogic()
     Variable.frame = Variable.frame % maxFrames;
 }
 
-public static int punchLogic(){
+public static void punchLogic(){
     int maxFrames = 6;
-    int timer = 0;
-    int punchFrame = 1;
 
-    timer+=2;
+    Variable.timer2+=2;
     
-    if (timer > 10)
+    if (Variable.timer2 > 10)
     {
-        timer = 0;
-        punchFrame++;
+        Variable.timer2 = 0;
+        Variable.punchFrame++;
     }
 
-    
-
-    if (punchFrame == maxFrames)
+    if (Variable.punchFrame == maxFrames)
     {
-        return 0;
+        Variable.punchFrame = 0;
     }
-
-    return punchFrame;
 
 }
 

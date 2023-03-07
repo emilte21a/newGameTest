@@ -15,8 +15,12 @@ public class Variable
     public static float skyPlacementX = 1;
 
     public static int frame = 1;
+    
+    public static int punchFrame = 1;
+
    
     public static int timer = 1;
+    public static int timer2 = 1;
 
     public static int way = 1;
     
