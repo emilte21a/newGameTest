@@ -26,7 +26,7 @@ enemies.Add(new Enemy() { name = "Joseph" });
 enemies.Add(new Enemy() { name = "Avdol" });
 enemies.Add(new Enemy() { name = "Jean Pierre" });
 
-
+Color mountainColor = new Color(255, 255, 255, 155);
 
 int charVariable;
 
@@ -42,53 +42,54 @@ float enemySpeed = 2;
 Camera2D camera = new();
 camera.zoom = 0.9f;
 camera.rotation = 0;
-camera.offset = new Vector2(Variable.screenHeight/2, Variable.screenWidth/2);
+camera.offset = new Vector2(Variable.screenHeight / 2, Variable.screenWidth / 2);
 
 string currentScene = "start";
 
 while (!Raylib.WindowShouldClose())
 {
 
-//Logik====================
+    //Logik====================
 
-    Vector2 characterPos = new Vector2(CharProp.characterRec.x, CharProp.characterRec.y);
-    Vector2 skyPos = new Vector2(-Variable.screenWidth/2, 0);
-    
+    Vector2 characterPos = new Vector2(characterProperties.characterRec.x, characterProperties.characterRec.y);
+    Vector2 skyPos = new Vector2(-Variable.screenWidth / 2, 0);
+    Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight/2.5f);
+
     camera.target = characterPos; //Kamerans target är karaktärens position
 
-    
-    if (currentScene =="start")
+
+    if (currentScene == "start")
     {
-       if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
         {
-            currentScene="game";
-            Method.resetVars();
+            currentScene = "game";
+            characterMethods.resetVars();
         }
-        
-    }    
-    
-      
+
+    }
+
+
     else if (currentScene == "game")
     {
-        Method.gravityMethod();
+        characterMethods.gravityMethod();
 
-        
-        CharProp.characterRec.x = Method.walkingX(CharProp.characterRec.x, CharProp.speed);
+
+        characterProperties.characterRec.x = characterMethods.walkingX(characterProperties.characterRec.x, characterProperties.speed);
         //&& Rectangles.hitBox.y < Rectangles.Floor.y+100
-        
-        if (CharProp.characterRec.y > Variable.screenHeight)
+
+        if (characterProperties.characterRec.y > Variable.screenHeight)
         {
             currentScene = "dead";
-        }        
+        }
     }
 
     else if (currentScene == "dead")
     {
-        Method.resetVars();
+        characterMethods.resetVars();
 
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER));
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER)) ;
         {
-            currentScene="start";
+            currentScene = "start";
         }
     }
 
@@ -97,7 +98,7 @@ while (!Raylib.WindowShouldClose())
 
 
 
-    
+
 
 
 
@@ -106,92 +107,134 @@ while (!Raylib.WindowShouldClose())
     // Vector2 diff = playerPos - fiendePos;
     // Vector2 fiendeDirection = Vector2.Normalize(diff);
 
-//Grafik===========================================
+    //Grafik===========================================
 
-Raylib.BeginDrawing();
+    Raylib.BeginDrawing();
 
-if (currentScene == "start")
-{
-    
-    Raylib.ClearBackground(Color.WHITE);
-    Raylib.DrawText("Press ENTER to start", Variable.screenWidth/2, Variable.screenHeight/2, 50, Color.GOLD);  
-
-} 
-
-
-else if (currentScene == "game")
-{
-    charVariable = Method.jumpAnim();
-    Method.runningLogic();
-    Method.bothADdown();
-
-    Rectangle sourceRec1 = new Rectangle(120*Variable.frame, 0, Variable.way*120, 180);
-    Rectangle facing = new Rectangle(0, 0, Variable.way*120, 180);
-    Rectangle skyRec = new Rectangle(Variable.skyPlacementX*1, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
-
-
-    Raylib.ClearBackground(Color.WHITE);
-
-    
-    
-    Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], skyRec, skyPos, Color.WHITE);
-    Raylib.BeginMode2D(camera);
-    
-    Rectangles.hitBox.x = CharProp.characterRec.x;
-    Rectangles.hitBox.y = CharProp.characterRec.y+180;
-
-    
-
-    
-
-    //Raylib.DrawRectangle((int)Rectangles.Floor.x, (int)Rectangles.Floor.y, (int)Rectangles.Floor.width, (int)Rectangles.Floor.height, Color.BLUE);
-
-
-    Raylib.DrawTexture(TextureClass.backgroundTextures[0],(int)Rectangles.Floor2.x, (int) Rectangles.Floor2.y, Color.WHITE);
-    //Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor2.x, (int)Rectangles.Floor2.y, Color.WHITE);
-    //Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor3.x, (int)Rectangles.Floor3.y, Color.WHITE);
-    
-    
-    //Raylib.DrawRectangle((int)Rectangles.hitBox.x, (int)Rectangles.hitBox.y, (int)Rectangles.hitBox.width, (int)Rectangles.hitBox.height, Color.LIME);
-    
-    if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) || (Raylib.IsKeyDown(KeyboardKey.KEY_D)))
+    if (currentScene == "start")
     {
-        Variable.way = 1;
-        Variable.skyPlacementX+=0.5f;
+
+        Raylib.ClearBackground(Color.WHITE);
+        Raylib.DrawText("Press ENTER to start", Variable.screenWidth / 2, Variable.screenHeight / 2, 50, Color.GOLD);
+
     }
 
-    else if (Raylib.IsKeyReleased(KeyboardKey.KEY_A) || (Raylib.IsKeyDown(KeyboardKey.KEY_A)))
-    {
-        Variable.way = -1;
-        Variable.skyPlacementX-=0.5f;
-    }    
 
-    if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+    else if (currentScene == "game")
     {
-        Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+        charVariable = characterMethods.jumpAnim();
+        characterMethods.runningLogic();
+        characterMethods.bothADdown();
+
+        int punchframe = characterMethods.punchLogic();
+
+        if (Variable.whilePunching > 0)
+        {
+            Variable.whilePunching--;
+        }
+
+        Rectangle sourceRec1 = new Rectangle(120 * Variable.frame, 0, Variable.way * 120, 180);
+        Rectangle facing = new Rectangle(0, 0, Variable.way * 120, 180);
+        Rectangle skyRec = new Rectangle(Variable.skyPlacementX * 1, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
+        Rectangle mountainRec = new Rectangle(Variable.skyPlacementX * 0.5f, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[2].height);
+        Rectangle punchRec = new Rectangle(120* punchframe, 0, Variable.way * 120, 180);
+
+
+        Raylib.ClearBackground(Color.WHITE);
+
+
+
+        Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], skyRec, skyPos, Color.WHITE);
+        Raylib.DrawTextureRec(TextureClass.backgroundTextures[2], mountainRec, mountainPos, mountainColor);
+        
+        
+        Raylib.BeginMode2D(camera);
+
+        Rectangles.hitBox.x = characterProperties.characterRec.x;
+        Rectangles.hitBox.y = characterProperties.characterRec.y + 180;
+
+
+
+
+
+        //Raylib.DrawRectangle((int)Rectangles.Floor.x, (int)Rectangles.Floor.y, (int)Rectangles.Floor.width, (int)Rectangles.Floor.height, Color.BLUE);
+
+
+        Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor2.x, (int)Rectangles.Floor2.y, Color.WHITE);
+        //Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor2.x, (int)Rectangles.Floor2.y, Color.WHITE);
+        //Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)Rectangles.Floor3.x, (int)Rectangles.Floor3.y, Color.WHITE);
+
+
+        //Raylib.DrawRectangle((int)Rectangles.hitBox.x, (int)Rectangles.hitBox.y, (int)Rectangles.hitBox.width, (int)Rectangles.hitBox.height, Color.LIME);
+
+        if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.isMoving == true))
+        {
+            Variable.way = 1;
+            Variable.skyPlacementX += 0.5f;
+        }
+
+        else if (Raylib.IsKeyReleased(KeyboardKey.KEY_A) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.isMoving == true))
+        {
+            Variable.way = -1;
+            Variable.skyPlacementX -= 0.5f;
+        }
+
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+        {
+            
+            Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+        }
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+        {
+            
+            Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+        }
+
+
+        
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15)
+        {
+            Variable.whilePunching = 120;
+
+            for (var i = 0; i < Variable.whilePunching; i++)
+            {
+                Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
+            }
+            
+        
+            if (Variable.whilePunching == 0)
+            {
+                Variable.whilePunching = 0;
+            }
+        }
+            
+
+        
+
+        
+
+        else
+        {
+            
+            Variable.isMoving = false;
+            Raylib.DrawTextureRec(TextureClass.charTextures[charVariable], facing, characterPos, Color.WHITE);
+        }
+
+
+        Raylib.DrawText($"{e.name}", 400, 400, 50, Color.BLACK);
+        Raylib.DrawRectangle(-1300, 1150, 4200, 1600, Color.BLACK);
+        Raylib.EndMode2D();
+        Raylib.DrawTexture(TextureClass.otherTextures[0], 10, 0, Color.WHITE);
     }
-    else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+
+    else if (currentScene == "dead")
     {
-        Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+
+        Raylib.ClearBackground(Color.WHITE);
+        Raylib.DrawText("you died", Variable.screenWidth / 2, Variable.screenHeight / 2, 50, Color.GOLD);
     }
 
-    else
-    {
-        Raylib.DrawTextureRec(TextureClass.charTextures[charVariable], facing, characterPos, Color.WHITE);
-    }
-
-    Raylib.DrawText($"{e.name}", 400, 400, 50, Color.BLACK);
-    Raylib.EndMode2D();
-}
-
-else if(currentScene=="dead")
-{
-
-Raylib.ClearBackground(Color.WHITE);
-Raylib.DrawText("you died", Variable.screenWidth/2, Variable.screenHeight/2, 50, Color.GOLD);      
-}
-
-Raylib.EndDrawing();
+    Raylib.EndDrawing();
 
 
 

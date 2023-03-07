@@ -20,7 +20,10 @@ public class Variable
 
     public static int way = 1;
     
+    public static int whilePunching = 0;
     public static bool bothButtonsPressed = false;
+
+    public static bool isMoving  = true;
 }
 
 
@@ -39,12 +42,6 @@ public class Rectangles
     public static Rectangle Floor2 = new Rectangle(0, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
     public static Rectangle Floor3 = new Rectangle(1300, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
 
-    public static Rectangle hitBox = new Rectangle(CharProp.characterRec.x, CharProp.characterRec.y+179, CharProp.characterRec.width, 3);
+    public static Rectangle hitBox = new Rectangle(characterProperties.characterRec.x, characterProperties.characterRec.y+179, characterProperties.characterRec.width, 3);
 }
 
-public class CharProp
-{
-
-    public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.backgroundTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
-    public static float speed = 4;
-}
