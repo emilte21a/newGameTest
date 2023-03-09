@@ -45,19 +45,20 @@ public static void gravityMethod()
 public static void isColliding(){
 Rectangles r = new();
 
-//foreach (var rect in r.floors)
-//{
-    
-    if(!Raylib.CheckCollisionRecs(Rectangles.hitBox, Rectangles.Floor2))
-    {
-        Variable.touchFloor = false;
-    }
-
-    else
+for (var i = 0; i < r.floors.Count; i++)
+{
+if (!Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
+{
+    Variable.touchFloor = false;
+}
+}
+for (var i = 0; i < r.floors.Count; i++)
+{
+    if (Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
     {
         Variable.touchFloor = true;
     }
-//}
+}
 }
 
 
