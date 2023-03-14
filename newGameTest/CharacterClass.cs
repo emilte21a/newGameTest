@@ -6,168 +6,173 @@ using System.Numerics;
 public class characterMethods
 {
 
-public static void gravityMethod()
-{
-    float gravity = 0.5f;
-    float maxFallSpeed = 15;
-    float minFallSpeed = -15;
-    
-    isColliding();
-
-    if(!Variable.touchFloor)
+    public static void gravityMethod()
     {
-        Variable.gravity.Y += gravity;
-        characterProperties.characterRec.y += Variable.gravity.Y;
+        float gravity = 0.5f;
+        float maxFallSpeed = 15;
+        float minFallSpeed = -15;
 
-        if (Variable.gravity.Y > maxFallSpeed)
-        {
-            Variable.gravity.Y = maxFallSpeed;
-        }
-    }
+        isColliding();
 
-    else
-    {
-        Variable.gravity.Y -= 15;
-        if (Variable.gravity.Y < minFallSpeed)
+        if (!Variable.touchFloor)
         {
-            Variable.gravity.Y = minFallSpeed;
-        }
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE)  && Variable.touchFloor==true)
-        {
+            Variable.gravity.Y += gravity;
             characterProperties.characterRec.y += Variable.gravity.Y;
-            Variable.touchFloor= false;
-            characterMethods.jumpMechanics();
+
+            if (Variable.gravity.Y > maxFallSpeed)
+            {
+                Variable.gravity.Y = maxFallSpeed;
+            }
+        }
+
+        else
+        {
+            Variable.gravity.Y -= 15;
+            if (Variable.gravity.Y < minFallSpeed)
+            {
+                Variable.gravity.Y = minFallSpeed;
+            }
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && Variable.touchFloor == true)
+            {
+                characterProperties.characterRec.y += Variable.gravity.Y;
+                Variable.touchFloor = false;
+                characterMethods.jumpMechanics();
+            }
         }
     }
-}
 
 
-public static void isColliding(){
-Rectangles r = new();
-
-for (var i = 0; i < r.floors.Count; i++)
-{
-if (!Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
-{
-    Variable.touchFloor = false;
-}
-}
-for (var i = 0; i < r.floors.Count; i++)
-{
-    if (Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
+    public static void isColliding()
     {
-        Variable.touchFloor = true;
+        Rectangles r = new();
+
+        for (var i = 0; i < r.floors.Count; i++)
+        {
+            if (!Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
+            {
+                Variable.touchFloor = false;
+            }
+        }
+        for (var i = 0; i < r.floors.Count; i++)
+        {
+            if (Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
+            {
+                Variable.touchFloor = true;
+            }
+        }
     }
-}
-}
 
 
 
-public static void jumpMechanics(){
-    
-    Variable.gravity.Y = -15f; 
-}
-
-
-    public static float walkingX(float characterx, float speed) 
-{
-    if (Raylib.IsKeyDown(KeyboardKey.KEY_A) //&& characterx > 0
-    )
+    public static void jumpMechanics()
     {
-        Variable.isMoving = true;
-        characterx -= speed;
+
+        Variable.gravity.Y = -15f;
     }
-    if (Raylib.IsKeyDown(KeyboardKey.KEY_D) //&& characterx < Variable.screenWidth - 100
-    )
+
+
+    public static float walkingX(float characterx, float speed)
     {
-        Variable.isMoving = true;
-        characterx += speed;
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_A) //&& characterx > 0
+        )
+        {
+            Variable.isMoving = true;
+            characterx -= speed;
+        }
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) //&& characterx < Variable.screenWidth - 100
+        )
+        {
+            Variable.isMoving = true;
+            characterx += speed;
+        }
+        return characterx;
     }
-    return characterx;
-}
 
 
-public static int jumpAnim()
-{
-if (Variable.touchFloor == true)
-{
-    return 0;
-}
-else if (Variable.touchFloor == false)
-{  
-
-    if (Variable.gravity.Y > 0)
+    public static int jumpAnim()
     {
-        return 1; //om gravitationens y-värde är mindre än 0 så returnas 1, vilket är ett index för falling texture
+        if (Variable.touchFloor == true)
+        {
+            return 0;
+        }
+        else if (Variable.touchFloor == false)
+        {
+
+            if (Variable.gravity.Y > 0)
+            {
+                return 1; //om gravitationens y-värde är mindre än 0 så returnas 1, vilket är ett index för falling texture
+            }
+
+            else
+            {
+                return 2; //Annars så returneras 2 vilket är ett annat index för jumping texure
+            }
+        }
+        else
+        {
+            return 4;
+        }
+
     }
 
-    else{
-        return 2; //Annars så returneras 2 vilket är ett annat index för jumping texure
-    }
-}
-else {
-    return 4;
-}
-
-}
-
-public static void resetVars(){
-Variable.gravity.Y = 0;
-characterProperties.characterRec.y = TextureClass.backgroundTextures[0].height;
-characterProperties.characterRec.x = Variable.screenWidth / 2;
-}
-
-
-
-public static void runningLogic()
-{
-    
-    int maxFrames = 4;
-    
-
-    Variable.timer+=2;
-    
-
-    if (Variable.timer>20)
+    public static void resetVars()
     {
-        Variable.timer=0;
-        Variable.frame++;
+        Variable.gravity.Y = 0;
+        characterProperties.characterRec.y = TextureClass.backgroundTextures[0].height;
+        characterProperties.characterRec.x = Variable.screenWidth / 2;
     }
-    Variable.frame = Variable.frame % maxFrames;
-}
 
-public static void punchLogic(){
-    int maxFrames = 6;
 
-    Variable.timer2+=2;
-    
-    if (Variable.timer2 > 10)
+
+    public static void runningLogic()
     {
-        Variable.timer2 = 0;
-        Variable.punchFrame++;
+
+        int maxFrames = 4;
+
+        Variable.timer += 2;
+
+        if (Variable.timer > 20)
+        {
+            Variable.timer = 0;
+            Variable.frame++;
+        }
+        Variable.frame = Variable.frame % maxFrames;
     }
 
-    if (Variable.punchFrame == maxFrames)
+    public static void punchLogic()
     {
-        Variable.punchFrame = 0;
+        int maxFrames = 6;
+
+        Variable.timer2 += 2;
+
+        if (Variable.timer2 > 10)
+        {
+            Variable.timer2 = 0;
+            Variable.punchFrame++;
+        }
+
+        if (Variable.punchFrame == maxFrames)
+        {
+            Variable.punchFrame = 0;
+        }
+
     }
 
-}
 
-
-public static void bothADdown(){
-    if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && (Raylib.IsKeyDown(KeyboardKey.KEY_A)))
+    public static void bothADdown()
     {
-        Variable.bothButtonsPressed = true;
-        Variable.isMoving = false;
-    }
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && (Raylib.IsKeyDown(KeyboardKey.KEY_A)))
+        {
+            Variable.bothButtonsPressed = true;
+            Variable.isMoving = false;
+        }
 
-    else
-    {
-        Variable.bothButtonsPressed = false;
+        else
+        {
+            Variable.bothButtonsPressed = false;
+        }
+
     }
-   
-}
 
 }
 

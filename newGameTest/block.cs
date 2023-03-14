@@ -3,10 +3,11 @@ using System;
 
 public class Rectangles
 {
-    
+
     public List<Rectangle> floors = new();
 
-    public Rectangles(){
+    public Rectangles()
+    {
         floors.Add(Floor);
         floors.Add(Floor2);
         floors.Add(Floor3);
@@ -16,9 +17,9 @@ public class Rectangles
     public static Rectangle Floor2 = new Rectangle(0, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
     public static Rectangle Floor3 = new Rectangle(1300, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
 
-    public static Rectangle hitBox = new Rectangle(characterProperties.characterRec.x, characterProperties.characterRec.y+179, characterProperties.characterRec.width, 3);
+    public static Rectangle hitBox = new Rectangle(characterProperties.characterRec.x, characterProperties.characterRec.y + 179, characterProperties.characterRec.width, 3);
 
-    public static Rectangle tree = new Rectangle(780, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height);
+
 
 }
 
