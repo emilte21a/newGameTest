@@ -72,8 +72,8 @@ while (!Raylib.WindowShouldClose())
 
     else if (currentScene == "game")
     {
+        BlockObject.loadBlocks();
         characterMethods.gravityMethod();
-
         characterProperties.characterRec.x = characterMethods.walkingX(characterProperties.characterRec.x, characterProperties.speed);
         //&& Rectangles.hitBox.y < Rectangles.Floor.y+100
 
@@ -120,9 +120,7 @@ while (!Raylib.WindowShouldClose())
         characterMethods.runningLogic();
         characterMethods.bothADdown();
         Methods.meleeMethod();
-
-
-        landscape.loadBlocks();
+        
 
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
         {
@@ -165,17 +163,19 @@ while (!Raylib.WindowShouldClose())
 
         
 
+        /*
         foreach (var item in BlockObject.floors)
         {
-            Raylib.DrawTexturePro(TextureClass.backgroundTextures[0], new Rectangle(0, 0, landscape.cellsize, landscape.cellsize), item.cellBlock, new Vector2(0, 0), 0, Color.WHITE);
+            Raylib.DrawTexturePro(TextureClass.backgroundTextures[0], new Rectangle(0, 0, BlockObject.cellsize, BlockObject.cellsize), item.cellBlock, new Vector2(0, 0), 0, Color.WHITE);
         }
         
-        for (var i = 0; i < floorCollection.floors.Count; i++)
+        */
+        for (var i = 0; i < BlockObject.floors.Count; i++)
         {
-            blockEntity floor = floorCollection.floors[i];
+            blockEntity floor = BlockObject.floors[i];
             Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)floor.cellBlock.x, (int)floor.cellBlock.y, Color.WHITE);
         }
-
+        
         
         for (var i = 0; i < treeCollection.Trees.Count; i++)
         {

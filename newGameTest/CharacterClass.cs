@@ -44,21 +44,30 @@ public class characterMethods
 
     public static void isColliding()
     {
-        BlockObject floorCollection = new BlockObject();
-        
+        //BlockObject f = new BlockObject();
 
-        for (var i = 0; i < floorCollection.floors.Count; i++)
+        /*
+        foreach (var floor in BlockObject.floors)
         {
-            blockEntity floor = floorCollection.floors[i];
+            
+        }
+        */
+
+        for (var i = 0; i < BlockObject.floors.Count; i++)
+        {
+            blockEntity floor = BlockObject.floors[i];
             if (!Raylib.CheckCollisionRecs(characterProperties.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = false;
             }
 
-            if (Raylib.CheckCollisionRecs(characterProperties.hitBox, floor.cellBlock))
+            else if (Raylib.CheckCollisionRecs(characterProperties.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = true;
+                break;
+                
             }
+           
         }
     }
 
