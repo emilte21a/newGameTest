@@ -8,9 +8,10 @@ Raylib.SetTargetFPS(60);
 
 string[] names = { "mad", "hollo", "wal" };
 
-TextureClass t = new();
-Rectangles r = new();
+TextureClass Textures = new();
+BlockObject floorCollection = new BlockObject();
 TreeObject treeCollection = new TreeObject();
+
 
 Rectangle enemyRec = new Rectangle(900, 900, 120, 120);
 
@@ -59,7 +60,6 @@ while (!Raylib.WindowShouldClose())
 
     camera.target = characterPos; //Kamerans target är karaktärens position
 
-
     if (currentScene == "start")
     {
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
@@ -96,13 +96,6 @@ while (!Raylib.WindowShouldClose())
 
 
 
-
-
-
-
-
-
-
     // Vector2 playerPos = new Vector2(characterRec.x, characterRec.y);
     // Vector2 fiendePos = new Vector2(enemyRec.x, enemyRec.y);
     // Vector2 diff = playerPos - fiendePos;
@@ -128,10 +121,11 @@ while (!Raylib.WindowShouldClose())
         characterMethods.bothADdown();
         Methods.meleeMethod();
 
+
+        landscape.loadBlocks();
+
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
         {
-
-            
             Variable.punchColorAlpha = 170;
             Variable.punchTimer = 100;
             Variable.whilePunching = 25;
@@ -151,8 +145,8 @@ while (!Raylib.WindowShouldClose())
 
         Rectangle sourceRec1 = new Rectangle(120 * Variable.frame, 0, Variable.way * 120, 180);
         Rectangle facing = new Rectangle(0, 0, Variable.way * 120, 180);
-        Rectangle skyRec = new Rectangle(Variable.skyPlacementX * 1, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
-        Rectangle mountainRec = new Rectangle(Variable.skyPlacementX * 0.5f, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[2].height);
+        Rectangle skyRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
+        Rectangle mountainRec = new Rectangle(Variable.skyPlacementX/2, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[2].height);
         Rectangle punchRec = new Rectangle(120 * Variable.punchFrame, 0, Variable.way * 120, 180);
 
 
@@ -166,19 +160,25 @@ while (!Raylib.WindowShouldClose())
 
         Raylib.BeginMode2D(camera);
 
-        Rectangles.hitBox.x = characterProperties.characterRec.x;
-        Rectangles.hitBox.y = characterProperties.characterRec.y + 180;
+        characterProperties.hitBox.x = characterProperties.characterRec.x;
+        characterProperties.hitBox.y = characterProperties.characterRec.y + 180;
 
-        for (var i = 0; i < r.floors.Count; i++)
+        
+
+        foreach (var item in BlockObject.floors)
         {
-            Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)r.floors[i].x, (int)r.floors[i].y, Color.WHITE);
+            Raylib.DrawTexturePro(TextureClass.backgroundTextures[0], new Rectangle(0, 0, landscape.cellsize, landscape.cellsize), item.cellBlock, new Vector2(0, 0), 0, Color.WHITE);
+        }
+        
+        for (var i = 0; i < floorCollection.floors.Count; i++)
+        {
+            blockEntity floor = floorCollection.floors[i];
+            Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)floor.cellBlock.x, (int)floor.cellBlock.y, Color.WHITE);
         }
 
-        //TRÄD
+        
         for (var i = 0; i < treeCollection.Trees.Count; i++)
         {
-
-
             TreeEntity tree = treeCollection.Trees[i];
 
             if (tree.treeHealth > 0)

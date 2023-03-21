@@ -44,18 +44,18 @@ public class characterMethods
 
     public static void isColliding()
     {
-        Rectangles r = new();
+        BlockObject floorCollection = new BlockObject();
+        
 
-        for (var i = 0; i < r.floors.Count; i++)
+        for (var i = 0; i < floorCollection.floors.Count; i++)
         {
-            if (!Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
+            blockEntity floor = floorCollection.floors[i];
+            if (!Raylib.CheckCollisionRecs(characterProperties.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = false;
             }
-        }
-        for (var i = 0; i < r.floors.Count; i++)
-        {
-            if (Raylib.CheckCollisionRecs(Rectangles.hitBox, r.floors[i]))
+
+            if (Raylib.CheckCollisionRecs(characterProperties.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = true;
             }
@@ -180,5 +180,8 @@ public class characterProperties
 {
 
     public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.backgroundTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
+    
+    public static Rectangle hitBox = new Rectangle(characterProperties.characterRec.x, characterProperties.characterRec.y + 179, characterProperties.characterRec.width, 3);
+    
     public static float speed = 4;
 }

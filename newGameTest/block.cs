@@ -1,25 +1,52 @@
 using Raylib_cs;
 using System;
 
-public class Rectangles
+
+public class blockEntity
 {
-
-    public List<Rectangle> floors = new();
-
-    public Rectangles()
-    {
-        floors.Add(Floor);
-        floors.Add(Floor2);
-        floors.Add(Floor3);
-    }
-
-    public static Rectangle Floor = new Rectangle(-1300, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
-    public static Rectangle Floor2 = new Rectangle(0, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
-    public static Rectangle Floor3 = new Rectangle(1300, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
-
-    public static Rectangle hitBox = new Rectangle(characterProperties.characterRec.x, characterProperties.characterRec.y + 179, characterProperties.characterRec.width, 3);
-
-
+    public Rectangle cellBlock;
 
 }
+
+
+
+
+public class BlockObject
+{
+    const int levelwidth = 10;
+    const int levelheight = 1;
+    public static int cellsize = 120;
+
+    public static List<blockEntity> floors = new();
+
+    public static void loadBlocks()
+    {
+        for (int x = 0; x < levelwidth; x++)
+        {
+            for (int y = 0; y < levelheight; y++)
+            {
+                floors.Add(new blockEntity()
+                {
+                    cellBlock = new Rectangle(x*cellsize, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height)
+                }
+                );
+                
+            }
+
+        }
+
+    }
+
+    /*
+    public BlockObject()
+    {
+        floors.Add(new blockEntity() { cellBlock = Floor });
+        
+    }
+    public static Rectangle Floor = new Rectangle(360, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
+
+*/
+}
+
+
 

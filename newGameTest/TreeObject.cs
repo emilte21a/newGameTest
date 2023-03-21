@@ -3,11 +3,8 @@ using Raylib_cs;
 
 public class TreeEntity
 {
-
     public int treeHealth = 100;
-
     public Rectangle rect;
-
     public int breakTreeMethod()
     {
         treeHealth -= 25;
