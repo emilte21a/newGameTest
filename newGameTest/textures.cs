@@ -19,6 +19,8 @@ class TextureClass
         backgroundTextures.Add(Raylib.LoadTexture("IMG/blockTexture.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/sky.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/mountains.png"));
+        backgroundTextures.Add(Raylib.LoadTexture("IMG/dirtBlockTexture.png"));
+        backgroundTextures.Add(Raylib.LoadTexture("IMG/parallaxbackground.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/inventoryspot.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/punchCoolDown.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/abilityFrame.png"));

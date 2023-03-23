@@ -45,7 +45,9 @@ float enemySpeed = 2;
 Camera2D camera = new();
 camera.zoom = 0.9f;
 camera.rotation = 0;
-camera.offset = new Vector2(Variable.screenHeight / 2, Variable.screenWidth / 2);
+camera.offset = new Vector2(1180 / 2, Variable.screenWidth/2);
+
+//1180 = Screenwidth-120 (120 är texturens bredd)
 
 string currentScene = "start";
 
@@ -56,7 +58,9 @@ while (!Raylib.WindowShouldClose())
 
     Vector2 characterPos = new Vector2(characterProperties.characterRec.x, characterProperties.characterRec.y);
     Vector2 skyPos = new Vector2(-Variable.screenWidth / 2, 0);
-    Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 2.5f);
+    Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 3.5f);
+    Vector2 hillsPos = new Vector2(-Variable.screenWidth /2, Variable.screenHeight/2);
+
 
     camera.target = characterPos; //Kamerans target är karaktärens position
 
@@ -104,6 +108,7 @@ while (!Raylib.WindowShouldClose())
     //Grafik===========================================
 
     Raylib.BeginDrawing();
+    Raylib.ClearBackground(Color.WHITE);
 
     if (currentScene == "start")
     {
@@ -120,63 +125,53 @@ while (!Raylib.WindowShouldClose())
         characterMethods.runningLogic();
         characterMethods.bothADdown();
         Methods.meleeMethod();
+        Methods.punchReturn();
         
-
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
-        {
-            Variable.punchColorAlpha = 170;
-            Variable.punchTimer = 100;
-            Variable.whilePunching = 25;
-            Variable.punchRectWidth = 0;
-        }
-
-        if (Variable.whilePunching > 0)
-        {
-            
-            Variable.whilePunching--;
-            characterMethods.punchLogic();
-        }
-
+        
         
 
         Color punchColor = new Color(255, 255, 255, Variable.punchColorAlpha);
 
         Rectangle sourceRec1 = new Rectangle(120 * Variable.frame, 0, Variable.way * 120, 180);
         Rectangle facing = new Rectangle(0, 0, Variable.way * 120, 180);
-        Rectangle skyRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
+        Rectangle skyRec = new Rectangle(Variable.skyPlacementX/4, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[1].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX/2, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[2].height);
+        Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[1].width, TextureClass.backgroundTextures[4].height);
+        
+        
         Rectangle punchRec = new Rectangle(120 * Variable.punchFrame, 0, Variable.way * 120, 180);
 
 
-        Raylib.ClearBackground(Color.WHITE);
 
 
 
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], skyRec, skyPos, Color.WHITE);
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[2], mountainRec, mountainPos, mountainColor);
-
+        Raylib.DrawTextureRec(TextureClass.backgroundTextures[4], hillsRec, hillsPos, Color.WHITE);
+        
 
         Raylib.BeginMode2D(camera);
 
         characterProperties.hitBox.x = characterProperties.characterRec.x;
         characterProperties.hitBox.y = characterProperties.characterRec.y + 180;
 
-        
+
 
         /*
         foreach (var item in BlockObject.floors)
         {
-            Raylib.DrawTexturePro(TextureClass.backgroundTextures[0], new Rectangle(0, 0, BlockObject.cellsize, BlockObject.cellsize), item.cellBlock, new Vector2(0, 0), 0, Color.WHITE);
+            Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)item.cellBlock.x, (int)item.cellBlock.y, Color.WHITE);
         }
-        
         */
+
         for (var i = 0; i < BlockObject.floors.Count; i++)
         {
             blockEntity floor = BlockObject.floors[i];
             Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)floor.cellBlock.x, (int)floor.cellBlock.y, Color.WHITE);
         }
-        
-        
+
+        BlockObject.drawDirtBlocks();
+
         for (var i = 0; i < treeCollection.Trees.Count; i++)
         {
             TreeEntity tree = treeCollection.Trees[i];
@@ -188,9 +183,7 @@ while (!Raylib.WindowShouldClose())
 
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(characterProperties.characterRec, tree.rect) && Variable.punchTimer==100)
                 {
-
                     tree.breakTreeMethod();
-                    Console.WriteLine(tree.treeHealth);
                     if (tree.treeHealth == 0)
                     {
                         Variable.amountOfWood += 10;
@@ -249,8 +242,11 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawTexture(TextureClass.otherTextures[1], 1110, 35, Color.WHITE);
         Raylib.DrawRectangle(1110, 35, Variable.punchRectWidth, 100, punchColor);
 
+        Raylib.DrawFPS(2, 2);
         Raylib.DrawTexture(TextureClass.otherTextures[4], 20, 150, Color.WHITE);
         Raylib.DrawText($"{Variable.amountOfWood}", 60, 155, 30, Color.WHITE);
+        Raylib.DrawRectangle(Variable.screenWidth/2, 0, 1, Variable.screenHeight, Color.ORANGE);
+        Raylib.DrawRectangle(0, Variable.screenHeight/2, Variable.screenWidth, 1, Color.ORANGE);
     }
 
     else if (currentScene == "dead")

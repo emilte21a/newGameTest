@@ -22,6 +22,23 @@ public static void meleeMethod(){
             Variable.punchColorAlpha = 0;
         }       
 }
+public static void punchReturn(){
+
+if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
+        {
+            Variable.punchColorAlpha = 170;
+            Variable.punchTimer = 100;
+            Variable.whilePunching = 25;
+            Variable.punchRectWidth = 0;
+        }
+
+        if (Variable.whilePunching > 0)
+        {
+            
+            Variable.whilePunching--;
+            characterMethods.punchLogic();
+        }
+}
 
 
 
