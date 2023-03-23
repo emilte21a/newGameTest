@@ -34,9 +34,8 @@ if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gra
 
         if (Variable.whilePunching > 0)
         {
-            
             Variable.whilePunching--;
-            characterMethods.punchLogic();
+            Player.punchLogic();
         }
 }
 

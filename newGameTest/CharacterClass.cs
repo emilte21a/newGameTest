@@ -3,10 +3,10 @@ using Raylib_cs;
 using System.Numerics;
 
 
-public class characterMethods
+public class Player
 {
 
-    public static void gravityMethod()
+    public static void GravityPhysics()
     {
         float gravity = 0.5f;
         float maxFallSpeed = 15;
@@ -36,7 +36,7 @@ public class characterMethods
             {
                 characterProperties.characterRec.y += Variable.gravity.Y;
                 Variable.touchFloor = false;
-                characterMethods.jumpMechanics();
+                Player.jumpMechanics();
             }
         }
     }
@@ -109,12 +109,12 @@ public class characterMethods
 
             if (Variable.gravity.Y > 0)
             {
-                return 1; //om gravitationens y-värde är mindre än 0 så returnas 1, vilket är ett index för falling texture
+                return 1; //om gravitationens y-värde är större än 0 så returnas 1, vilket är ett index för falling texture
             }
 
             else
             {
-                return 2; //Annars så returneras 2 vilket är ett annat index för jumping texure
+                return 2; //Annars så returneras 2 vilket är ett annat index för jumping texturen
             }
         }
         else
@@ -127,7 +127,7 @@ public class characterMethods
     public static void resetVars()
     {
         Variable.gravity.Y = 0;
-        characterProperties.characterRec.y = TextureClass.backgroundTextures[0].height;
+        characterProperties.characterRec.y = TextureClass.blockTextures[0].height;
         characterProperties.characterRec.x = Variable.screenWidth / 2;
     }
 
@@ -180,15 +180,13 @@ public class characterMethods
         {
             Variable.bothButtonsPressed = false;
         }
-
     }
-
 }
 
 public class characterProperties
 {
 
-    public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.backgroundTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
+    public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.blockTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
     
     public static Rectangle hitBox = new Rectangle(characterProperties.characterRec.x, characterProperties.characterRec.y + 179, characterProperties.characterRec.width, 3);
     

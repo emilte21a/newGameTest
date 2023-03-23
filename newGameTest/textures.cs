@@ -9,6 +9,7 @@ class TextureClass
     public static List<Texture2D> charTextures = new();
     public static List<Texture2D> backgroundTextures = new();
     public static List<Texture2D> otherTextures = new();
+    public static List<Texture2D> blockTextures = new();
     public TextureClass()
     {
         charTextures.Add(Raylib.LoadTexture("IMG/charTexture.png"));
@@ -16,11 +17,14 @@ class TextureClass
         charTextures.Add(Raylib.LoadTexture("IMG/charTextureJump.png"));
         charTextures.Add(Raylib.LoadTexture("IMG/charRunningTexture.png"));
         charTextures.Add(Raylib.LoadTexture("IMG/punchTexture.png"));
-        backgroundTextures.Add(Raylib.LoadTexture("IMG/blockTexture.png"));
+
+        blockTextures.Add(Raylib.LoadTexture("IMG/blockTexture.png"));
+        blockTextures.Add(Raylib.LoadTexture("IMG/dirtBlockTexture.png"));
+
         backgroundTextures.Add(Raylib.LoadTexture("IMG/sky.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/mountains.png"));
-        backgroundTextures.Add(Raylib.LoadTexture("IMG/dirtBlockTexture.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/parallaxbackground.png"));
+        
         otherTextures.Add(Raylib.LoadTexture("IMG/inventoryspot.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/punchCoolDown.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/abilityFrame.png"));

@@ -17,24 +17,26 @@ public class BlockObject
 
     public static void loadBlocks()
     {
+        floors.Clear();
         for (int x = -20; x < levelwidth; x++)
         {
             for (int y = 0; y < levelheight; y++)
             {
                 floors.Add(new blockEntity()
                 {
-                    cellBlock = new Rectangle(x * cellsize, y * cellsize + 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height)
+                    cellBlock = new Rectangle(x * cellsize, y * cellsize + 900, TextureClass.blockTextures[0].width, TextureClass.blockTextures[0].height)
                 });
             }
         }
     }
 
-    public static void drawDirtBlocks(){
+    public static void drawDirtBlocks()
+    {
         for (var x = -20; x < levelwidth; x++)
-        {   
+        {
             for (var y = 0; y < 2; y++)
             {
-                Raylib.DrawTexture(TextureClass.backgroundTextures[3], x*cellsize, y*cellsize +1020, Color.WHITE);
+                Raylib.DrawTexture(TextureClass.blockTextures[1], x * cellsize, y * cellsize + 1020, Color.WHITE);
             }
 
         }
