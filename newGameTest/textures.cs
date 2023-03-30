@@ -10,6 +10,8 @@ class TextureClass
     public static List<Texture2D> backgroundTextures = new();
     public static List<Texture2D> otherTextures = new();
     public static List<Texture2D> blockTextures = new();
+
+    public static List<Texture2D> rockTextures = new();
     public TextureClass()
     {
         charTextures.Add(Raylib.LoadTexture("IMG/charTexture.png"));
@@ -21,6 +23,9 @@ class TextureClass
         blockTextures.Add(Raylib.LoadTexture("IMG/blockTexture.png"));
         blockTextures.Add(Raylib.LoadTexture("IMG/dirtBlockTexture.png"));
 
+        rockTextures.Add(Raylib.LoadTexture("IMG/rock.png"));
+        rockTextures.Add(Raylib.LoadTexture("IMG/rock2.png"));
+
         backgroundTextures.Add(Raylib.LoadTexture("IMG/sky.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/mountains.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/parallaxbackground.png"));
@@ -30,6 +35,7 @@ class TextureClass
         otherTextures.Add(Raylib.LoadTexture("IMG/abilityFrame.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/tree.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/woodTexture.png"));
+        otherTextures.Add(Raylib.LoadTexture("IMG/InventoryTexture.png"));
     }
 }
 

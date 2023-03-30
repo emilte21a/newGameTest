@@ -24,7 +24,7 @@ public class BlockObject
             {
                 floors.Add(new blockEntity()
                 {
-                    cellBlock = new Rectangle(x * cellsize, y * cellsize + 900, TextureClass.blockTextures[0].width, TextureClass.blockTextures[0].height)
+                cellBlock = new Rectangle(x * cellsize, y * cellsize + 900, TextureClass.blockTextures[0].width, TextureClass.blockTextures[0].height)
                 });
             }
         }

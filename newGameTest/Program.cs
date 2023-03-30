@@ -26,7 +26,14 @@ enemies.Add(new Enemy() { name = "Joseph" });
 enemies.Add(new Enemy() { name = "Avdol" });
 enemies.Add(new Enemy() { name = "Jean Pierre" });
 
+/*
+System.Timers.Timer timer = new (interval: 1000); 
+timer.Elapsed += ( sender, e ) => methodClass.HandleTimer();
 
+int HandleTimer(int ){
+
+}
+*/
 
 Color mountainColor = new Color(255, 255, 255, 155);
 
@@ -38,8 +45,7 @@ foreach (Enemy en in enemies)
     Console.WriteLine(en.name);
 }
 
-
-float enemySpeed = 2;
+//float enemySpeed = 2;
 
 
 Camera2D camera = new();
@@ -71,6 +77,8 @@ while (!Raylib.WindowShouldClose())
             currentScene = "game";
             Player.resetVars();
             BlockObject.loadBlocks();
+            TreeObject.loadTrees();
+            rockObject.loadRocks();
         }
 
     }
@@ -80,8 +88,6 @@ while (!Raylib.WindowShouldClose())
 
         Player.GravityPhysics();
         characterProperties.characterRec.x = Player.walkingX(characterProperties.characterRec.x, characterProperties.speed);
-        //&& Rectangles.hitBox.y < Rectangles.Floor.y+100
-
 
         if (characterProperties.characterRec.y > Variable.screenHeight)
         {
@@ -128,9 +134,7 @@ while (!Raylib.WindowShouldClose())
         Player.bothADdown();
         Methods.meleeMethod();
         Methods.punchReturn();
-
-
-
+        Methods.parallaxEffect();
 
         //Spring texturens source rektangel
         Rectangle sourceRec1 = new Rectangle(120 * Variable.frame, 0, Variable.way * 120, 180);
@@ -145,11 +149,8 @@ while (!Raylib.WindowShouldClose())
         Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[2].height);
         Rectangle punchRec = new Rectangle(120 * Variable.punchFrame, 0, Variable.way * 120, 180);
 
-
         //Slag rektangeln och dess färg
         Color punchColor = new Color(255, 255, 255, Variable.punchColorAlpha);
-
-
 
         //Rita ut bakgrundstexturerna
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[0], skyRec, skyPos, Color.WHITE);
@@ -164,43 +165,34 @@ while (!Raylib.WindowShouldClose())
         characterProperties.hitBox.y = characterProperties.characterRec.y + 180;
 
 
+
         //För varje block i listan BlockObject.floors så ska gräs texturen ritas ut
-
-        /*
-        foreach (var item in BlockObject.floors)
-        {
-            Raylib.DrawTexture(TextureClass.backgroundTextures[0], (int)item.cellBlock.x, (int)item.cellBlock.y, Color.WHITE);
-        }
-        */
-
         for (var i = 0; i < BlockObject.floors.Count; i++)
         {
             blockEntity floor = BlockObject.floors[i];
             Raylib.DrawTexture(TextureClass.blockTextures[0], (int)floor.cellBlock.x, (int)floor.cellBlock.y, Color.WHITE);
         }
 
-
         //Rita ut alla dirtblocks som bara är texturer
         BlockObject.drawDirtBlocks();
 
+
+
         //För varje träd i treeCollection.Trees så ska en textur ritas ut
-        for (var i = 0; i < treeCollection.Trees.Count; i++)
+        for (var i = 0; i < TreeObject.Trees.Count; i++)
         {
-            TreeEntity tree = treeCollection.Trees[i];
+            TreeEntity tree = TreeObject.Trees[i];
 
             if (tree.treeHealth > 0)
             {
-                //Raylib.DrawRectangleRec(tree.rect, Color.BLACK);
-                Raylib.DrawTexture(TextureClass.otherTextures[3], (int)tree.rect.x, 420, Color.WHITE);
-
-
+                Raylib.DrawTexture(TextureClass.otherTextures[3], (int)tree.TreeRect.x, 420, Color.WHITE);
                 /*
                 Om man trycker på F och karaktärens rektangel kolliderar med trädets Rektangel
                 Starta då breakTreeMethod
                 Om trädets HP är detsamma som 0 så ska spelarens mängd trä att öka med 10
                 */
 
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(characterProperties.characterRec, tree.rect) && Variable.punchTimer == 100)
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(characterProperties.characterRec, tree.TreeRect) && Variable.punchTimer == 100)
                 {
                     tree.breakTreeMethod();
                     if (tree.treeHealth == 0)
@@ -208,28 +200,24 @@ while (!Raylib.WindowShouldClose())
                         Variable.amountOfWood += 10;
                     }
                 }
-
-
             }
-
         }
-
-
-
-        //Raylib.DrawRectangle((int)Rectangles.hitBox.x, (int)Rectangles.hitBox.y, (int)Rectangles.hitBox.width, (int)Rectangles.hitBox.height, Color.LIME);
-
-        if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.isMoving == true))
+    
+        
+        
+        //Rita ut stenar
+        for (var i = 0; i < rockObject.Rocks.Count; i++)
         {
-            Variable.way = 1;
-            Variable.skyPlacementX += 0.5f;
+            rockEntity rock = rockObject.Rocks[i];
+        
+            
+            Raylib.DrawTexture(TextureClass.rockTextures[rockObject.rockTexture], (int)rock.rockRect.x, (int)rock.rockRect.y, Color.WHITE);
+           
         }
 
-        else if (Raylib.IsKeyReleased(KeyboardKey.KEY_A) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.isMoving == true))
-        {
-            Variable.way = -1;
-            Variable.skyPlacementX -= 0.5f;
-        }
+        
 
+        
         if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
         {
 
@@ -263,10 +251,25 @@ while (!Raylib.WindowShouldClose())
 
         Raylib.DrawFPS(2, 2);
         Raylib.DrawTexture(TextureClass.otherTextures[4], 20, 150, Color.WHITE);
+
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_TAB))
+        {
+            InventorySystem.loadInventory();
+
+            Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 10, Color.WHITE);
+            for (int i = 0; i < InventorySystem.slots.Count; i++)
+            {
+                inventoryEntitySlot invSlot = InventorySystem.slots[i];
+                Raylib.DrawRectangle((int)invSlot.inventorySlot.x, (int)invSlot.inventorySlot.y, InventorySystem.slotWidth, InventorySystem.slotWidth, Color.RED);
+                //break;
+            }
+        }
+
         Raylib.DrawText($"{Variable.amountOfWood}", 60, 155, 30, Color.WHITE);
-       // Raylib.DrawRectangle(Variable.screenWidth / 2, 0, 1, Variable.screenHeight, Color.ORANGE);
-       // Raylib.DrawRectangle(0, Variable.screenHeight / 2, Variable.screenWidth, 1, Color.ORANGE);
+        // Raylib.DrawRectangle(Variable.screenWidth / 2, 0, 1, Variable.screenHeight, Color.ORANGE);
+        // Raylib.DrawRectangle(0, Variable.screenHeight / 2, Variable.screenWidth, 1, Color.ORANGE);
     }
+
 
     else if (currentScene == "dead")
     {

@@ -5,7 +5,7 @@ using System.Numerics;
 
 public class Player
 {
-
+    //static BlockObject floorCollection = new BlockObject();
     public static void GravityPhysics()
     {
         float gravity = 0.5f;
@@ -27,31 +27,23 @@ public class Player
 
         else
         {
-            Variable.gravity.Y -= 15;
+            Variable.gravity.Y = 0;
             if (Variable.gravity.Y < minFallSpeed)
             {
                 Variable.gravity.Y = minFallSpeed;
             }
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && Variable.touchFloor == true)
             {
+                Variable.gravity.Y-=15;
                 characterProperties.characterRec.y += Variable.gravity.Y;
-                Variable.touchFloor = false;
                 Player.jumpMechanics();
+                Variable.touchFloor = false;
             }
         }
     }
 
-
     public static void isColliding()
     {
-        //BlockObject f = new BlockObject();
-
-        /*
-        foreach (var floor in BlockObject.floors)
-        {
-            
-        }
-        */
 
         for (var i = 0; i < BlockObject.floors.Count; i++)
         {

@@ -4,7 +4,7 @@ using Raylib_cs;
 public class TreeEntity
 {
     public int treeHealth = 100;
-    public Rectangle rect;
+    public Rectangle TreeRect;
     public int breakTreeMethod()
     {
         treeHealth -= 25;
@@ -15,9 +15,27 @@ public class TreeEntity
 
 public class TreeObject
 {
+    
+    static int treePos;
+    static int amountOfTrees = 10;
+    static int treeWidth = 120;
+    public static List<TreeEntity> Trees = new();
 
-    public List<TreeEntity> Trees = new();
+    public static void loadTrees()
+    {
+        for (var i = 0; i < amountOfTrees; i++)
+        {
+            Variable.Rand = new Random();
+            treePos = Variable.Rand.Next(-1000, 1000);
+            Trees.Add(new TreeEntity(){
+                TreeRect = new Rectangle(i*treePos, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height)
+            });
+        }
 
+    }   
+
+    
+    /*
     public TreeObject()
     {
         Trees.Add(new TreeEntity() {rect = tree1});
@@ -26,10 +44,11 @@ public class TreeObject
 
     }
 
+
     public static Rectangle tree1 = new Rectangle(780, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height);
     public static Rectangle tree2 = new Rectangle(120, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height);
     public static Rectangle tree3 = new Rectangle(400, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height);
 
-
+*/
 
 }

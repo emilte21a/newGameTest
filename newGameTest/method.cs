@@ -24,7 +24,7 @@ public static void meleeMethod(){
 }
 public static void punchReturn(){
 
-if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == -15 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
+if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == 0 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
         {
             Variable.punchColorAlpha = 170;
             Variable.punchTimer = 100;
@@ -36,6 +36,20 @@ if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gra
         {
             Variable.whilePunching--;
             Player.punchLogic();
+        }
+}
+
+public static void parallaxEffect(){
+    if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.isMoving == true))
+        {
+            Variable.way = 1;
+            Variable.skyPlacementX += 0.5f;
+        }
+
+        else if (Raylib.IsKeyReleased(KeyboardKey.KEY_A) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.isMoving == true))
+        {
+            Variable.way = -1;
+            Variable.skyPlacementX -= 0.5f;
         }
 }
 

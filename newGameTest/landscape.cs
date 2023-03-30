@@ -1,9 +1,9 @@
 using Raylib_cs;
 using System;
 
-public class celler{
+public class rocks{
 
-public Rectangle Floor; 
+public Rectangle Rock; 
 
 }
 
@@ -15,7 +15,7 @@ public class landscape
     const int levelheight = 1;
     public static int cellsize = 120;
 
-    public static List<celler> grid = new();
+    public static List<rocks> grid = new();
 
     public static void loadBlocks()
     {
@@ -23,9 +23,9 @@ public class landscape
         {
             for (int y = 0; y < levelheight; y++)
             {
-                grid.Add(new celler()
+                grid.Add(new rocks()
                 {
-                    Floor = new Rectangle(x*cellsize, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height)
+                    Rock = new Rectangle(x*cellsize, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height)
                 }
                 );
                 

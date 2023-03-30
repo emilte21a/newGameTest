@@ -35,6 +35,8 @@ public class Variable
     public static bool isPunching = false;
 
     public static int amountOfWood = 0;
+
+    public static Random Rand = new Random();
 }
 
 
