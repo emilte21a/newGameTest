@@ -10,7 +10,7 @@ public class blockEntity
 
 public class BlockObject
 {
-    const int levelwidth = 20;
+    const int levelwidth = 50;
     const int levelheight = 1;
     public static int cellsize = 120;
     public static List<blockEntity> floors = new();

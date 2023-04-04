@@ -11,7 +11,8 @@ string[] names = { "mad", "hollo", "wal" };
 TextureClass Textures = new();
 BlockObject floorCollection = new BlockObject();
 TreeObject treeCollection = new TreeObject();
-
+inventory inventoryManager = new inventory();
+TextureManager textureManager = new TextureManager();
 
 Rectangle enemyRec = new Rectangle(900, 900, 120, 120);
 
@@ -55,7 +56,21 @@ camera.offset = new Vector2(1180 / 2, Variable.screenWidth / 2);
 
 //1180 = Screenwidth-120 (120 är texturens bredd)
 
+void zoomFunction()
+{
+    if (Raylib.IsKeyPressed(KeyboardKey.KEY_X))
+    {
+        camera.zoom += 0.05f;
+    }
+
+    if (Raylib.IsKeyPressed(KeyboardKey.KEY_Z))
+    {
+        camera.zoom -= 0.05f;
+    }
+}
+
 string currentScene = "start";
+wood wood = new();
 
 while (!Raylib.WindowShouldClose())
 {
@@ -135,6 +150,7 @@ while (!Raylib.WindowShouldClose())
         Methods.meleeMethod();
         Methods.punchReturn();
         Methods.parallaxEffect();
+        zoomFunction();
 
         //Spring texturens source rektangel
         Rectangle sourceRec1 = new Rectangle(120 * Variable.frame, 0, Variable.way * 120, 180);
@@ -197,27 +213,31 @@ while (!Raylib.WindowShouldClose())
                     tree.breakTreeMethod();
                     if (tree.treeHealth == 0)
                     {
-                        Variable.amountOfWood += 10;
+                        inventoryManager.addToInventory("wood", wood, 10);
                     }
+                }
+                if (tree.treeHealth < 100)
+                {
+                    Raylib.DrawText($"{tree.treeHealth}", (int)tree.TreeRect.x, (int)tree.TreeRect.y - 10, 80, Color.RED);
                 }
             }
         }
-    
-        
-        
+
+
+
         //Rita ut stenar
         for (var i = 0; i < rockObject.Rocks.Count; i++)
         {
             rockEntity rock = rockObject.Rocks[i];
-        
-            
+
+
             Raylib.DrawTexture(TextureClass.rockTextures[rockObject.rockTexture], (int)rock.rockRect.x, (int)rock.rockRect.y, Color.WHITE);
-           
+
         }
 
-        
 
-        
+
+
         if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
         {
 
@@ -244,28 +264,70 @@ while (!Raylib.WindowShouldClose())
 
         Raylib.DrawText($"{e.name}", 400, 400, 50, Color.BLACK);
         Raylib.EndMode2D();
-        Raylib.DrawTexture(TextureClass.otherTextures[0], 10, 0, Color.WHITE);
+
+        Raylib.DrawTexture(TextureClass.otherTextures[0], 10, -10, Color.WHITE);
         Raylib.DrawTexture(TextureClass.otherTextures[2], 1100, 25, Color.WHITE);
         Raylib.DrawTexture(TextureClass.otherTextures[1], 1110, 35, Color.WHITE);
         Raylib.DrawRectangle(1110, 35, Variable.punchRectWidth, 100, punchColor);
 
         Raylib.DrawFPS(2, 2);
-        Raylib.DrawTexture(TextureClass.otherTextures[4], 20, 150, Color.WHITE);
 
+        bool tab = false;
+        InventorySystem.loadInventory();
         if (Raylib.IsKeyDown(KeyboardKey.KEY_TAB))
         {
-            InventorySystem.loadInventory();
+            tab = true;
+            Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 100, Color.WHITE);
 
-            Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 10, Color.WHITE);
-            for (int i = 0; i < InventorySystem.slots.Count; i++)
+
+
+        }
+        int itemPos = 0;
+        foreach (var item in inventoryManager.InventorySlots)
+        {
+
+            if (itemPos <= 3)
             {
-                inventoryEntitySlot invSlot = InventorySystem.slots[i];
-                Raylib.DrawRectangle((int)invSlot.inventorySlot.x, (int)invSlot.inventorySlot.y, InventorySystem.slotWidth, InventorySystem.slotWidth, Color.RED);
-                //break;
+
+                if (item.Value == "Empty")
+                {
+                    Raylib.DrawRectangle(51+120 * itemPos, 40, 80, 80, Color.RED);
+                }
+                else
+                {
+                    InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
+                    Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture),50+ 120 * itemPos, 40, Color.WHITE);
+                    Raylib.DrawText($"{item1.stacks}", 51+125 * itemPos, 50, 50, Color.WHITE);
+                }
+            }
+
+            else if (itemPos > 4 && tab == true)
+            {
+                int X = (int)InventorySystem.slots[itemPos - 5].inventorySlot.x;
+                int Y = (int)InventorySystem.slots[itemPos - 5].inventorySlot.y;
+
+                if (item.Value == "Empty")
+                {
+                    Raylib.DrawRectangle(X, Y, 80, 80, Color.RED);
+                }
+                else
+                {
+                    InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
+                    Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), X, Y, Color.WHITE);
+                    Raylib.DrawText($"{item1.stacks}", X, Y+40, 50, Color.WHITE);
+                }
+            }
+            itemPos++;
+            if (itemPos == inventoryManager.InventorySlots.Count())
+            {
+                itemPos = 0;
             }
         }
 
-        Raylib.DrawText($"{Variable.amountOfWood}", 60, 155, 30, Color.WHITE);
+
+
+
+        //Raylib.DrawText($"{Variable.amountOfWood}", 60, 155, 30, Color.WHITE);
         // Raylib.DrawRectangle(Variable.screenWidth / 2, 0, 1, Variable.screenHeight, Color.ORANGE);
         // Raylib.DrawRectangle(0, Variable.screenHeight / 2, Variable.screenWidth, 1, Color.ORANGE);
     }

@@ -1,7 +1,7 @@
 using Raylib_cs;
 using System;
 using System.Numerics;
-
+using System.Collections.Generic;
 public class inventoryEntitySlot
 {
     public Rectangle inventorySlot;
@@ -31,21 +31,13 @@ public class InventorySystem
             {
                 slots.Add(new inventoryEntitySlot()
                 {
-                    inventorySlot = new Rectangle(500+3*x+x * slotWidth, 500+y * slotWidth, slotWidth, slotWidth)
+                    inventorySlot = new Rectangle(462+68*x+x * slotWidth, 342+68*y+y * slotWidth, slotWidth, slotWidth)
+
                 });
                    
             }
         }
 
     }
-
-int [,] array = {
-{0, 0, 0}, 
-{0, 0, 0},
-};
-
-
-
-
-
 }
+

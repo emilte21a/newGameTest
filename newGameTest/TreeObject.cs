@@ -23,12 +23,13 @@ public class TreeObject
 
     public static void loadTrees()
     {
+        Trees.Clear();
         for (var i = 0; i < amountOfTrees; i++)
         {
             Variable.Rand = new Random();
-            treePos = Variable.Rand.Next(-1000, 1000);
+            treePos = Variable.Rand.Next(-100, 100  );
             Trees.Add(new TreeEntity(){
-                TreeRect = new Rectangle(i*treePos, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height)
+                TreeRect = new Rectangle(120*i+i*treePos, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height)
             });
         }
 

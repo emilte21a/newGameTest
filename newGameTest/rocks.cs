@@ -12,13 +12,14 @@ public class rockObject{
 
 static int rockpos;
 
-static int amountOfRocks = 10;
+static int amountOfRocks = 3;
 public static int rockTexture;
 
 public static List<rockEntity> Rocks = new();
 
 public static void loadRocks()
 {
+    Rocks.Clear();
     for (var i = 0; i < amountOfRocks; i++)
     {
         Variable.Rand = new Random();
