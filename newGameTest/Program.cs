@@ -283,6 +283,8 @@ while (!Raylib.WindowShouldClose())
 
         }
         int itemPos = 0;
+
+
         foreach (var item in inventoryManager.InventorySlots)
         {
 
@@ -291,16 +293,18 @@ while (!Raylib.WindowShouldClose())
 
                 if (item.Value == "Empty")
                 {
-                    Raylib.DrawRectangle(51+120 * itemPos, 40, 80, 80, Color.RED);
+                    Raylib.DrawRectangle(50+120 * itemPos, 70, 80, 80, Color.WHITE);
                 }
                 else
                 {
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
-                    Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture),50+ 120 * itemPos, 40, Color.WHITE);
-                    Raylib.DrawText($"{item1.stacks}", 51+125 * itemPos, 50, 50, Color.WHITE);
+                    Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture),50+ 120 * itemPos, 70, Color.WHITE);
+                    Raylib.DrawText($"{item1.stacks}", 110+120 * itemPos, 130, 20, Color.WHITE);
                 }
             }
 
+
+            //Draw rektangler i inventoryt när man trycker tab
             else if (itemPos > 4 && tab == true)
             {
                 int X = (int)InventorySystem.slots[itemPos - 5].inventorySlot.x;
@@ -317,6 +321,7 @@ while (!Raylib.WindowShouldClose())
                     Raylib.DrawText($"{item1.stacks}", X, Y+40, 50, Color.WHITE);
                 }
             }
+        
             itemPos++;
             if (itemPos == inventoryManager.InventorySlots.Count())
             {

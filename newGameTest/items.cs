@@ -19,7 +19,7 @@ public class wood : InventoryItem
     {
         name = "wood";
         stackable = true;
-        craftable = true;
+        craftable = false;
         Texture = "IMG/woodTexture.png";
     }
 }
@@ -32,6 +32,17 @@ public class stone : InventoryItem
         stackable = true;
         craftable = false;
         Texture = "IMG/rockTexture.png";
+    }
+}
+
+public class stick : InventoryItem
+{
+    public stick()
+    {
+        name = "stick";
+        stackable = true;
+        craftable = true;
+        
     }
 }
 
