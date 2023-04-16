@@ -9,6 +9,8 @@ public class InventoryItem
     public bool craftable;
     public string Texture;
     public int stacks;
+
+
 }
 
 //Inherit
@@ -42,7 +44,31 @@ public class stick : InventoryItem
         name = "stick";
         stackable = true;
         craftable = true;
+        Texture = "IMG/stickTexture.png";
         
+    }
+}
+public class woodPickaxe : InventoryItem
+{
+    
+    public woodPickaxe()
+    {
+        name = "woodPickaxe";
+        stackable = false;
+        craftable = true;
+        Texture = "IMG/woodenPickaxeTexture.png";
+    }
+}
+
+public class stoneAxe : InventoryItem
+{
+
+    public stoneAxe()
+    {
+        name = "stoneAxe";
+        stackable = false;
+        craftable = true;
+        Texture = "IMG/stoneAxeTexture";
     }
 }
 
@@ -54,7 +80,6 @@ public class inventory
 
     int InventoryLength = 4+7;
     
-
     public inventory()
     {
         for (int i = 0; i < InventoryLength; i++)
@@ -62,6 +87,7 @@ public class inventory
             InventorySlots.Add(i, "Empty");
         }
     }
+    
 
     public void addToInventory(string item, InventoryItem Itemdata, int Amount)
     {
@@ -79,7 +105,7 @@ public class inventory
             InventorySlots.Remove(UsableSlot);
             InventorySlots.Add(UsableSlot, Itemdata.name);
             ItemsInInventory.Add(Itemdata.name, Itemdata);
-            if (Amount != 1)
+            if (Amount != 0)
             {
                 Itemdata.stacks+=Amount;
             }

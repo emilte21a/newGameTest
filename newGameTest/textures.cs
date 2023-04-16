@@ -19,6 +19,7 @@ class TextureClass
         charTextures.Add(Raylib.LoadTexture("IMG/charTextureJump.png"));
         charTextures.Add(Raylib.LoadTexture("IMG/charRunningTexture.png"));
         charTextures.Add(Raylib.LoadTexture("IMG/punchTexture.png"));
+        charTextures.Add(Raylib.LoadTexture("IMG/charPickaxeAnim.png"));
 
         blockTextures.Add(Raylib.LoadTexture("IMG/blockTexture.png"));
         blockTextures.Add(Raylib.LoadTexture("IMG/dirtBlockTexture.png"));
@@ -29,7 +30,8 @@ class TextureClass
         backgroundTextures.Add(Raylib.LoadTexture("IMG/sky.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/mountains.png"));
         backgroundTextures.Add(Raylib.LoadTexture("IMG/parallaxbackground.png"));
-        
+        backgroundTextures.Add(Raylib.LoadTexture("IMG/clouds.png"));
+
         otherTextures.Add(Raylib.LoadTexture("IMG/inventoryspot.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/punchCoolDown.png"));
         otherTextures.Add(Raylib.LoadTexture("IMG/abilityFrame.png"));

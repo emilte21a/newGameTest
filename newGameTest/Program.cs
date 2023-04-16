@@ -13,6 +13,8 @@ BlockObject floorCollection = new BlockObject();
 TreeObject treeCollection = new TreeObject();
 inventory inventoryManager = new inventory();
 TextureManager textureManager = new TextureManager();
+Player Player = new();
+Methods Methods = new();
 
 Rectangle enemyRec = new Rectangle(900, 900, 120, 120);
 
@@ -27,11 +29,18 @@ enemies.Add(new Enemy() { name = "Joseph" });
 enemies.Add(new Enemy() { name = "Avdol" });
 enemies.Add(new Enemy() { name = "Jean Pierre" });
 
+
+int skyGreen = 215;
+int skyBlue = 255;
+int skyRed = 115;
+
+Color skyColor = new Color(skyRed, skyGreen, skyBlue, 255);
 /*
 System.Timers.Timer timer = new (interval: 1000); 
-timer.Elapsed += ( sender, e ) => methodClass.HandleTimer();
+timer.Elapsed += ( sender, e ) => DayCycle();
 
-int HandleTimer(int ){
+void DayCycle(){
+
 
 }
 */
@@ -71,6 +80,10 @@ void zoomFunction()
 
 string currentScene = "start";
 wood wood = new();
+stone stone = new();
+stick stick = new();
+woodPickaxe woodPickaxe = new();
+stoneAxe stoneAxe = new();
 
 while (!Raylib.WindowShouldClose())
 {
@@ -78,7 +91,7 @@ while (!Raylib.WindowShouldClose())
     //Logik====================
 
     Vector2 characterPos = new Vector2(characterProperties.characterRec.x, characterProperties.characterRec.y);
-    Vector2 skyPos = new Vector2(-Variable.screenWidth / 2, 0);
+    Vector2 skyPos = new Vector2(-Variable.screenWidth / 2, -100);
     Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 3.5f);
     Vector2 hillsPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 2);
 
@@ -145,31 +158,39 @@ while (!Raylib.WindowShouldClose())
     {
 
         charVariable = Player.jumpAnim();
-        Player.runningLogic();
+        int runningFrame = Player.runningAnimation();
         Player.bothADdown();
         Methods.meleeMethod();
-        Methods.punchReturn();
+        int punchFrame = Methods.punchReturn();
+        int pickaxeFrame = Player.pickaxeAnimation();
         Methods.parallaxEffect();
         zoomFunction();
 
         //Spring texturens source rektangel
-        Rectangle sourceRec1 = new Rectangle(120 * Variable.frame, 0, Variable.way * 120, 180);
+        Rectangle sourceRec1 = new Rectangle(120 * runningFrame, 0, Variable.way * 120, 180);
 
         //Spelarens textur rektangel med variabeln way på bredden för att rendera om vilket håll gubben är vänd
         Rectangle facing = new Rectangle(0, 0, Variable.way * 120, 180);
 
 
         //Bakgrundens texturers source rektanglar
-        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
+        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX / 2, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[1].height);
         Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[2].height);
-        Rectangle punchRec = new Rectangle(120 * Variable.punchFrame, 0, Variable.way * 120, 180);
-
+        Rectangle punchRec = new Rectangle(120 * punchFrame, 0, Variable.way * 120, 180);
+        Rectangle pickaxeRec = new Rectangle(180*pickaxeFrame, 0, Variable.way*180, 180);
         //Slag rektangeln och dess färg
         Color punchColor = new Color(255, 255, 255, Variable.punchColorAlpha);
 
         //Rita ut bakgrundstexturerna
-        Raylib.DrawTextureRec(TextureClass.backgroundTextures[0], skyRec, skyPos, Color.WHITE);
+        //Raylib.DrawTextureRec(TextureClass.backgroundTextures[0], skyRec, skyPos, Color.WHITE);
+        Raylib.DrawRectanglePro(
+        new Rectangle(0, 0, Variable.screenWidth, Variable.screenHeight),
+        new Vector2(0, 0),
+        0,
+        skyColor);
+
+        Raylib.DrawTextureRec(TextureClass.backgroundTextures[3], skyRec, skyPos, Color.WHITE);
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], mountainRec, mountainPos, mountainColor);
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[2], hillsRec, hillsPos, Color.WHITE);
 
@@ -214,15 +235,18 @@ while (!Raylib.WindowShouldClose())
                     if (tree.treeHealth == 0)
                     {
                         inventoryManager.addToInventory("wood", wood, 10);
+                        inventoryManager.addToInventory("stone", stone, 10);
+                        inventoryManager.addToInventory("stick", stick, 10);
+                        inventoryManager.addToInventory("woodPickaxe", woodPickaxe, 1);
+                        inventoryManager.addToInventory("stoneAxe", stoneAxe, 1);
                     }
                 }
                 if (tree.treeHealth < 100)
                 {
-                    Raylib.DrawText($"{tree.treeHealth}", (int)tree.TreeRect.x, (int)tree.TreeRect.y - 10, 80, Color.RED);
+                    Raylib.DrawText($"{tree.treeHealth}", (int)tree.TreeRect.x + 50, (int)tree.TreeRect.y - 30, 50, Color.RED);
                 }
             }
         }
-
 
 
         //Rita ut stenar
@@ -254,6 +278,11 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
 
         }
+        
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_R))
+        {
+            Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
+        }
 
         else
         {
@@ -270,17 +299,12 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawTexture(TextureClass.otherTextures[1], 1110, 35, Color.WHITE);
         Raylib.DrawRectangle(1110, 35, Variable.punchRectWidth, 100, punchColor);
 
-        Raylib.DrawFPS(2, 2);
-
         bool tab = false;
         InventorySystem.loadInventory();
         if (Raylib.IsKeyDown(KeyboardKey.KEY_TAB))
         {
             tab = true;
             Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 100, Color.WHITE);
-
-
-
         }
         int itemPos = 0;
 
@@ -291,15 +315,11 @@ while (!Raylib.WindowShouldClose())
             if (itemPos <= 3)
             {
 
-                if (item.Value == "Empty")
-                {
-                    Raylib.DrawRectangle(50+120 * itemPos, 70, 80, 80, Color.WHITE);
-                }
-                else
+                if (item.Value != "Empty")
                 {
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
-                    Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture),50+ 120 * itemPos, 70, Color.WHITE);
-                    Raylib.DrawText($"{item1.stacks}", 110+120 * itemPos, 130, 20, Color.WHITE);
+                    Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), 50 + 120 * itemPos, 70, Color.WHITE);
+                    Raylib.DrawText($"{item1.stacks}", 110 + 120 * itemPos, 130, 20, Color.WHITE);
                 }
             }
 
@@ -310,20 +330,16 @@ while (!Raylib.WindowShouldClose())
                 int X = (int)InventorySystem.slots[itemPos - 5].inventorySlot.x;
                 int Y = (int)InventorySystem.slots[itemPos - 5].inventorySlot.y;
 
-                if (item.Value == "Empty")
-                {
-                    Raylib.DrawRectangle(X, Y, 80, 80, Color.RED);
-                }
-                else
+                if (item.Value != "Empty")
                 {
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
                     Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), X, Y, Color.WHITE);
-                    Raylib.DrawText($"{item1.stacks}", X, Y+40, 50, Color.WHITE);
+                    Raylib.DrawText($"{item1.stacks}", X, Y + 40, 50, Color.WHITE);
                 }
             }
-        
+
             itemPos++;
-            if (itemPos == inventoryManager.InventorySlots.Count())
+            if (itemPos >= inventoryManager.InventorySlots.Count())
             {
                 itemPos = 0;
             }
@@ -332,9 +348,7 @@ while (!Raylib.WindowShouldClose())
 
 
 
-        //Raylib.DrawText($"{Variable.amountOfWood}", 60, 155, 30, Color.WHITE);
-        // Raylib.DrawRectangle(Variable.screenWidth / 2, 0, 1, Variable.screenHeight, Color.ORANGE);
-        // Raylib.DrawRectangle(0, Variable.screenHeight / 2, Variable.screenWidth, 1, Color.ORANGE);
+
     }
 
 
@@ -361,7 +375,7 @@ while (!Raylib.WindowShouldClose())
 
 //Spelet
 
-//2D survival-ish spel där man kan gå höger, vänster och hoppa
+//2D survival-i spel där man kan gå höger, vänster och hoppa
 //Man ska kunna skapa tools med en crafting table 
 //Kunna hugga träd samt hacka sten och döda monster
 //Försök till day-night time cycle

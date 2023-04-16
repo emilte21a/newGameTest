@@ -10,16 +10,8 @@ public class InventorySystem
 {
 
     static int inventorySlotsX = 3;
-    static int inventorySlotsY = 2;
-
-    int itemCount;
+    static int inventorySlotsY = 2; 
     public const int slotWidth = 100;
-
-    bool isfull = false;
-
-    int inventorySpotX;
-    int inventorySpotY;
-
     public static List<inventoryEntitySlot> slots = new();
 
     public static void loadInventory()
@@ -40,4 +32,3 @@ public class InventorySystem
 
     }
 }
-

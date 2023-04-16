@@ -3,28 +3,31 @@ using System;
 
 public class Methods
 {
-
-public static void meleeMethod(){
-     if (Variable.whilePunching == 0)
+    Player Player = new();
+    public void meleeMethod()
+    {
+        int punchFrame = Player.punchAnimation();
+        if (Variable.whilePunching == 0)
         {
-            Variable.punchFrame = 1;
+            punchFrame = 1;
             Variable.whilePunching = 0;
-        }   
+        }
 
         if (Variable.punchTimer > 0)
         {
-            Variable.punchRectWidth+=2;
-            Variable.punchTimer-=2;
+            Variable.punchRectWidth += 2;
+            Variable.punchTimer -= 2;
         }
 
         if (Variable.punchTimer == 0)
         {
             Variable.punchColorAlpha = 0;
-        }       
-}
-public static void punchReturn(){
-
-if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == 0 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
+        }
+    }
+    public int punchReturn()
+    {
+        int punchFrame = Player.punchAnimation();
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == 0 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
         {
             Variable.punchColorAlpha = 170;
             Variable.punchTimer = 100;
@@ -35,12 +38,15 @@ if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gra
         if (Variable.whilePunching > 0)
         {
             Variable.whilePunching--;
-            Player.punchLogic();
+            Player.punchAnimation();
         }
-}
+        return punchFrame;
+    }
 
-public static void parallaxEffect(){
-    if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.isMoving == true))
+    public void parallaxEffect()
+    {
+
+        if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.isMoving == true))
         {
             Variable.way = 1;
             Variable.skyPlacementX += 0.5f;
@@ -51,6 +57,6 @@ public static void parallaxEffect(){
             Variable.way = -1;
             Variable.skyPlacementX -= 0.5f;
         }
-}
+    }
 
 }

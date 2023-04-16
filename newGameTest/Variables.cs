@@ -14,16 +14,16 @@ public class Variable
 
     public static float skyPlacementX = 1;
 
+/*
     public static int frame = 1;
 
     public static int punchFrame = 1;
 
+    public static int pickaxeFrame = 1;
+*/
     public static int punchColorAlpha;
     public static int punchRectWidth = 0;
     public static int punchTimer = 0;
-
-    public static int timer = 1;
-    public static int timer2 = 1;
 
     public static int way = 1;
 
