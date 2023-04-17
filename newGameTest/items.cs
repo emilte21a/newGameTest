@@ -134,6 +134,8 @@ public class inventory
                 Itemdata.stacks+=Amount;
             }
         }
+
+
         //Annars så är usableSlot funktionen findFirstEmptySlot som ser vilken inventoryslot som är ledig
         //Om itemet redan finns i inventoryt, så ta bort en tom usableSlot
         //Och lägg istället till ett nytt item i samma usableSlot
@@ -141,6 +143,16 @@ public class inventory
         //Om amount inte är 0
         //Lägg till amount till stacks om det får stackas
     
+    }
+    public void removeFromInventory(string item, InventoryItem Itemdata, int Amount){
+        
+        if (ItemsInInventory.ContainsKey(item))
+        {
+            if (Itemdata.stackable == true)
+            {
+                Itemdata.stacks -= Amount;
+            }
+        }
     }
 
     public int findFirstEmptySlot()
@@ -156,6 +168,16 @@ public class inventory
         return 10;
     }
 
+    public string activeItem(string currentActiveItem){
+        
+        for (int i = 0; i < InventoryLength; i++)
+        {
+            
+        }
+
+        return currentActiveItem;
+    }
+    
 //För varje integer I som är mindre än InventoryLength
 //Om inventorySloten I är tom, så returna I
 //Fortsätt att kolla vilka inventoryslots som är lediga tills funktionen körts klart

@@ -13,6 +13,7 @@ Methods Methods = new();
 BlockObject BlockObject = new();
 TreeObject TreeObject = new();
 rockObject rockObject = new();
+playerAssets playerAssets = new();
 
 //Instanser av varje item
 wood wood = new();
@@ -21,21 +22,9 @@ stick stick = new();
 woodPickaxe woodPickaxe = new();
 stoneAxe stoneAxe = new();
 
-
 string currentScene = "start";
 Color skyColor = new Color(115, 215, 255, 255);
 
-string[] names = { "mad", "hollo", "wal" };
-
-Rectangle enemyRec = new Rectangle(900, 900, 120, 120);
-
-Enemy e = new Enemy();
-Enemy e2 = new Enemy();
-Enemy e3 = new Enemy();
-
-List<Enemy> enemies = new();
-
-enemies.Add(new Enemy() { name = "Joseph" });
 /*
 System.Timers.Timer timer = new (interval: 1000); 
 timer.Elapsed += ( sender, e ) => DayCycle();
@@ -43,14 +32,6 @@ timer.Elapsed += ( sender, e ) => DayCycle();
 void DayCycle(){
 }
 */
-
-foreach (Enemy en in enemies)
-{
-    Console.WriteLine(en.name);
-}
-//float enemySpeed = 2;
-
-
 
 while (!Raylib.WindowShouldClose())
 {
@@ -91,7 +72,6 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("Press ENTER to start", Variable.screenWidth / 2, Variable.screenHeight / 2, 50, Color.GOLD);
     }
 
-
     else if (currentScene == "game")
     {
         Player.GravityPhysics();
@@ -100,12 +80,28 @@ while (!Raylib.WindowShouldClose())
         Player.bothADdown();
         Methods.meleeMethod();
         Methods.parallaxEffect();
+        
+        int runningFrame = Player.runningAnimation();
+        int pickaxeFrame = Player.pickaxeAnimation();
+        int punchFrame = Methods.punchReturn();
+        int charVariable = Player.jumpAnimation();
 
         //Bakgrundens texturers source rektanglar
         Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX / 2, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[1].height);
         Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[2].height);
 
+        //Spring texturens source rektangel
+        Rectangle sourceRec1 = new Rectangle(120 * runningFrame, 0, Variable.FacingDirection * 120, 180);
+
+        //Spelarens textur rektangel med variabeln way på bredden för att rendera om vilket håll gubben är vänd
+        Rectangle facing = new Rectangle(0, 0, Variable.FacingDirection * 120, 180);
+
+        //Source rektangeln för pickaxe animationen
+        Rectangle pickaxeRec = new Rectangle(180 * pickaxeFrame, 0, Variable.FacingDirection * 180, 180);
+
+        //Source rektangeln för slå animationen 
+        Rectangle punchRec = new Rectangle(120 * punchFrame, 0, Variable.FacingDirection * 120, 180);
 
         //Slag rektangeln och dess färg
         Color punchColor = new Color(255, 255, 255, Variable.punchColorAlpha);
@@ -123,29 +119,17 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], mountainRec, mountainPos, mountainColor);
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[2], hillsRec, hillsPos, Color.WHITE);
 
-
         Raylib.BeginMode2D(camera);
-
+        
         //Karaktärens hitbox
         playerAssets.hitBox.x = playerAssets.characterRec.x;
-        playerAssets.hitBox.y = playerAssets.characterRec.y + 180;
+        playerAssets.hitBox.y = playerAssets.characterRec.y+180;
 
-        int runningFrame = Player.runningAnimation();
-        int pickaxeFrame = Player.pickaxeAnimation();
-        int punchFrame = Methods.punchReturn();
-        int charVariable = Player.jumpAnimation();
+       
 
-        //Spring texturens source rektangel
-        Rectangle sourceRec1 = new Rectangle(120 * runningFrame, 0, Variable.FacingDirection * 120, 180);
+       
 
-        //Spelarens textur rektangel med variabeln way på bredden för att rendera om vilket håll gubben är vänd
-        Rectangle facing = new Rectangle(0, 0, Variable.FacingDirection * 120, 180);
-
-        //Source rektangeln för pickaxe animationen
-        Rectangle pickaxeRec = new Rectangle(180 * pickaxeFrame, 0, Variable.FacingDirection * 180, 180);
-
-        //Source rektangeln för slå animationen 
-        Rectangle punchRec = new Rectangle(120 * punchFrame, 0, Variable.FacingDirection * 120, 180);
+        
 
         if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
         {
@@ -160,8 +144,8 @@ while (!Raylib.WindowShouldClose())
 
         else if (Variable.whilePunching > 0)
         {
-            Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
-
+            //Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
+            Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
         }
 
         else if (Raylib.IsKeyPressed(KeyboardKey.KEY_R))
@@ -171,13 +155,9 @@ while (!Raylib.WindowShouldClose())
 
         else
         {
-
             Variable.isMoving = false;
             Raylib.DrawTextureRec(TextureClass.charTextures[charVariable], facing, characterPos, Color.WHITE);
         }
-
-
-
 
         //För varje block i listan BlockObject.floors så ska gräs texturen ritas ut
         for (var i = 0; i < BlockObject.floors.Count; i++)
@@ -222,7 +202,6 @@ while (!Raylib.WindowShouldClose())
             }
         }
 
-
         //Rita ut stenar
         for (var i = 0; i < rockObject.Rocks.Count; i++)
         {
@@ -230,7 +209,6 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawTexture(TextureClass.rockTextures[rockObject.rockTexture], (int)rock.rockRect.x, (int)rock.rockRect.y, Color.WHITE);
 
         }
-
 
         Raylib.EndMode2D();
 
@@ -247,7 +225,6 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 100, Color.WHITE);
         }
         int itemPos = 0;
-
 
         foreach (var item in inventoryManager.InventorySlots)
         {
@@ -289,7 +266,6 @@ while (!Raylib.WindowShouldClose())
         {
             currentScene = "dead";
         }
-
     }
 
     else if (currentScene == "dead")
@@ -306,13 +282,11 @@ while (!Raylib.WindowShouldClose())
     }
 
     Raylib.EndDrawing();
-
 }
 
 //Startskärmen
 
 //En rörande bakgrund där man kan välja att spela eller lämna
-
 
 //Spelet
 

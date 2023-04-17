@@ -1,18 +1,22 @@
 using System;
 using Raylib_cs;
 using System.Numerics;
-using System.Collections.Generic;
 
+
+public class playerAssets{
+    
+    public  Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.blockTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
+    
+    public  Rectangle hitBox = new Rectangle(6, + 179, TextureClass.charTextures[0].width, 3);
+    
+    public  float speed = 4;
+}
 public class Player
 {
-  
-
-    BlockObject BlockObject = new();
-
     
+    playerAssets playerAssets = new();
     public void GravityPhysics()
-    {
-        
+    {   
         float gravity = 0.5f;
         float maxFallSpeed = 15;
         float minFallSpeed = -15;
@@ -49,7 +53,8 @@ public class Player
 
     public void isColliding()
     {
-
+        BlockObject BlockObject = new();
+        
         for (var i = 0; i < BlockObject.floors.Count; i++)
         {
             blockEntity floor = BlockObject.floors[i];
@@ -75,13 +80,13 @@ public class Player
 
     public float walkingX(float characterx, float speed)
     {
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_A) //&& characterx > 0
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_A) 
         )
         {
             Variable.isMoving = true;
             characterx -= speed;
         }
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) //&& characterx < Variable.screenWidth - 100
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) 
         )
         {
             Variable.isMoving = true;
@@ -188,13 +193,5 @@ public class Player
             Variable.bothButtonsPressed = false;
         }
     }
-
-
 }
 
-public class playerAssets{
-    public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.blockTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
-    public static Rectangle hitBox = new Rectangle(characterRec.x, characterRec.y + 179, TextureClass.charTextures[0].width, 3);
-
-    public static float speed = 4;
-}
