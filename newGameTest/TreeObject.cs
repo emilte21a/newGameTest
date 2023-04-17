@@ -1,6 +1,7 @@
 using System;
 using Raylib_cs;
 
+
 public class TreeEntity
 {
     public int treeHealth = 100;
@@ -15,27 +16,28 @@ public class TreeEntity
 
 public class TreeObject
 {
+   
     
-    static int treePos;
-    static int amountOfTrees = 10;
-   // static int treeWidth = 120;
-    public static List<TreeEntity> Trees = new();
+    int treePos;
+    int amountOfTrees = 10;
+    public List<TreeEntity> Trees = new();
 
-    public static void loadTrees()
+    public void loadTrees()
     {
         Trees.Clear();
         for (var i = 0; i < amountOfTrees; i++)
         {
             Variable.Rand = new Random();
-            treePos = Variable.Rand.Next(-400, 400  );
-            Trees.Add(new TreeEntity(){
-                TreeRect = new Rectangle(120*i+i*treePos, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height)
+            treePos = Variable.Rand.Next(-400, 400);
+            Trees.Add(new TreeEntity()
+            {
+                TreeRect = new Rectangle(120 * i + i * treePos, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height)
             });
         }
 
-    }   
+    }
 
-    
+
     /*
     public TreeObject()
     {

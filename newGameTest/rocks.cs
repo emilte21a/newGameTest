@@ -10,14 +10,16 @@ public class rockEntity{
 
 public class rockObject{
 
-static int rockpos;
 
-static int amountOfRocks = 3;
-public static int rockTexture;
 
-public static List<rockEntity> Rocks = new();
+int rockpos;
 
-public static void loadRocks()
+int amountOfRocks = 3;
+public int rockTexture;
+
+public List<rockEntity> Rocks = new();
+
+public void loadRocks()
 {
     Rocks.Clear();
     for (var i = 0; i < amountOfRocks; i++)

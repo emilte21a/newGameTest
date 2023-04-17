@@ -3,7 +3,7 @@ using Raylib_cs;
 using System.Numerics;
 
 
-public class Variable
+public static class Variable
 {
     public const int screenHeight = 1050;
     public const int screenWidth = 1300;
@@ -14,18 +14,20 @@ public class Variable
 
     public static float skyPlacementX = 1;
 
-/*
-    public static int frame = 1;
+    /*
+        public static int frame = 1;
 
-    public static int punchFrame = 1;
+        public static int punchFrame = 1;
 
-    public static int pickaxeFrame = 1;
-*/
+        public static int pickaxeFrame = 1;
+    */
     public static int punchColorAlpha;
     public static int punchRectWidth = 0;
     public static int punchTimer = 0;
 
-    public static int way = 1;
+    public static int FacingDirection = 1;
+    //Vart karaktärspriten riktas mot. 
+    //Höger: 1 / vänster: -1
 
     public static int whilePunching = 0;
     public static bool bothButtonsPressed = false;

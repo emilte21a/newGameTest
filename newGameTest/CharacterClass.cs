@@ -1,13 +1,18 @@
 using System;
 using Raylib_cs;
 using System.Numerics;
-
+using System.Collections.Generic;
 
 public class Player
 {
-    //static BlockObject floorCollection = new BlockObject();
+  
+
+    BlockObject BlockObject = new();
+
+    
     public void GravityPhysics()
     {
+        
         float gravity = 0.5f;
         float maxFallSpeed = 15;
         float minFallSpeed = -15;
@@ -17,7 +22,7 @@ public class Player
         if (!Variable.touchFloor)
         {
             Variable.gravity.Y += gravity;
-            characterProperties.characterRec.y += Variable.gravity.Y;
+            playerAssets.characterRec.y += Variable.gravity.Y;
 
             if (Variable.gravity.Y > maxFallSpeed)
             {
@@ -35,7 +40,7 @@ public class Player
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && Variable.touchFloor == true)
             {
                 Variable.gravity.Y -= 15;
-                characterProperties.characterRec.y += Variable.gravity.Y;
+                playerAssets.characterRec.y += Variable.gravity.Y;
                 jumpMechanics();
                 Variable.touchFloor = false;
             }
@@ -48,26 +53,22 @@ public class Player
         for (var i = 0; i < BlockObject.floors.Count; i++)
         {
             blockEntity floor = BlockObject.floors[i];
-            if (!Raylib.CheckCollisionRecs(characterProperties.hitBox, floor.cellBlock))
+            if (!Raylib.CheckCollisionRecs(playerAssets.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = false;
             }
 
-            else if (Raylib.CheckCollisionRecs(characterProperties.hitBox, floor.cellBlock))
+            else if (Raylib.CheckCollisionRecs(playerAssets.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = true;
                 break;
 
             }
-
         }
     }
 
-
-
     public void jumpMechanics()
     {
-
         Variable.gravity.Y = -15f;
     }
 
@@ -90,7 +91,7 @@ public class Player
     }
 
 
-    public int jumpAnim()
+    public int jumpAnimation()
     {
         if (Variable.touchFloor == true)
         {
@@ -119,8 +120,8 @@ public class Player
     public void resetVars()
     {
         Variable.gravity.Y = 0;
-        characterProperties.characterRec.y = TextureClass.blockTextures[0].height;
-        characterProperties.characterRec.x = Variable.screenWidth / 2;
+        playerAssets.characterRec.y = TextureClass.blockTextures[0].height;
+        playerAssets.characterRec.x = Variable.screenWidth / 2;
     }
 
 
@@ -129,7 +130,7 @@ public class Player
     int frame = 1;
     public int runningAnimation()
     {
-       
+
         int maxFrames = 4;
 
         timer += 2;
@@ -141,7 +142,7 @@ public class Player
         }
         frame = frame % maxFrames;
         return frame;
-        
+
     }
 
     public int punchAnimation()
@@ -163,9 +164,8 @@ public class Player
 
     public int pickaxeAnimation()
     {
-        int maxFrames = 10;
-        
-        timer2+=2;
+
+        timer2 += 2;
 
         if (timer > 8)
         {
@@ -174,6 +174,7 @@ public class Player
         }
         return frame;
     }
+
     public void bothADdown()
     {
         if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && (Raylib.IsKeyDown(KeyboardKey.KEY_A)))
@@ -187,14 +188,13 @@ public class Player
             Variable.bothButtonsPressed = false;
         }
     }
+
+
 }
 
-public class characterProperties
-{
-
+public class playerAssets{
     public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.blockTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
-
-    public static Rectangle hitBox = new Rectangle(characterProperties.characterRec.x, characterProperties.characterRec.y + 179, characterProperties.characterRec.width, 3);
+    public static Rectangle hitBox = new Rectangle(characterRec.x, characterRec.y + 179, TextureClass.charTextures[0].width, 3);
 
     public static float speed = 4;
 }

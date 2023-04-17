@@ -1,9 +1,6 @@
 using Raylib_cs;
 using System;
 
-
-
-
 class TextureClass
 {
     public static List<Texture2D> charTextures = new();

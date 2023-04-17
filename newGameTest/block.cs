@@ -2,6 +2,7 @@ using Raylib_cs;
 using System;
 
 
+
 public class blockEntity
 {
     public Rectangle cellBlock;
@@ -10,12 +11,14 @@ public class blockEntity
 
 public class BlockObject
 {
+
+   
     const int levelwidth = 50;
     const int levelheight = 1;
-    public static int cellsize = 120;
-    public static List<blockEntity> floors = new();
+    public int cellsize = 120;
+    public List<blockEntity> floors = new();
 
-    public static void loadBlocks()
+    public void loadBlocks()
     {
         floors.Clear();
         for (int x = -20; x < levelwidth; x++)
@@ -24,14 +27,15 @@ public class BlockObject
             {
                 floors.Add(new blockEntity()
                 {
-                cellBlock = new Rectangle(x * cellsize, y * cellsize + 900, TextureClass.blockTextures[0].width, TextureClass.blockTextures[0].height)
+                    cellBlock = new Rectangle(x * cellsize, y * cellsize + 900, TextureClass.blockTextures[0].width, TextureClass.blockTextures[0].height)
                 });
             }
         }
     }
 
-    public static void drawDirtBlocks()
+    public void drawDirtBlocks()
     {
+        
         for (var x = -20; x < levelwidth; x++)
         {
             for (var y = 0; y < 2; y++)

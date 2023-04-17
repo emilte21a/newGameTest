@@ -3,10 +3,11 @@ using System;
 
 public class Methods
 {
+  
     Player Player = new();
     public void meleeMethod()
     {
-        int punchFrame = Player.punchAnimation();
+    int punchFrame = Player.punchAnimation();
         if (Variable.whilePunching == 0)
         {
             punchFrame = 1;
@@ -48,15 +49,18 @@ public class Methods
 
         if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.isMoving == true))
         {
-            Variable.way = 1;
+            Variable.FacingDirection = 1;
             Variable.skyPlacementX += 0.5f;
         }
 
         else if (Raylib.IsKeyReleased(KeyboardKey.KEY_A) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.isMoving == true))
         {
-            Variable.way = -1;
+            Variable.FacingDirection = -1;
             Variable.skyPlacementX -= 0.5f;
         }
     }
+    
+    
+
 
 }
