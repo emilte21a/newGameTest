@@ -21,6 +21,7 @@ stone stone = new();
 stick stick = new();
 woodPickaxe woodPickaxe = new();
 stoneAxe stoneAxe = new();
+stoneAxe2 stoneAxe2 = new();
 
 string currentScene = "start";
 Color skyColor = new Color(115, 215, 255, 255);
@@ -64,14 +65,13 @@ while (!Raylib.WindowShouldClose())
             currentScene = "game";
             Player.resetVars();
             BlockObject.loadBlocks();
-            TreeObject.loadTrees();
+            TreeObject.LoadTrees();
             rockObject.loadRocks();
         }
 
         Raylib.ClearBackground(Color.WHITE);
         Raylib.DrawText("Press ENTER to start", Variable.screenWidth / 2, Variable.screenHeight / 2, 50, Color.GOLD);
     }
-
     else if (currentScene == "game")
     {
         Player.GravityPhysics();
@@ -80,10 +80,12 @@ while (!Raylib.WindowShouldClose())
         Player.bothADdown();
         Methods.meleeMethod();
         Methods.parallaxEffect();
-        
+        Methods.punchReturn();
+
+
+        int punchFrame = Variable.punchFrame;
         int runningFrame = Player.runningAnimation();
         int pickaxeFrame = Player.pickaxeAnimation();
-        int punchFrame = Methods.punchReturn();
         int charVariable = Player.jumpAnimation();
 
         //Bakgrundens texturers source rektanglar
@@ -120,44 +122,11 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[2], hillsRec, hillsPos, Color.WHITE);
 
         Raylib.BeginMode2D(camera);
-        
+
         //Karaktärens hitbox
         playerAssets.hitBox.x = playerAssets.characterRec.x;
-        playerAssets.hitBox.y = playerAssets.characterRec.y+180;
+        playerAssets.hitBox.y = playerAssets.characterRec.y + 180;
 
-       
-
-       
-
-        
-
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
-        {
-
-            Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
-        }
-        else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
-        {
-
-            Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
-        }
-
-        else if (Variable.whilePunching > 0)
-        {
-            //Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
-            Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
-        }
-
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_R))
-        {
-            Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
-        }
-
-        else
-        {
-            Variable.isMoving = false;
-            Raylib.DrawTextureRec(TextureClass.charTextures[charVariable], facing, characterPos, Color.WHITE);
-        }
 
         //För varje block i listan BlockObject.floors så ska gräs texturen ritas ut
         for (var i = 0; i < BlockObject.floors.Count; i++)
@@ -193,6 +162,7 @@ while (!Raylib.WindowShouldClose())
                         inventoryManager.addToInventory("stick", stick, 10);
                         inventoryManager.addToInventory("woodPickaxe", woodPickaxe, 1);
                         inventoryManager.addToInventory("stoneAxe", stoneAxe, 1);
+                        inventoryManager.addToInventory("stoneAxe2", stoneAxe2, 1);
                     }
                 }
                 if (tree.treeHealth < 100)
@@ -209,6 +179,43 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawTexture(TextureClass.rockTextures[rockObject.rockTexture], (int)rock.rockRect.x, (int)rock.rockRect.y, Color.WHITE);
 
         }
+
+
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+        {
+
+            Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+        }
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
+        {
+
+            Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
+        }
+
+        else if (Variable.whilePunching > 0)
+        {
+            Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
+            //Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
+        }
+
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_R))
+        {
+            if (Variable.FacingDirection == -1)
+            {
+                characterPos.X = characterPos.X - 60;
+            }
+            Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
+        }
+
+        else
+        {
+            Variable.isMoving = false;
+            Raylib.DrawTextureRec(TextureClass.charTextures[charVariable], facing, characterPos, Color.WHITE);
+        }
+
+        Raylib.DrawText("WASD to move", 300, 300, 70, Color.BLACK);
+        Raylib.DrawText("Press F to punch", 300, 500, 70, Color.BLACK);
+
 
         Raylib.EndMode2D();
 
@@ -228,10 +235,9 @@ while (!Raylib.WindowShouldClose())
 
         foreach (var item in inventoryManager.InventorySlots)
         {
-
             if (itemPos <= 3)
             {
-
+                Console.WriteLine(itemPos);
                 if (item.Value != "Empty")
                 {
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
@@ -240,12 +246,13 @@ while (!Raylib.WindowShouldClose())
                 }
             }
 
-
             //Rita rektanglar i inventoryt när man trycker tab
-            else if (itemPos > 4 && tab == true)
+            else if (itemPos > 3 && tab == true)
             {
-                int X = (int)InventorySystem.slots[itemPos - 5].inventorySlot.x;
-                int Y = (int)InventorySystem.slots[itemPos - 5].inventorySlot.y;
+                Console.WriteLine(itemPos-5);
+                int X = (int)InventorySystem.slots[itemPos-4].inventorySlot.x;
+                int Y = (int)InventorySystem.slots[itemPos-4].inventorySlot.y;
+
 
                 if (item.Value != "Empty")
                 {

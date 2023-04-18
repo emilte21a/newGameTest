@@ -8,7 +8,7 @@ public class TreeEntity
     public Rectangle TreeRect;
     public int breakTreeMethod()
     {
-        treeHealth -= 100;
+        treeHealth -= 25;
         return treeHealth;
     }
 }
@@ -16,19 +16,19 @@ public class TreeEntity
 
 public class TreeObject
 {
-   
-    
+
+
     int treePos;
     int amountOfTrees = 10;
     public List<TreeEntity> Trees = new();
 
-    public void loadTrees()
+    public void LoadTrees()
     {
         Trees.Clear();
         for (var i = 0; i < amountOfTrees; i++)
         {
             Variable.Rand = new Random();
-            treePos = Variable.Rand.Next(-400, 400);
+            treePos = Variable.Rand.Next(-1000, 1000);
             Trees.Add(new TreeEntity()
             {
                 TreeRect = new Rectangle(120 * i + i * treePos, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height)

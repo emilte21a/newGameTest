@@ -5,12 +5,12 @@ public class Methods
 {
   
     Player Player = new();
-    public void meleeMethod()
+    
+    public static void meleeMethod()
     {
-    int punchFrame = Player.punchAnimation();
         if (Variable.whilePunching == 0)
         {
-            punchFrame = 1;
+            Variable.punchFrame = 1;
             Variable.whilePunching = 0;
         }
 
@@ -25,9 +25,9 @@ public class Methods
             Variable.punchColorAlpha = 0;
         }
     }
-    public int punchReturn()
+    public void punchReturn()
     {
-        int punchFrame = Player.punchAnimation();
+        //int punchFrame = Player.punchAnimation();
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == 0 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
         {
             Variable.punchColorAlpha = 170;
@@ -41,7 +41,7 @@ public class Methods
             Variable.whilePunching--;
             Player.punchAnimation();
         }
-        return punchFrame;
+        //return punchFrame;
     }
 
     public void parallaxEffect()

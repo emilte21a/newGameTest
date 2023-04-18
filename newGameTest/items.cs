@@ -66,13 +66,22 @@ public class woodPickaxe : InventoryItem
 
 public class stoneAxe : InventoryItem
 {
-
     public stoneAxe()
     {
         name = "stoneAxe";
         stackable = false;
         craftable = true;
-        Texture = "IMG/stoneAxeTexture";
+        Texture = "IMG/stoneAxeTexture.png";
+    }
+}
+public class stoneAxe2 : InventoryItem
+{
+    public stoneAxe2()
+    {
+        name = "stoneAxe2";
+        stackable = false;
+        craftable = true;
+        Texture = "IMG/stoneAxeTexture.png";
     }
 }
 
@@ -93,7 +102,7 @@ public class inventory
 
     //Hotbaren är 4 stycken slots
     //När man trycker på tab så får man 6 stycken extra slots
-    int InventoryLength = 4+7;
+    int InventoryLength = 4+6;
 
     //En struct av inventory    
     public inventory()

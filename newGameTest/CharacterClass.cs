@@ -5,14 +5,16 @@ using System.Numerics;
 
 public class playerAssets{
     
-    public  Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.blockTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
+    public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, TextureClass.blockTextures[0].height, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
     
-    public  Rectangle hitBox = new Rectangle(6, + 179, TextureClass.charTextures[0].width, 3);
+    public static Rectangle hitBox = new Rectangle(6, + 179, TextureClass.charTextures[0].width, 3);
     
-    public  float speed = 4;
+    public static float speed = 4;
 }
 public class Player
 {
+    BlockObject BlockObject = new();
+
     
     playerAssets playerAssets = new();
     public void GravityPhysics()
@@ -34,7 +36,7 @@ public class Player
             }
         }
 
-        else
+        else 
         {
             Variable.gravity.Y = 0;
             if (Variable.gravity.Y < minFallSpeed)
@@ -53,21 +55,18 @@ public class Player
 
     public void isColliding()
     {
-        BlockObject BlockObject = new();
-        
+        BlockObject.loadBlocks();
         for (var i = 0; i < BlockObject.floors.Count; i++)
-        {
+        {  
             blockEntity floor = BlockObject.floors[i];
             if (!Raylib.CheckCollisionRecs(playerAssets.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = false;
             }
-
             else if (Raylib.CheckCollisionRecs(playerAssets.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = true;
                 break;
-
             }
         }
     }
@@ -143,10 +142,10 @@ public class Player
         if (timer > 20)
         {
             timer = 0;
-            frame++;
+            Variable.runningFrame++;
         }
-        frame = frame % maxFrames;
-        return frame;
+        Variable.runningFrame = Variable.runningFrame % maxFrames;
+        return Variable.runningFrame;
 
     }
 
@@ -154,25 +153,26 @@ public class Player
     {
         int maxFrames = 6;
 
-        if (timer > 10)
+        timer2+=2;
+        if (timer2 > 10)
         {
-            timer = 0;
-            frame++;
+            timer2 = 0;
+           Variable.punchFrame++;
         }
 
-        if (frame == maxFrames)
+        if (Variable.punchFrame == maxFrames)
         {
-            frame = 0;
+            Variable.punchFrame = 0;
         }
-        return frame;
+        return Variable.punchFrame;
     }
 
     public int pickaxeAnimation()
     {
 
-        timer2 += 2;
+        timer2 += 1;
 
-        if (timer > 8)
+        if (timer > 16)
         {
             timer2 = 0;
             frame++;
