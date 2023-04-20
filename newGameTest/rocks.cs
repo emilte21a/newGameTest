@@ -8,7 +8,7 @@ public class rockEntity{
     public int rockHealth = 100;
 
     public int breakStoneMethod(){
-        rockHealth-=10;
+        rockHealth-= Variable.Damage;
         return rockHealth;
     }
 }

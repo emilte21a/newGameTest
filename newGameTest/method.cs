@@ -40,6 +40,7 @@ public class Methods
         {
             Variable.whilePunching--;
             Player.punchAnimation();
+            Player.pickaxeAnimation();
         }
         //return punchFrame;
     }

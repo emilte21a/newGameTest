@@ -23,7 +23,6 @@ public static class Variable
     */
 
     public static int punchFrame = 0; 
-
     public static int runningFrame = 1;
     public static int punchColorAlpha;
     public static int punchRectWidth = 0;
@@ -33,6 +32,8 @@ public static class Variable
     //Vart karaktärspriten riktas mot. 
     //Höger: 1 / vänster: -1
 
+    public static int Damage = 10;
+    
     public static int whilePunching = 0;
     public static bool bothButtonsPressed = false;
 

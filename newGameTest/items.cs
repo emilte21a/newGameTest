@@ -13,10 +13,6 @@ public class InventoryItem
     public bool craftable;
     public string Texture;
     public int stacks;
-
-    public int damage;
-    public bool canBreakWood;
-    public bool canBreakStone;
     public bool Action;
 }
 
@@ -64,9 +60,7 @@ public class woodPickaxe : InventoryItem
         craftable = true;
         Texture = "IMG/woodenPickaxeTexture.png";
         Action = true;
-        canBreakWood = false;
-        canBreakStone = true;
-        damage = 20;
+   
     }
 }
 
@@ -79,21 +73,9 @@ public class stoneAxe : InventoryItem
         craftable = true;
         Texture = "IMG/stoneAxeTexture.png";
         Action = true;
-        canBreakStone = false;
-        canBreakWood = true;
-        damage = 25;
+      
     }
 
-}
-public class stoneAxe2 : InventoryItem
-{
-    public stoneAxe2()
-    {
-        name = "stoneAxe2";
-        stackable = false;
-        craftable = true;
-        Texture = "IMG/stoneAxeTexture.png";
-    }
 }
 
 public class inventory
@@ -188,11 +170,14 @@ public class inventory
         }
         return 10;
     }
+    //För varje integer I som är mindre än InventoryLength
+    //Om inventorySloten I är tom, så returna I
+    //Fortsätt att kolla vilka inventoryslots som är lediga tills funktionen körts klart
 
     int itemIndex = 0;
     public int activeHotbarItem()
     {
-       
+
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_ONE))
         {
             itemIndex = 0;
@@ -214,7 +199,7 @@ public class inventory
     public string activeItem(string currentActiveItem, string item)
     {
         int itemIndex = activeHotbarItem();
-        
+
         if (InventorySlots[itemIndex] == currentActiveItem)
         {
             if (ItemsInInventory.ContainsKey(item))
@@ -226,11 +211,24 @@ public class inventory
         return currentActiveItem;
     }
 
-    
+    int active = 1;
+    string CurrentActiveItem;
+    public void weaponDamageComponent()
+    {
+        active = activeHotbarItem();
+        CurrentActiveItem = activeItem(InventorySlots[active], "Empty");
+        if (CurrentActiveItem == "woodPickaxe")
+        {
+             Variable.Damage = 25;
+        }
+        else if (CurrentActiveItem == "stoneAxe")
+        {
+             Variable.Damage = 25;
+        }
 
-    //För varje integer I som är mindre än InventoryLength
-    //Om inventorySloten I är tom, så returna I
-    //Fortsätt att kolla vilka inventoryslots som är lediga tills funktionen körts klart
+    }
+
+
 }
 
 

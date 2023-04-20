@@ -7,6 +7,7 @@ Raylib.InitWindow(Variable.screenWidth, Variable.screenHeight, "Terraria knockof
 Raylib.SetTargetFPS(60);
 
 inventory inventoryManager = new inventory();
+InventoryItem invItem = new();
 TextureManager textureManager = new TextureManager();
 Player Player = new();
 Methods Methods = new();
@@ -21,7 +22,6 @@ stone stone = new();
 stick stick = new();
 woodPickaxe woodPickaxe = new();
 stoneAxe stoneAxe = new();
-stoneAxe2 stoneAxe2 = new();
 
 string currentScene = "start";
 Color skyColor = new Color(115, 215, 255, 255);
@@ -81,7 +81,10 @@ while (!Raylib.WindowShouldClose())
         Methods.meleeMethod();
         Methods.parallaxEffect();
         Methods.punchReturn();
+        inventoryManager.weaponDamageComponent();
 
+        string currentActiveItem = "Empty";
+        int activeItem = 1;
 
         int punchFrame = Variable.punchFrame;
         int runningFrame = Player.runningAnimation();
@@ -145,13 +148,13 @@ while (!Raylib.WindowShouldClose())
 
             if (tree.treeHealth > 0)
             {
-                Raylib.DrawTexture(TextureClass.otherTextures[3], (int)tree.TreeRect.x, 420, Color.WHITE);
+                Raylib.DrawTexture(TextureClass.otherTextures[3], (int)tree.TreeRect.x-90, 420, Color.WHITE);
                 /*
                 Om man trycker på F och karaktärens rektangel kolliderar med trädets Rektangel
                 Starta då breakTreeMethod
                 Om trädets HP är detsamma som 0 så ska spelarens mängd trä att öka med 10
                 */
-
+                
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(playerAssets.characterRec, tree.TreeRect) && Variable.punchTimer == 100)
                 {
                     tree.breakTreeMethod();
@@ -159,10 +162,9 @@ while (!Raylib.WindowShouldClose())
                     {
                         inventoryManager.addToInventory("wood", wood, 10);
                         inventoryManager.addToInventory("stone", stone, 10);
-                        inventoryManager.addToInventory("stick", stick, 10);
+                        //inventoryManager.addToInventory("stick", stick, 10);
                         inventoryManager.addToInventory("woodPickaxe", woodPickaxe, 1);
                         inventoryManager.addToInventory("stoneAxe", stoneAxe, 1);
-                        inventoryManager.addToInventory("stoneAxe2", stoneAxe2, 1);
                     }
                 }
                 if (tree.treeHealth < 100)
@@ -194,17 +196,20 @@ while (!Raylib.WindowShouldClose())
 
         else if (Variable.whilePunching > 0)
         {
+            if (currentActiveItem != "woodPickaxe")
+            {
+                
             Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
-            //Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
-        }
-
-        else if (Raylib.IsKeyDown(KeyboardKey.KEY_R))
-        {
-            if (Variable.FacingDirection == -1)
+            }
+            else
+            {
+                if (Variable.FacingDirection == -1)
             {
                 characterPos.X = characterPos.X - 60;
             }
             Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
+            }
+            //Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
         }
 
         else
@@ -232,15 +237,14 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 100, Color.WHITE);
         }
         int itemPos = 0;
-        string currentActiveItem;
-        int activeItem = 1;
+       
         foreach (var item in inventoryManager.InventorySlots)
         {
             if (itemPos <= 3)
             {
             activeItem = inventoryManager.activeHotbarItem();
             currentActiveItem = inventoryManager.activeItem(inventoryManager.InventorySlots[activeItem], "Empty");
-                
+            Console.WriteLine(currentActiveItem);
                 if (item.Value != "Empty")
                 {
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
