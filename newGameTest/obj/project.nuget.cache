@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3bxNCSiAHp4yTzKYCjQAgVypgoYJHjRnq33l6EtXdeTjnGabrIiH3Ob/tVqQYPISXjQbAHisNm5x03r85nw6Nw==",
+  "dgSpecHash": "k84lgEdlGGUbbnOcEB5JUIwbf+H4djFtfnE5LjJVXQFUGr8syF9NnTZ0jZrp7wZ9WtMnc6s3a/Wuydo2UDY+5A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\emil.ulinjohansson\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj",
+  "projectFilePath": "C:\\Users\\emil.ulinjohansson\\Downloads\\pragermerin-20230419T163234Z-001\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\emil.ulinjohansson\\.nuget\\packages\\raylib-cs\\4.2.0.1\\raylib-cs.4.2.0.1.nupkg.sha512",
     "C:\\Users\\emil.ulinjohansson\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"

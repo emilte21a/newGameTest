@@ -232,27 +232,29 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 100, Color.WHITE);
         }
         int itemPos = 0;
-
+        string currentActiveItem;
+        int activeItem = 1;
         foreach (var item in inventoryManager.InventorySlots)
         {
             if (itemPos <= 3)
             {
-                Console.WriteLine(itemPos);
+            activeItem = inventoryManager.activeHotbarItem();
+            currentActiveItem = inventoryManager.activeItem(inventoryManager.InventorySlots[activeItem], "Empty");
+                
                 if (item.Value != "Empty")
                 {
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
                     Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), 50 + 120 * itemPos, 70, Color.WHITE);
                     Raylib.DrawText($"{item1.stacks}", 110 + 120 * itemPos, 130, 20, Color.WHITE);
                 }
+                Raylib.DrawTexture(textureManager.LoadTexture("IMG/itemChosen.png"), 40+activeItem*120, 60, Color.WHITE );
             }
 
             //Rita rektanglar i inventoryt när man trycker tab
             else if (itemPos > 3 && tab == true)
             {
-                Console.WriteLine(itemPos-5);
                 int X = (int)InventorySystem.slots[itemPos-4].inventorySlot.x;
                 int Y = (int)InventorySystem.slots[itemPos-4].inventorySlot.y;
-
 
                 if (item.Value != "Empty")
                 {
@@ -274,6 +276,7 @@ while (!Raylib.WindowShouldClose())
             currentScene = "dead";
         }
     }
+
 
     else if (currentScene == "dead")
     {

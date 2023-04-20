@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\emil.ulinjohansson\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj": {}
+    "C:\\Users\\emil.ulinjohansson\\Downloads\\pragermerin-20230419T163234Z-001\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\emil.ulinjohansson\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj": {
+    "C:\\Users\\emil.ulinjohansson\\Downloads\\pragermerin-20230419T163234Z-001\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emil.ulinjohansson\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj",
+        "projectUniqueName": "C:\\Users\\emil.ulinjohansson\\Downloads\\pragermerin-20230419T163234Z-001\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj",
         "projectName": "newGameTest",
-        "projectPath": "C:\\Users\\emil.ulinjohansson\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj",
+        "projectPath": "C:\\Users\\emil.ulinjohansson\\Downloads\\pragermerin-20230419T163234Z-001\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\newGameTest.csproj",
         "packagesPath": "C:\\Users\\emil.ulinjohansson\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emil.ulinjohansson\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\obj\\",
+        "outputPath": "C:\\Users\\emil.ulinjohansson\\Downloads\\pragermerin-20230419T163234Z-001\\pragermerin\\newGameMan\\newGameTest\\newGameTest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

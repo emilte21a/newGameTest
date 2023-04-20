@@ -13,9 +13,7 @@ public class playerAssets{
 }
 public class Player
 {
-    BlockObject BlockObject = new();
-
-    
+    BlockObject BlockObject = new();    
     playerAssets playerAssets = new();
     public void GravityPhysics()
     {   

@@ -14,7 +14,10 @@ public class InventoryItem
     public string Texture;
     public int stacks;
 
-
+    public int damage;
+    public bool canBreakWood;
+    public bool canBreakStone;
+    public bool Action;
 }
 
 //Varje item inheritar från Inventoryitem
@@ -49,18 +52,21 @@ public class stick : InventoryItem
         stackable = true;
         craftable = true;
         Texture = "IMG/stickTexture.png";
-        
     }
 }
 public class woodPickaxe : InventoryItem
 {
-    
+
     public woodPickaxe()
     {
         name = "woodPickaxe";
         stackable = false;
         craftable = true;
         Texture = "IMG/woodenPickaxeTexture.png";
+        Action = true;
+        canBreakWood = false;
+        canBreakStone = true;
+        damage = 20;
     }
 }
 
@@ -72,7 +78,12 @@ public class stoneAxe : InventoryItem
         stackable = false;
         craftable = true;
         Texture = "IMG/stoneAxeTexture.png";
+        Action = true;
+        canBreakStone = false;
+        canBreakWood = true;
+        damage = 25;
     }
+
 }
 public class stoneAxe2 : InventoryItem
 {
@@ -87,13 +98,13 @@ public class stoneAxe2 : InventoryItem
 
 public class inventory
 {
-    
+
     /*
     Dictionary med key: string och value: IntentoryItem. 
     Detta gör det möjligt att "kalla" på valutan som är InventoryItem med en string.
     */
     public Dictionary<string, InventoryItem> ItemsInInventory = new Dictionary<string, InventoryItem>();
-    
+
     /*
     En dictionary med key: int och value: string
     Den gör det möjligt att lägga till en ny "empty" string för varje inventoryslot
@@ -102,7 +113,7 @@ public class inventory
 
     //Hotbaren är 4 stycken slots
     //När man trycker på tab så får man 6 stycken extra slots
-    int InventoryLength = 4+6;
+    int InventoryLength = 4 + 6;
 
     //En struct av inventory    
     public inventory()
@@ -111,16 +122,16 @@ public class inventory
         {
             InventorySlots.Add(invSlot, "Empty");
         }
-    //För varje int invSlot i InventoryLength
-    //Lägg till en ny tom inventoryslot
-    
+        //För varje int invSlot i InventoryLength
+        //Lägg till en ny tom inventoryslot
+
     }
-    
+
 
     //Funktion för att lägga till nytt item i inventoryt
     public void addToInventory(string item, InventoryItem Itemdata, int Amount)
     {
-        
+
         if (ItemsInInventory.ContainsKey(item))
         {
             if (Itemdata.stackable == true)
@@ -140,7 +151,7 @@ public class inventory
             ItemsInInventory.Add(Itemdata.name, Itemdata);
             if (Amount != 0)
             {
-                Itemdata.stacks+=Amount;
+                Itemdata.stacks += Amount;
             }
         }
 
@@ -151,10 +162,11 @@ public class inventory
         //Lägg till itemet i inventoryt och dess data
         //Om amount inte är 0
         //Lägg till amount till stacks om det får stackas
-    
+
     }
-    public void removeFromInventory(string item, InventoryItem Itemdata, int Amount){
-        
+    public void removeFromInventory(string item, InventoryItem Itemdata, int Amount)
+    {
+
         if (ItemsInInventory.ContainsKey(item))
         {
             if (Itemdata.stackable == true)
@@ -177,19 +189,48 @@ public class inventory
         return 10;
     }
 
-    public string activeItem(string currentActiveItem){
-        
-        for (int i = 0; i < InventoryLength; i++)
+    int itemIndex = 0;
+    public int activeHotbarItem()
+    {
+       
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ONE))
         {
-            
+            itemIndex = 0;
+        }
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_TWO))
+        {
+            itemIndex = 1;
+        }
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_THREE))
+        {
+            itemIndex = 2;
+        }
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_FOUR))
+        {
+            itemIndex = 3;
+        }
+        return itemIndex;
+    }
+    public string activeItem(string currentActiveItem, string item)
+    {
+        int itemIndex = activeHotbarItem();
+        
+        if (InventorySlots[itemIndex] == currentActiveItem)
+        {
+            if (ItemsInInventory.ContainsKey(item))
+            {
+                currentActiveItem = InventorySlots[itemIndex];
+            }
         }
 
         return currentActiveItem;
     }
+
     
-//För varje integer I som är mindre än InventoryLength
-//Om inventorySloten I är tom, så returna I
-//Fortsätt att kolla vilka inventoryslots som är lediga tills funktionen körts klart
+
+    //För varje integer I som är mindre än InventoryLength
+    //Om inventorySloten I är tom, så returna I
+    //Fortsätt att kolla vilka inventoryslots som är lediga tills funktionen körts klart
 }
 
 
