@@ -24,6 +24,8 @@ public static class Variable
 
     public static int punchFrame = 0; 
     public static int runningFrame = 1;
+
+    public static int pickaxeFrame = 0;
     public static int punchColorAlpha;
     public static int punchRectWidth = 0;
     public static int punchTimer = 0;
@@ -33,6 +35,9 @@ public static class Variable
     //Höger: 1 / vänster: -1
 
     public static int Damage = 10;
+
+    public static bool canBreakWood;
+    public static bool canBreakStone;
     
     public static int whilePunching = 0;
     public static bool bothButtonsPressed = false;

@@ -14,6 +14,8 @@ public class InventoryItem
     public string Texture;
     public int stacks;
     public bool Action;
+
+    
 }
 
 //Varje item inheritar från Inventoryitem
@@ -60,7 +62,6 @@ public class woodPickaxe : InventoryItem
         craftable = true;
         Texture = "IMG/woodenPickaxeTexture.png";
         Action = true;
-   
     }
 }
 
@@ -73,7 +74,6 @@ public class stoneAxe : InventoryItem
         craftable = true;
         Texture = "IMG/stoneAxeTexture.png";
         Action = true;
-      
     }
 
 }
@@ -219,15 +219,23 @@ public class inventory
         CurrentActiveItem = activeItem(InventorySlots[active], "Empty");
         if (CurrentActiveItem == "woodPickaxe")
         {
-             Variable.Damage = 25;
+            Variable.Damage = 25;
+            Variable.canBreakWood = false;
+            Variable.canBreakStone = true;
         }
         else if (CurrentActiveItem == "stoneAxe")
         {
-             Variable.Damage = 25;
+            Variable.Damage = 25;
+            Variable.canBreakWood = true;
+            Variable.canBreakStone = false;
         }
-
+        else 
+        {
+            Variable.Damage = 10;
+            Variable.canBreakWood = true;
+            Variable.canBreakStone = false;
+        }
     }
-
 
 }
 

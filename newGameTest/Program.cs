@@ -6,8 +6,8 @@ using System.Collections.Generic;
 Raylib.InitWindow(Variable.screenWidth, Variable.screenHeight, "Terraria knockoff");
 Raylib.SetTargetFPS(60);
 
-inventory inventoryManager = new inventory();
 InventoryItem invItem = new();
+inventory inventoryManager = new inventory();
 TextureManager textureManager = new TextureManager();
 Player Player = new();
 Methods Methods = new();
@@ -22,6 +22,7 @@ stone stone = new();
 stick stick = new();
 woodPickaxe woodPickaxe = new();
 stoneAxe stoneAxe = new();
+
 
 string currentScene = "start";
 Color skyColor = new Color(115, 215, 255, 255);
@@ -46,6 +47,7 @@ while (!Raylib.WindowShouldClose())
     Vector2 skyPos = new Vector2(-Variable.screenWidth / 2, -100);
     Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 3.5f);
     Vector2 hillsPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 2);
+    
 
     Camera2D camera = new();
     camera.zoom = 0.9f;
@@ -67,6 +69,7 @@ while (!Raylib.WindowShouldClose())
             BlockObject.loadBlocks();
             TreeObject.LoadTrees();
             rockObject.loadRocks();
+              inventoryManager.addToInventory("woodPickaxe", woodPickaxe, 1);
         }
 
         Raylib.ClearBackground(Color.WHITE);
@@ -85,11 +88,11 @@ while (!Raylib.WindowShouldClose())
 
         string currentActiveItem = "Empty";
         int activeItem = 1;
-
         int punchFrame = Variable.punchFrame;
         int runningFrame = Player.runningAnimation();
-        int pickaxeFrame = Player.pickaxeAnimation();
+        int pickaxeFrame = Variable.pickaxeFrame;
         int charVariable = Player.jumpAnimation();
+
 
         //Bakgrundens texturers source rektanglar
         Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
@@ -148,23 +151,23 @@ while (!Raylib.WindowShouldClose())
 
             if (tree.treeHealth > 0)
             {
-                Raylib.DrawTexture(TextureClass.otherTextures[3], (int)tree.TreeRect.x-90, 420, Color.WHITE);
+                Raylib.DrawTexture(TextureClass.otherTextures[3], (int)tree.TreeRect.x - 90, 420, Color.WHITE);
                 /*
                 Om man trycker på F och karaktärens rektangel kolliderar med trädets Rektangel
                 Starta då breakTreeMethod
                 Om trädets HP är detsamma som 0 så ska spelarens mängd trä att öka med 10
                 */
-                
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(playerAssets.characterRec, tree.TreeRect) && Variable.punchTimer == 100)
+
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(playerAssets.characterRec, tree.TreeRect) && Variable.punchTimer == 100 && Variable.canBreakWood == true)
                 {
                     tree.breakTreeMethod();
                     if (tree.treeHealth == 0)
                     {
                         inventoryManager.addToInventory("wood", wood, 10);
-                        inventoryManager.addToInventory("stone", stone, 10);
+                        //inventoryManager.addToInventory("stone", stone, 10);
                         //inventoryManager.addToInventory("stick", stick, 10);
-                        inventoryManager.addToInventory("woodPickaxe", woodPickaxe, 1);
-                        inventoryManager.addToInventory("stoneAxe", stoneAxe, 1);
+                        //inventoryManager.addToInventory("woodPickaxe", woodPickaxe, 1);
+                        //inventoryManager.addToInventory("stoneAxe", stoneAxe, 1);
                     }
                 }
                 if (tree.treeHealth < 100)
@@ -182,6 +185,11 @@ while (!Raylib.WindowShouldClose())
 
         }
 
+        activeItem = inventoryManager.activeHotbarItem();
+                currentActiveItem = inventoryManager.activeItem(inventoryManager.InventorySlots[activeItem], "Empty");
+                Console.WriteLine(currentActiveItem);
+
+     
 
         if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
         {
@@ -190,27 +198,29 @@ while (!Raylib.WindowShouldClose())
         }
         else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && Variable.touchFloor == true && Variable.bothButtonsPressed == false)
         {
-
             Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
         }
 
         else if (Variable.whilePunching > 0)
         {
-            if (currentActiveItem != "woodPickaxe")
+            
+            if (currentActiveItem == "woodPickaxe")
             {
-                
-            Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
+                Player.pickaxeAnimation();
+                if (Variable.FacingDirection == -1)
+                {
+                    characterPos.X -=60;
+                }
+                Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
+              
             }
+
             else
             {
-                if (Variable.FacingDirection == -1)
-            {
-                characterPos.X = characterPos.X - 60;
+                Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
             }
-            Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
-            }
-            //Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
         }
+            //Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
 
         else
         {
@@ -237,28 +247,26 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawTexture(TextureClass.otherTextures[5], 400, 100, Color.WHITE);
         }
         int itemPos = 0;
-       
+
         foreach (var item in inventoryManager.InventorySlots)
         {
             if (itemPos <= 3)
             {
-            activeItem = inventoryManager.activeHotbarItem();
-            currentActiveItem = inventoryManager.activeItem(inventoryManager.InventorySlots[activeItem], "Empty");
-            Console.WriteLine(currentActiveItem);
+                
                 if (item.Value != "Empty")
                 {
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
                     Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), 50 + 120 * itemPos, 70, Color.WHITE);
                     Raylib.DrawText($"{item1.stacks}", 110 + 120 * itemPos, 130, 20, Color.WHITE);
                 }
-                Raylib.DrawTexture(textureManager.LoadTexture("IMG/itemChosen.png"), 40+activeItem*120, 60, Color.WHITE );
+                Raylib.DrawTexture(textureManager.LoadTexture("IMG/itemChosen.png"), 40 + activeItem * 120, 60, Color.WHITE);
             }
 
             //Rita rektanglar i inventoryt när man trycker tab
             else if (itemPos > 3 && tab == true)
             {
-                int X = (int)InventorySystem.slots[itemPos-4].inventorySlot.x;
-                int Y = (int)InventorySystem.slots[itemPos-4].inventorySlot.y;
+                int X = (int)InventorySystem.slots[itemPos - 4].inventorySlot.x;
+                int Y = (int)InventorySystem.slots[itemPos - 4].inventorySlot.y;
 
                 if (item.Value != "Empty")
                 {

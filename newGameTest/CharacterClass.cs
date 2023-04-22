@@ -152,30 +152,28 @@ public class Player
         int maxFrames = 6;
 
         timer2+=2;
-        if (timer2 > 10)
+        if (timer2 > 14)
         {
             timer2 = 0;
            Variable.punchFrame++;
         }
 
-        if (Variable.punchFrame == maxFrames)
-        {
-            Variable.punchFrame = 0;
-        }
+        Variable.punchFrame%=maxFrames;
         return Variable.punchFrame;
     }
 
     public int pickaxeAnimation()
     {
+        int maxFrames = 10;
+        timer2 += 2;
 
-        timer2 += 1;
-
-        if (timer > 16)
+        if (timer > 12)
         {
             timer2 = 0;
-            frame++;
+            Variable.pickaxeFrame++;
         }
-        return frame;
+        Variable.pickaxeFrame%=maxFrames;
+        return Variable.pickaxeFrame;
     }
 
     public void bothADdown()

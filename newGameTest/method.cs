@@ -11,6 +11,7 @@ public class Methods
         if (Variable.whilePunching == 0)
         {
             Variable.punchFrame = 1;
+            Variable.pickaxeFrame = 1;
             Variable.whilePunching = 0;
         }
 
@@ -40,7 +41,7 @@ public class Methods
         {
             Variable.whilePunching--;
             Player.punchAnimation();
-            Player.pickaxeAnimation();
+           
         }
         //return punchFrame;
     }
