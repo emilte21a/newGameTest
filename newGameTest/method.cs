@@ -1,5 +1,6 @@
 using Raylib_cs;
 using System;
+using System.Numerics;
 
 public class Methods
 {
@@ -61,8 +62,6 @@ public class Methods
             Variable.skyPlacementX -= 0.5f;
         }
     }
-    
-    
 
 
 }

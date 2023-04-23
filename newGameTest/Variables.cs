@@ -4,6 +4,7 @@ using System.Numerics;
 
 public static class Variable
 {
+    //En statisk klass med globala variabler som används hela tiden i olika funktioner
 
     public const int screenHeight = 1050;
     public const int screenWidth = 1300;
@@ -16,13 +17,11 @@ public static class Variable
 
     /*
         public static int frame = 1;
-
         public static int punchFrame = 1;
-
         public static int pickaxeFrame = 1;
     */
 
-    public static int punchFrame = 0; 
+    public static int punchFrame = 0;
     public static int runningFrame = 1;
 
     public static int pickaxeFrame = 0;
@@ -38,7 +37,7 @@ public static class Variable
 
     public static bool canBreakWood;
     public static bool canBreakStone;
-    
+
     public static int whilePunching = 0;
     public static bool bothButtonsPressed = false;
 
@@ -48,8 +47,7 @@ public static class Variable
 
     public static int amountOfWood = 0;
 
+    public static int whichItem = 0;
+
     public static Random Rand = new Random();
 }
-
-
-

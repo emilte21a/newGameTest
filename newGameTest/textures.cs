@@ -17,6 +17,7 @@ public class TextureClass
         charTextures.Add(Raylib.LoadTexture("IMG/charRunningTexture.png"));
         charTextures.Add(Raylib.LoadTexture("IMG/punchTexture.png"));
         charTextures.Add(Raylib.LoadTexture("IMG/charPickaxeAnim.png"));
+        charTextures.Add(Raylib.LoadTexture("IMG/charAxeAnim.png"));
 
         blockTextures.Add(Raylib.LoadTexture("IMG/blockTexture.png"));
         blockTextures.Add(Raylib.LoadTexture("IMG/dirtBlockTexture.png"));
@@ -37,4 +38,3 @@ public class TextureClass
         otherTextures.Add(Raylib.LoadTexture("IMG/InventoryTexture.png"));
     }
 }
-

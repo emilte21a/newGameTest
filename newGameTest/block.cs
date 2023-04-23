@@ -12,8 +12,8 @@ public class blockEntity
 public class BlockObject
 {
 
-   
-    const int levelwidth = 50;
+
+    const int levelwidth = 70;
     const int levelheight = 1;
     public int cellsize = 120;
     public List<blockEntity> floors = new();
@@ -21,7 +21,7 @@ public class BlockObject
     public void loadBlocks()
     {
         floors.Clear();
-        for (int x = -20; x < levelwidth; x++)
+        for (int x = -levelwidth; x < levelwidth; x++)
         {
             for (int y = 0; y < levelheight; y++)
             {
@@ -35,8 +35,8 @@ public class BlockObject
 
     public void drawDirtBlocks()
     {
-        
-        for (var x = -20; x < levelwidth; x++)
+
+        for (var x = -levelwidth; x < levelwidth; x++)
         {
             for (var y = 0; y < 2; y++)
             {
@@ -51,12 +51,8 @@ public class BlockObject
     public BlockObject()
     {
         floors.Add(new blockEntity() { cellBlock = Floor });
-        
+
     }
     public static Rectangle Floor = new Rectangle(360, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
-
 */
 }
-
-
-

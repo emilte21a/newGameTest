@@ -16,10 +16,8 @@ public class TreeEntity
 
 public class TreeObject
 {
-
-
     int treePos;
-    int amountOfTrees = 10;
+    int amountOfTrees = 20;
     public List<TreeEntity> Trees = new();
 
     public void LoadTrees()
@@ -38,20 +36,6 @@ public class TreeObject
     }
 
 
-    /*
-    public TreeObject()
-    {
-        Trees.Add(new TreeEntity() {rect = tree1});
-        Trees.Add(new TreeEntity() {rect = tree2});
-        Trees.Add(new TreeEntity() {rect = tree3});
 
-    }
-
-
-    public static Rectangle tree1 = new Rectangle(780, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height);
-    public static Rectangle tree2 = new Rectangle(120, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height);
-    public static Rectangle tree3 = new Rectangle(400, 420, TextureClass.otherTextures[3].width, TextureClass.otherTextures[3].height);
-
-*/
 
 }

@@ -13,9 +13,9 @@ public class InventoryItem
     public bool craftable;
     public string Texture;
     public int stacks;
-    public bool Action;
 
-    
+    public Dictionary<string, int> Recipe;
+
 }
 
 //Varje item inheritar från Inventoryitem
@@ -50,6 +50,7 @@ public class stick : InventoryItem
         stackable = true;
         craftable = true;
         Texture = "IMG/stickTexture.png";
+        Recipe = new Dictionary<string, int> { { "wood", 1 } };
     }
 }
 public class woodPickaxe : InventoryItem
@@ -61,7 +62,7 @@ public class woodPickaxe : InventoryItem
         stackable = false;
         craftable = true;
         Texture = "IMG/woodenPickaxeTexture.png";
-        Action = true;
+        Recipe = new Dictionary<string, int> { { "stick", 2 }, { "wood", 3 } };
     }
 }
 
@@ -73,9 +74,21 @@ public class stoneAxe : InventoryItem
         stackable = false;
         craftable = true;
         Texture = "IMG/stoneAxeTexture.png";
-        Action = true;
+        Recipe = new Dictionary<string, int> { { "stick", 2 }, { "stone", 3 } };
     }
 
+}
+
+public class craftingTable : InventoryItem
+{
+    public craftingTable()
+    {
+        name = "craftingTable";
+        stackable = false;
+        craftable = true;
+        Texture = "IMG/craftingtableicon.png";
+        Recipe = new Dictionary<string, int> { { "wood", 4 } };
+    }
 }
 
 public class inventory
@@ -95,7 +108,7 @@ public class inventory
 
     //Hotbaren är 4 stycken slots
     //När man trycker på tab så får man 6 stycken extra slots
-    int InventoryLength = 4 + 6;
+    int InventoryLength = 5;
 
     //En struct av inventory    
     public inventory()
@@ -144,16 +157,15 @@ public class inventory
         //Lägg till itemet i inventoryt och dess data
         //Om amount inte är 0
         //Lägg till amount till stacks om det får stackas
-
     }
-    public void removeFromInventory(string item, InventoryItem Itemdata, int Amount)
+    
+    public void addToExistingStacks(string item, InventoryItem Itemdata, int Amount)
     {
-
         if (ItemsInInventory.ContainsKey(item))
         {
             if (Itemdata.stackable == true)
             {
-                Itemdata.stacks -= Amount;
+                Itemdata.stacks += Amount;
             }
         }
     }
@@ -168,7 +180,7 @@ public class inventory
             }
             continue;
         }
-        return 10;
+        return 5;
     }
     //För varje integer I som är mindre än InventoryLength
     //Om inventorySloten I är tom, så returna I
@@ -194,8 +206,13 @@ public class inventory
         {
             itemIndex = 3;
         }
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_FIVE))
+        {
+            itemIndex = 4;
+        }
         return itemIndex;
     }
+
     public string activeItem(string currentActiveItem, string item)
     {
         int itemIndex = activeHotbarItem();
@@ -207,8 +224,11 @@ public class inventory
                 currentActiveItem = InventorySlots[itemIndex];
             }
         }
-
         return currentActiveItem;
+        //Om föremålet på samma plats som itemIndex har i inventoryt
+        //Om inventoryt innehåller item 
+        //Gör currentActiveItem till den indexet man har.
+        //Detta betyder att om du trycker på knapp 1, så är första itemet currentActiveItem
     }
 
     int active = 1;
@@ -217,28 +237,77 @@ public class inventory
     {
         active = activeHotbarItem();
         CurrentActiveItem = activeItem(InventorySlots[active], "Empty");
-        if (CurrentActiveItem == "woodPickaxe")
+
+        switch (CurrentActiveItem)
         {
-            Variable.Damage = 25;
-            Variable.canBreakWood = false;
-            Variable.canBreakStone = true;
+            case "woodPickaxe":
+                Variable.Damage = 20;
+                Variable.canBreakWood = false;
+                Variable.canBreakStone = true;
+                break;
+            case "stoneAxe":
+                Variable.Damage = 25;
+                Variable.canBreakWood = true;
+                Variable.canBreakStone = false;
+                break;
+            default:
+                Variable.Damage = 10;
+                Variable.canBreakWood = true;
+                Variable.canBreakStone = false;
+                break;
         }
-        else if (CurrentActiveItem == "stoneAxe")
-        {
-            Variable.Damage = 25;
-            Variable.canBreakWood = true;
-            Variable.canBreakStone = false;
-        }
-        else 
-        {
-            Variable.Damage = 10;
-            Variable.canBreakWood = true;
-            Variable.canBreakStone = false;
-        }
+        //Varje item har olika egenskaper.
+        //en träpickaxe har 20 damage och kan ta sönder sten med inte trä
+        //en stenyxa har 25 damage och kan ta sönder trä men inte sten
+        //resterande items har 10 damage och kan endast ta sönder trä
     }
 
+    //Parametern är av InventoryItem, vilket är en klass som varje item inheritar
+    public bool CanCraft(InventoryItem itemdata)
+    {
+        foreach (KeyValuePair<string, int> ingredient in itemdata.Recipe)
+        {
+            if (!ItemsInInventory.ContainsKey(ingredient.Key) || ItemsInInventory[ingredient.Key].stacks < ingredient.Value)
+            {
+                return false;
+            }
+        }
+        return true;
+        //För varje Key & Value par vid namn ingredient som finns i receptet för varje InventoryItem
+        //Om inventoryt inte innehåller ingredienten
+        //Eller om mängden ingredienser är mindre än "hur mycket" det kostar att skapa det itemet man vill skapa
+        //Returnera falsk
+        //Annars returnera sant
+    }
+
+    public void CraftItem(InventoryItem itemdata)
+    {
+        if (CanCraft(itemdata) && itemdata.stacks != 0)
+        {
+            foreach (KeyValuePair<string, int> ingredient in itemdata.Recipe)
+            {
+                ItemsInInventory[ingredient.Key].stacks -= ingredient.Value;
+                if (ItemsInInventory[ingredient.Key].stacks == 0)
+                {
+                    ItemsInInventory.Remove(ingredient.Key);
+                }
+            }
+        }
+            
+            if (itemdata.stacks != 0)
+            {
+                addToExistingStacks(itemdata.name, itemdata, 1);
+            }
+
+            else
+            {
+            addToInventory(itemdata.name, itemdata, 1);
+            }
+    }
+    //Om man kan skapa det item man vill skapa, och det går att stacka
+    //För varje Key & Value par vid namn ingredient som finns i receptet för varje Inventoryitem
+    //Minska de ingredienser som användes vid skapandet med hur mycket som behövdes för receptet
+    //Om ingrediensens värde blir lika med 0, så ta bort ingrediensen från inventoryt
+    //Lägg till ett av det nya InventoryItem som man skapat
+
 }
-
-
-
-

@@ -4,21 +4,20 @@ using System.Numerics;
 
 public class rockEntity{
     public Rectangle rockRect;
-
     public int rockHealth = 100;
 
     public int breakStoneMethod(){
         rockHealth-= Variable.Damage;
         return rockHealth;
     }
+
 }
 
 
 public class rockObject{
 
 int rockpos;
-
-int amountOfRocks = 3;
+int amountOfRocks = 10;
 public int rockTexture;
 
 public List<rockEntity> Rocks = new();
