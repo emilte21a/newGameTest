@@ -35,11 +35,15 @@ playerAssets.characterRec.y = 400;
 
 while (!Raylib.WindowShouldClose())
 {
+    //Karaktärens positionsvektor
     Vector2 characterPos = new Vector2(playerAssets.characterRec.x, playerAssets.characterRec.y);
+
+    //Bakgrundens vektorer
     Vector2 skyPos = new Vector2(-Variable.screenWidth / 2, -100);
     Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 3.5f);
     Vector2 hillsPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 2);
 
+    //Kameran
     Camera2D camera = new();
     camera.zoom = 0.9f;
     camera.rotation = 0;
@@ -48,7 +52,6 @@ while (!Raylib.WindowShouldClose())
 
     camera.target = characterPos; //Kamerans target är karaktärens position
 
-
     Raylib.BeginDrawing();
     Raylib.ClearBackground(Color.WHITE);
 
@@ -56,6 +59,9 @@ while (!Raylib.WindowShouldClose())
     {
         playerAssets.characterRec.height = 50;
         playerAssets.characterRec.y = Player.skippingY(playerAssets.characterRec.y);
+        //Karaktärens Y värde är lika med funktionen SkippingY som tar emot karaktärens Y värde som parameter och returnerar sedan den
+
+        //Öka parallaxpos med 0.5 varje frame
         parallaxPos += 0.5f;
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
         {
@@ -90,13 +96,10 @@ while (!Raylib.WindowShouldClose())
 
         Raylib.DrawText("Press ENTER to", 540, 400, 30, Color.GOLD);
         Raylib.DrawText("START", 530, 430, 80, Color.GOLD);
-
         Raylib.DrawText("Instructions", 50, 500, 50, Color.BLACK);
         Raylib.DrawText("A-D to move", 50, 550, 30, Color.BLACK);
         Raylib.DrawText("SPACE to jump", 50, 600, 30, Color.BLACK);
         Raylib.DrawText("Press C to access your inventory", 50, 650, 30, Color.BLACK);
-
-
     }
 
     else if (currentScene == "game")
@@ -105,6 +108,7 @@ while (!Raylib.WindowShouldClose())
         playerAssets.characterRec.height = 180;
         Player.GravityPhysics();
         playerAssets.characterRec.x = Player.walkingX(playerAssets.characterRec.x, playerAssets.speed);
+        //Karaktärens X värde är lika med funktionen WalkingX som tar emot karaktärens x värde och variabeln speed som paratmetrar
 
         Player.bothADdown();
         Methods.meleeMethod();
@@ -119,7 +123,6 @@ while (!Raylib.WindowShouldClose())
         int runningFrame = Player.runningAnimation();
         int pickaxeFrame = Variable.pickaxeFrame;
         int charVariable = Player.jumpAnimation();
-
 
         //Bakgrundens texturers source rektanglar
         Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
@@ -140,9 +143,11 @@ while (!Raylib.WindowShouldClose())
 
         //Slag rektangeln och dess färg
         Color punchColor = new Color(255, 255, 255, Variable.punchColorAlpha);
+
+        //Bakgrundsbergtexturens färg
         Color mountainColor = new Color(255, 255, 255, 155);
 
-        //Raylib.DrawTextureRec(TextureClass.backgroundTextures[0], skyRec, skyPos, Color.WHITE);
+        //Rita ut himmelen
         Raylib.DrawRectanglePro(
         new Rectangle(0, 0, Variable.screenWidth, Variable.screenHeight),
         new Vector2(0, 0),
@@ -154,9 +159,10 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[1], mountainRec, mountainPos, mountainColor);
         Raylib.DrawTextureRec(TextureClass.backgroundTextures[2], hillsRec, hillsPos, Color.WHITE);
 
-        Raylib.BeginMode2D(camera);
+        Raylib.BeginMode2D(camera); // Starta kameraläge
 
-        //Karaktärens hitbox
+        //Karaktärens hitbox är lika med karaktärens rektangel
+        //Hitboxens Y värde är karaktärens y värde plus 180
         playerAssets.hitBox.x = playerAssets.characterRec.x;
         playerAssets.hitBox.y = playerAssets.characterRec.y + 180;
 
@@ -164,13 +170,13 @@ while (!Raylib.WindowShouldClose())
         currentActiveItem = inventoryManager.activeItem(inventoryManager.InventorySlots[activeItem], "Empty");
         //Det nuvarande aktiva item indexet är lika med activeHotBarItem funktionen
 
-
-        //För varje block i listan BlockObject.floors så ska gräs texturen ritas ut
         for (var i = 0; i < BlockObject.floors.Count; i++)
         {
             blockEntity floor = BlockObject.floors[i];
             Raylib.DrawTexture(TextureClass.blockTextures[0], (int)floor.cellBlock.x, (int)floor.cellBlock.y, Color.WHITE);
         }
+        //För varje block i listan BlockObject.floors så ska gräs texturen ritas ut 
+        //Grästexturen ritas ut på varje cellBlocks position
 
         //Rita ut alla dirtblocks som bara är texturer
         BlockObject.drawDirtBlocks();
@@ -186,27 +192,22 @@ while (!Raylib.WindowShouldClose())
                 /*
                 Om man trycker på F och karaktärens rektangel kolliderar med trädets Rektangel
                 Starta då breakTreeMethod
-                Om trädets HP är detsamma som 0 så ska spelarens mängd trä att öka med 10
+                Om trädets HP är detsamma som 0 så ska spelarens mängd trä att öka med 3
                 */
-
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(playerAssets.characterRec, tree.TreeRect) && Variable.punchTimer == 100 && Variable.canBreakWood == true)
                 {
                     tree.breakTreeMethod();
                     if (tree.treeHealth == 0)
                     {
                         inventoryManager.addToInventory("wood", wood, 3);
-                        //Om trädets liv är 0
-                        //Lägg till 3 trä i inventoryt
                     }
-                    //Om karaktärens rektangel kolliderar med trärekanteln  och om F knappen trycks och om punchtimer är 100 och om det aktiva föremålet kan ta sönder trä
-                    //Kör breakTreeMethod
                 }
                 if (tree.treeHealth < 100)
                 {
                     Raylib.DrawText($"{tree.treeHealth}", (int)tree.TreeRect.x + 50, (int)tree.TreeRect.y + 30, 50, Color.RED);
                 }
                 //Om trädets liv är mindre än 100
-                //Rita ut trädets liv bredvid
+                //Rita ut trädets mängd liv kvar bredvid
             }
         }
 
@@ -218,6 +219,11 @@ while (!Raylib.WindowShouldClose())
             if (rock.rockHealth > 0)
             {
                 Raylib.DrawTexture(TextureClass.rockTextures[rockObject.rockTexture], (int)rock.rockRect.x, (int)rock.rockRect.y, Color.WHITE);
+                /*
+               Om man trycker på F och karaktärens rektangel kolliderar med stenens Rektangel
+               Starta då breakStoneMethod
+               Om stenens HP är detsamma som 0 så ska spelarens mängd trä att öka med 10
+               */
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(playerAssets.characterRec, rock.rockRect) && Variable.punchTimer == 100 && Variable.canBreakStone == true)
                 {
                     rock.breakStoneMethod();
@@ -230,10 +236,10 @@ while (!Raylib.WindowShouldClose())
                 {
                     Raylib.DrawText($"{rock.rockHealth}", (int)rock.rockRect.x + 10, (int)rock.rockRect.y, 50, Color.RED);
                 }
+                //Om stenens liv är mindre än 100
+                //Rita ut stenens mängd liv kvar bredvid
             }
         }
-
-
 
         //Spring animationerna===============================================
 
@@ -248,7 +254,6 @@ while (!Raylib.WindowShouldClose())
         {
             Raylib.DrawTextureRec(TextureClass.charTextures[3], sourceRec1, characterPos, Color.WHITE);
         }
-
 
         else if (Variable.whilePunching > 0)
         {
@@ -271,7 +276,6 @@ while (!Raylib.WindowShouldClose())
                 }
                 Raylib.DrawTextureRec(TextureClass.charTextures[6], pickaxeRec, characterPos, Color.WHITE);
             }
-
             else
             {
                 Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
@@ -291,11 +295,9 @@ while (!Raylib.WindowShouldClose())
         }
         // Annars om gubben inte rör på sig så ska idle animationen ritas ut
 
-
         //TEXTS============================================
         Raylib.DrawText("Try punching down a tree", 50, 400, 30, Color.BLACK);
         Raylib.DrawText("Try punching down a tree", 52, 402, 30, Color.DARKGREEN);
-
 
         Raylib.DrawText("Try crafting a pickaxe to break a rock", 100, 600, 30, Color.BLACK);
         Raylib.DrawText("Try crafting a pickaxe to break a rock", 102, 602, 30, Color.DARKGRAY);
@@ -310,7 +312,6 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawTexture(textureManager.LoadTexture("IMG/craftingtableicon.png"), 670, 50, Color.WHITE);
         Raylib.DrawText("C", 680, 140, 70, Color.BLACK);
 
-
         //INVENTORY========================================
 
         bool tab = false;
@@ -318,6 +319,8 @@ while (!Raylib.WindowShouldClose())
         {
             tab = true;
         }
+        //Om tab = true
+
         int itemPos = 0;
 
         foreach (var item in inventoryManager.InventorySlots)
@@ -326,9 +329,8 @@ while (!Raylib.WindowShouldClose())
             {
                 if (item.Value != "Empty" && inventoryManager.ItemsInInventory.ContainsKey(item.Value))
                 {
-                    Console.WriteLine(item.Value);
+                    //Console.WriteLine(item.Value);
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
-                    //Console.WriteLine("item.Value: " + item.Value);
                     Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), 50 + 120 * itemPos, 70, Color.WHITE);
                     Raylib.DrawText($"{item1.stacks}", 110 + 120 * itemPos, 130, 20, Color.WHITE);
                 }
@@ -339,6 +341,15 @@ while (!Raylib.WindowShouldClose())
             {
                 itemPos = inventoryManager.findFirstEmptySlot();
             }
+            //För varje item i InventorySlots
+            //Om Itempositionen är mindre än mängden inventorySlots
+            //Om itemets value inte är Empty och om inventoryt innehåller itemet
+            //Itemet i inventoryt är lika med valutan i dictionaryt ItemsInInventory
+            //Rita ut itemets textur
+            //Rita ut varje items mängd med deras variabel int Stacks
+            //Öka itempos med 1 
+            //Om itempos är större eller lika med mängden inventorySlots
+            //Gör itempositionen till den första tomma platsen i inventoryt
         }
 
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
@@ -358,7 +369,6 @@ while (!Raylib.WindowShouldClose())
         int itemPos = 0;
         foreach (var item in inventoryManager.InventorySlots)
         {
-
             if (item.Value != "Empty" && inventoryManager.ItemsInInventory.ContainsKey(item.Value))
             {
                 InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
@@ -370,10 +380,18 @@ while (!Raylib.WindowShouldClose())
                 itemPos = 0;
             }
         }
+        //För varje item i InventorySlots
+        //Om Itempositionen är mindre än mängden inventorySlots
+        //Om itemets value inte är Empty och om inventoryt innehåller itemet
+        //Itemet i inventoryt är lika med valutan i dictionaryt ItemsInInventory
+        //Öka itempos med 1 
+        //Om itempos är större eller lika med mängden inventorySlots
+        //Gör itempositionen till 0
 
         Raylib.DrawTexture(textureManager.LoadTexture("IMG/craftingTable.png"), 0, 0, Color.WHITE);
 
         craftingSystem.craftingSyst();
+        //Starta craftingSyst funktionen som kollar kontroller och skriver ut texter
 
         if (Variable.whichItem == 0)
         {
@@ -385,6 +403,12 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawText($"{stick.name}", 240, 300, 20, Color.WHITE);
             Raylib.DrawText($"{stick.stacks}", 350, 340, 20, Color.WHITE);
         }
+        //Om variabeln whichItem är lika med 0
+        //Om SPACE knappen trycks
+        //Crafta itemet stick
+        //Rita ut mängden trä som du har
+        //Rita ut itemet sticks namn
+        //Rita ut mängden sticks som du har i inventoryt
 
         else if (Variable.whichItem == 1)
         {
@@ -397,6 +421,13 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawText($"{woodPickaxe.name}", 240, 300, 20, Color.WHITE);
             Raylib.DrawText($"{woodPickaxe.stacks}", 350, 340, 20, Color.WHITE);
         }
+        //Om variabeln whichItem är lika med 1
+        //Om SPACE knappen trycks
+        //Crafta itemet woodPickaxe
+        //Rita ut mängden pinnar som du har
+        //Rita ut mängden trä som du har
+        //Rita ut itemet woodPickaxe namn
+        //Rita ut mängden woodPickaxes som du har i inventoryt
 
         else if (Variable.whichItem == 2)
         {
@@ -410,10 +441,20 @@ while (!Raylib.WindowShouldClose())
             Raylib.DrawText($"{stoneAxe.stacks}", 350, 340, 20, Color.WHITE);
         }
 
+        //Om variabeln whichItem är lika med 2
+        //Om SPACE knappen trycks
+        //Crafta itemet stoneAxe
+        //Rita ut mängden pinnar som du har
+        //Rita ut mängden sten som du har
+        //Rita ut itemet stoneAxe namn
+        //Rita ut mängden stoneAxe som du har i inventoryt
+
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
         {
             currentScene = "game";
         }
+        //Om C knappen trycks
+        //Gör currentscene till game
     }
 
     else if (currentScene == "dead")
@@ -429,13 +470,13 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("you died", Variable.screenWidth / 2, Variable.screenHeight / 2, 50, Color.BLACK);
         Raylib.DrawText("you died", Variable.screenWidth / 2 + 5, Variable.screenHeight / 2 + 5, 50, Color.WHITE);
     }
-
     Raylib.EndDrawing();
 }
 
 //Startskärmen
 
-//En rörande bakgrund där man kan välja att spela eller lämna
+//En rörande bakgrund där man kan starta spelet när man trycker på Enter¨
+//Instruktioner vid sidan om som berättar "grund" funktionerna i spelet
 
 //Spelet
 
@@ -444,3 +485,14 @@ while (!Raylib.WindowShouldClose())
 //Kunna hugga träd samt hacka sten med yxa respektive pickaxe
 //Inventorysystem som fungerar korrekt eller delvis korrekt
 //Crafting system som fungerar korrekt eller delvis korrekt
+//Det ska vara ett enkelt pixelerat gränssnitt som är simpelt men tydligt
+//Man ska kunna gå in i crafting table när man trycker på C
+
+//Crafting table
+
+//I crafting tablet så ska man kunna se vilket item man ska skapa, vad som krävs för att skapa det och hur många av det itemet man har i inventoryt
+//Det ska även stå hur mycket av de items som krävs som du har i ditt inventory 
+
+//Slutskärmen
+//Om man går av spelets gräns så ska man dö och spelet startas om
+
