@@ -92,7 +92,7 @@ public class Player
 
     public void jumpMechanics()
     {
-        Variable.gravity.Y = -15f;
+        Variable.gravity.Y = -10f;
     }
 
 
