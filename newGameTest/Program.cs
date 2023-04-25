@@ -131,7 +131,7 @@ while (!Raylib.WindowShouldClose())
 
         //Spring texturens source rektangel
         Rectangle sourceRec1 = new Rectangle(120 * runningFrame, 0, Variable.FacingDirection * 120, 180);
-
+        
         //Spelarens textur rektangel med variabeln way på bredden för att rendera om vilket håll gubben är vänd
         Rectangle facing = new Rectangle(0, 0, Variable.FacingDirection * 120, 180);
 
