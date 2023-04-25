@@ -6,18 +6,14 @@ using System;
 public class blockEntity
 {
     public Rectangle cellBlock;
-
 }
 
 public class BlockObject
 {
-
-
     const int levelwidth = 70;
     const int levelheight = 1;
     public int cellsize = 120;
     public List<blockEntity> floors = new();
-
     public void loadBlocks()
     {
         floors.Clear();
@@ -42,17 +38,6 @@ public class BlockObject
             {
                 Raylib.DrawTexture(TextureClass.blockTextures[1], x * cellsize, y * cellsize + 1020, Color.WHITE);
             }
-
         }
-
     }
-
-    /*
-    public BlockObject()
-    {
-        floors.Add(new blockEntity() { cellBlock = Floor });
-
-    }
-    public static Rectangle Floor = new Rectangle(360, 900, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[0].height);
-*/
 }

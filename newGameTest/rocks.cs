@@ -10,16 +10,12 @@ public class rockEntity{
         rockHealth-= Variable.Damage;
         return rockHealth;
     }
-
 }
-
-
 public class rockObject{
 
 int rockpos;
 int amountOfRocks = 10;
 public int rockTexture;
-
 public List<rockEntity> Rocks = new();
 
 public void loadRocks()
