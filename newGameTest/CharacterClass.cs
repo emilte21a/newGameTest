@@ -3,7 +3,7 @@ using Raylib_cs;
 using System.Numerics;
 
 
-public class playerAssets
+public class PlayerAssets
 {
 
     public static Rectangle characterRec = new Rectangle(Variable.screenWidth / 2, -1000, TextureClass.charTextures[0].width, TextureClass.charTextures[0].height);
@@ -11,12 +11,15 @@ public class playerAssets
     public static Rectangle hitBox = new Rectangle(6, +179, TextureClass.charTextures[0].width, 3);
 
     public static float speed = 4;
+
 }
 
 public class Player
 {
     BlockObject BlockObject = new();
-    playerAssets playerAssets = new();
+    //PlayerAssets playerAssets = new();
+    //AnimationClass animationClass = new();
+    
     public void GravityPhysics()
     {
         //Lokala variabler
@@ -29,7 +32,7 @@ public class Player
         if (!Variable.touchFloor)
         {
             Variable.gravity.Y += gravity;
-            playerAssets.characterRec.y += Variable.gravity.Y;
+            PlayerAssets.characterRec.y += Variable.gravity.Y;
 
             if (Variable.gravity.Y > maxFallSpeed)
             {
@@ -51,7 +54,7 @@ public class Player
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && Variable.touchFloor == true)
             {
                 Variable.gravity.Y -= 15;
-                playerAssets.characterRec.y += Variable.gravity.Y;
+                PlayerAssets.characterRec.y += Variable.gravity.Y;
                 jumpMechanics();
                 Variable.touchFloor = false;
             }
@@ -71,11 +74,11 @@ public class Player
         for (var i = 0; i < BlockObject.floors.Count; i++)
         {
             blockEntity floor = BlockObject.floors[i];
-            if (!Raylib.CheckCollisionRecs(playerAssets.hitBox, floor.cellBlock))
+            if (!Raylib.CheckCollisionRecs(PlayerAssets.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = false;
             }
-            else if (Raylib.CheckCollisionRecs(playerAssets.hitBox, floor.cellBlock))
+            else if (Raylib.CheckCollisionRecs(PlayerAssets.hitBox, floor.cellBlock))
             {
                 Variable.touchFloor = true;
                 break;
@@ -170,14 +173,15 @@ public class Player
     public void resetVars()
     {
         Variable.gravity.Y = 0;
-        playerAssets.characterRec.y = -500;
-        playerAssets.characterRec.x = Variable.screenWidth / 2;
+        PlayerAssets.characterRec.y = 0;
+        PlayerAssets.characterRec.x = Variable.screenWidth / 2;
     }
 
     //Variabler för de olika animationerna
     int timer = 1;
     int timer2 = 1; //Två olika timers för att jag är lat
     int frame = 1;
+        
     public int runningAnimation()
     {
         int maxFrames = 4;
@@ -193,8 +197,8 @@ public class Player
         //Modulus gör så att runningFrame delas och blir 0 när den uppnår maxframes
         return Variable.runningFrame;
     }
+        
 
-    
     public int punchAnimation()
     {
         int maxFrames = 6;
@@ -211,7 +215,7 @@ public class Player
         //Samma som ovan
     }
 
-    public int pickaxeAnimation()
+    public int swingingAnimation()
     {
         int maxFrames = 10;
         timer2 += 2;

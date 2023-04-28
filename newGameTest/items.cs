@@ -14,6 +14,7 @@ public class InventoryItem
     public string Texture;
     public int stacks;
 
+    public int slot;
     public Dictionary<string, int> Recipe;
 
 }
@@ -126,7 +127,6 @@ public class inventory
     //Funktion för att lägga till nytt item i inventoryt
     public void addToInventory(string item, InventoryItem Itemdata, int Amount)
     {
-
         if (ItemsInInventory.ContainsKey(item))
         {
             if (Itemdata.stackable == true)
@@ -144,13 +144,12 @@ public class inventory
             InventorySlots.Remove(UsableSlot);
             InventorySlots.Add(UsableSlot, Itemdata.name);
             ItemsInInventory.Add(Itemdata.name, Itemdata);
+            Itemdata.slot = UsableSlot;
             if (Amount != 0)
             {
                 Itemdata.stacks += Amount;
             }
         }
-
-
         //Annars så är usableSlot funktionen findFirstEmptySlot som ser vilken inventoryslot som är ledig
         //Om itemet redan finns i inventoryt, så ta bort en tom usableSlot
         //Och lägg istället till ett nytt item i samma usableSlot
@@ -158,18 +157,6 @@ public class inventory
         //Om amount inte är 0
         //Lägg till amount till stacks om det får stackas
     }
-    
-    public void addToExistingStacks(string item, InventoryItem Itemdata, int Amount)
-    {
-        if (ItemsInInventory.ContainsKey(item))
-        {
-            if (Itemdata.stackable == true)
-            {
-                Itemdata.stacks += Amount;
-            }
-        }
-    }
-
     public int findFirstEmptySlot()
     {
         for (int i = 0; i < InventoryLength; i++)
@@ -180,7 +167,7 @@ public class inventory
             }
             continue;
         }
-        return 5;
+        return 10;
     }
     //För varje integer I som är mindre än InventoryLength
     //Om inventorySloten I är tom, så returna I
@@ -282,27 +269,23 @@ public class inventory
 
     public void CraftItem(InventoryItem itemdata)
     {
-        if (CanCraft(itemdata) && itemdata.stacks != 0)
+        if (CanCraft(itemdata))
         {
             foreach (KeyValuePair<string, int> ingredient in itemdata.Recipe)
             {
                 ItemsInInventory[ingredient.Key].stacks -= ingredient.Value;
-                if (ItemsInInventory[ingredient.Key].stacks == 0)
+                if (ItemsInInventory[ingredient.Key].stacks <= 0 && InventorySlots.ContainsValue(ItemsInInventory[ingredient.Key].name))
                 {
-                    ItemsInInventory.Remove(ingredient.Key);
+                    InventorySlots[ItemsInInventory[ingredient.Key].slot] = "Empty";
+                    ItemsInInventory.Remove(ingredient.Key);                    
+                    
                 }
+              
             }
-        }
-            
-            if (itemdata.stacks != 0)
-            {
-                addToExistingStacks(itemdata.name, itemdata, 1);
-            }
-
-            else
-            {
             addToInventory(itemdata.name, itemdata, 1);
-            }
+        }
+        
+        
     }
     //Om man kan skapa det item man vill skapa, och det går att stacka
     //För varje Key & Value par vid namn ingredient som finns i receptet för varje Inventoryitem

@@ -15,8 +15,8 @@ Methods Methods = new();
 BlockObject BlockObject = new();
 TreeObject TreeObject = new();
 rockObject rockObject = new();
-playerAssets playerAssets = new();
 CraftingSystem craftingSystem = new();
+
 
 //Instanser av varje item
 wood wood = new();
@@ -31,16 +31,16 @@ string currentScene = "start";
 Color skyColor = new Color(115, 215, 255, 255);
 
 //Sätt karaktärens y position till 400
-playerAssets.characterRec.y = 400;
+PlayerAssets.characterRec.y = 400;
 
 while (!Raylib.WindowShouldClose())
 {
     //Karaktärens positionsvektor
-    Vector2 characterPos = new Vector2(playerAssets.characterRec.x, playerAssets.characterRec.y);
+    Vector2 characterPos = new Vector2(PlayerAssets.characterRec.x, PlayerAssets.characterRec.y);
 
     //Bakgrundens vektorer
-    Vector2 skyPos = new Vector2(-Variable.screenWidth / 2, -100);
-    Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 3.5f);
+    Vector2 skyPos = new Vector2(parallaxPos, -100);
+    Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 4f);
     Vector2 hillsPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 2);
 
     //Kameran
@@ -57,8 +57,8 @@ while (!Raylib.WindowShouldClose())
 
     if (currentScene == "start")
     {
-        playerAssets.characterRec.height = 50;
-        playerAssets.characterRec.y = Player.skippingY(playerAssets.characterRec.y);
+        PlayerAssets.characterRec.height = 50;
+        PlayerAssets.characterRec.y = Player.skippingY(PlayerAssets.characterRec.y);
         //Karaktärens Y värde är lika med funktionen SkippingY som tar emot karaktärens Y värde som parameter och returnerar sedan den
 
         //Öka parallaxpos med 0.5 varje frame
@@ -104,42 +104,29 @@ while (!Raylib.WindowShouldClose())
 
     else if (currentScene == "game")
     {
+         parallaxPos += 0.05f;
         //Sätt karaktärrektangelns höjd till 180
-        playerAssets.characterRec.height = 180;
+        PlayerAssets.characterRec.height = 180;
         Player.GravityPhysics();
-        playerAssets.characterRec.x = Player.walkingX(playerAssets.characterRec.x, playerAssets.speed);
+        PlayerAssets.characterRec.x = Player.walkingX(PlayerAssets.characterRec.x, PlayerAssets.speed);
         //Karaktärens X värde är lika med funktionen WalkingX som tar emot karaktärens x värde och variabeln speed som paratmetrar
 
         Player.bothADdown();
-        Methods.meleeMethod();
-        Methods.parallaxEffect();
+        Methods.MeleeMethod();
+        Methods.BackgroundParallaxEffect();
         Methods.punchReturn();
         inventoryManager.weaponDamageComponent();
 
         //Lokala variabler inom Game
-        string currentActiveItem = "Empty";
         int activeItem = 1;
         int punchFrame = Variable.punchFrame;
         int runningFrame = Player.runningAnimation();
         int pickaxeFrame = Variable.pickaxeFrame;
         int charVariable = Player.jumpAnimation();
-
         //Bakgrundens texturers source rektanglar
         Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX / 2, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[1].height);
         Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[2].height);
-
-        //Spring texturens source rektangel
-        Rectangle sourceRec1 = new Rectangle(120 * runningFrame, 0, Variable.FacingDirection * 120, 180);
-        
-        //Spelarens textur rektangel med variabeln way på bredden för att rendera om vilket håll gubben är vänd
-        Rectangle facing = new Rectangle(0, 0, Variable.FacingDirection * 120, 180);
-
-        //Source rektangeln för pickaxe animationen
-        Rectangle pickaxeRec = new Rectangle(180 * pickaxeFrame, 0, Variable.FacingDirection * 180, 180);
-
-        //Source rektangeln för slå animationen 
-        Rectangle punchRec = new Rectangle(120 * punchFrame, 0, Variable.FacingDirection * 120, 180);
 
         //Slag rektangeln och dess färg
         Color punchColor = new Color(255, 255, 255, Variable.punchColorAlpha);
@@ -163,11 +150,11 @@ while (!Raylib.WindowShouldClose())
 
         //Karaktärens hitbox är lika med karaktärens rektangel
         //Hitboxens Y värde är karaktärens y värde plus 180
-        playerAssets.hitBox.x = playerAssets.characterRec.x;
-        playerAssets.hitBox.y = playerAssets.characterRec.y + 180;
+        PlayerAssets.hitBox.x = PlayerAssets.characterRec.x;
+        PlayerAssets.hitBox.y = PlayerAssets.characterRec.y + 180;
 
         activeItem = inventoryManager.activeHotbarItem();
-        currentActiveItem = inventoryManager.activeItem(inventoryManager.InventorySlots[activeItem], "Empty");
+        Variable.currentActiveItem = inventoryManager.activeItem(inventoryManager.InventorySlots[activeItem], "Empty");
         //Det nuvarande aktiva item indexet är lika med activeHotBarItem funktionen
 
         for (var i = 0; i < BlockObject.floors.Count; i++)
@@ -194,7 +181,7 @@ while (!Raylib.WindowShouldClose())
                 Starta då breakTreeMethod
                 Om trädets HP är detsamma som 0 så ska spelarens mängd trä att öka med 3
                 */
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(playerAssets.characterRec, tree.TreeRect) && Variable.punchTimer == 100 && Variable.canBreakWood == true)
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(PlayerAssets.characterRec, tree.TreeRect) && Variable.punchTimer == 100 && Variable.canBreakWood == true)
                 {
                     tree.breakTreeMethod();
                     if (tree.treeHealth == 0)
@@ -224,7 +211,7 @@ while (!Raylib.WindowShouldClose())
                Starta då breakStoneMethod
                Om stenens HP är detsamma som 0 så ska spelarens mängd trä att öka med 10
                */
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(playerAssets.characterRec, rock.rockRect) && Variable.punchTimer == 100 && Variable.canBreakStone == true)
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && Raylib.CheckCollisionRecs(PlayerAssets.characterRec, rock.rockRect) && Variable.punchTimer == 100 && Variable.canBreakStone == true)
                 {
                     rock.breakStoneMethod();
                     if (rock.rockHealth == 0)
@@ -240,6 +227,17 @@ while (!Raylib.WindowShouldClose())
                 //Rita ut stenens mängd liv kvar bredvid
             }
         }
+        //Spring texturens source rektangel
+        Rectangle sourceRec1 = new Rectangle(120 * runningFrame, 0, Variable.FacingDirection * 120, 180);
+
+        //Spelarens textur rektangel med variabeln way på bredden för att rendera om vilket håll gubben är vänd
+        Rectangle facing = new Rectangle(0, 0, Variable.FacingDirection * 120, 180);
+
+        //Source rektangeln för pickaxe animationen
+        Rectangle pickaxeRec = new Rectangle(180 * pickaxeFrame, 0, Variable.FacingDirection * 180, 180);
+
+        //Source rektangeln för slå animationen 
+        Rectangle punchRec = new Rectangle(120 * punchFrame, 0, Variable.FacingDirection * 120, 180);
 
         //Spring animationerna===============================================
 
@@ -257,19 +255,19 @@ while (!Raylib.WindowShouldClose())
 
         else if (Variable.whilePunching > 0)
         {
-
-            if (currentActiveItem == "woodPickaxe")
+            if (Variable.currentActiveItem == "woodPickaxe")
             {
-                Player.pickaxeAnimation();
+                Player.swingingAnimation();
+                
                 if (Variable.FacingDirection == -1)
                 {
                     characterPos.X -= 60;
                 }
                 Raylib.DrawTextureRec(TextureClass.charTextures[5], pickaxeRec, characterPos, Color.WHITE);
             }
-            else if (currentActiveItem == "stoneAxe")
+            else if (Variable.currentActiveItem == "stoneAxe")
             {
-                Player.pickaxeAnimation();
+                Player.swingingAnimation();
                 if (Variable.FacingDirection == -1)
                 {
                     characterPos.X -= 60;
@@ -278,6 +276,7 @@ while (!Raylib.WindowShouldClose())
             }
             else
             {
+                
                 Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
             }
             //Om variabeln whilePunching är större än 0
@@ -313,7 +312,7 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("C", 680, 140, 70, Color.BLACK);
 
         //INVENTORY========================================
-
+        Console.WriteLine(Variable.currentActiveItem);
         bool tab = false;
         if (Raylib.IsKeyDown(KeyboardKey.KEY_TAB))
         {
@@ -339,7 +338,8 @@ while (!Raylib.WindowShouldClose())
             itemPos++;
             if (itemPos >= inventoryManager.InventorySlots.Count())
             {
-                itemPos = inventoryManager.findFirstEmptySlot();
+                //itemPos = inventoryManager.findFirstEmptySlot();
+                Console.WriteLine(itemPos);
             }
             //För varje item i InventorySlots
             //Om Itempositionen är mindre än mängden inventorySlots
@@ -351,14 +351,13 @@ while (!Raylib.WindowShouldClose())
             //Om itempos är större eller lika med mängden inventorySlots
             //Gör itempositionen till den första tomma platsen i inventoryt
         }
-
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
         {
             currentScene = "craftingTable";
         }
 
         //Du dör om din karaktärs position är större än höjden på spelet
-        if (playerAssets.characterRec.y > Variable.screenHeight)
+        if (PlayerAssets.characterRec.y > Variable.screenHeight)
         {
             currentScene = "dead";
         }
@@ -377,7 +376,7 @@ while (!Raylib.WindowShouldClose())
             itemPos++;
             if (itemPos >= inventoryManager.InventorySlots.Count())
             {
-                itemPos = 0;
+                itemPos = inventoryManager.findFirstEmptySlot();
             }
         }
         //För varje item i InventorySlots
@@ -390,12 +389,11 @@ while (!Raylib.WindowShouldClose())
 
         Raylib.DrawTexture(textureManager.LoadTexture("IMG/craftingTable.png"), 0, 0, Color.WHITE);
 
-        craftingSystem.craftingSyst();
+        craftingSystem.CraftingSyst();
         //Starta craftingSyst funktionen som kollar kontroller och skriver ut texter
-
         if (Variable.whichItem == 0)
         {
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(stick))
             {
                 inventoryManager.CraftItem(stick);
             }
@@ -412,7 +410,7 @@ while (!Raylib.WindowShouldClose())
 
         else if (Variable.whichItem == 1)
         {
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(woodPickaxe))
             {
                 inventoryManager.CraftItem(woodPickaxe);
             }
@@ -431,7 +429,7 @@ while (!Raylib.WindowShouldClose())
 
         else if (Variable.whichItem == 2)
         {
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(stoneAxe))
             {
                 inventoryManager.CraftItem(stoneAxe);
             }
@@ -495,4 +493,3 @@ while (!Raylib.WindowShouldClose())
 
 //Slutskärmen
 //Om man går av spelets gräns så ska man dö och spelet startas om
-

@@ -7,7 +7,7 @@ public class Methods
   
     Player Player = new();
     
-    public static void meleeMethod()
+    public static void MeleeMethod()
     {
         if (Variable.whilePunching == 0)
         {
@@ -29,7 +29,6 @@ public class Methods
     }
     public void punchReturn()
     {
-        //int punchFrame = Player.punchAnimation();
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_F) && !Variable.isMoving && Variable.gravity.Y == 0 && Variable.whilePunching == 0 && Variable.punchTimer == 0)
         {
             Variable.punchColorAlpha = 170;
@@ -44,10 +43,9 @@ public class Methods
             Player.punchAnimation();
            
         }
-        //return punchFrame;
     }
 
-    public void parallaxEffect()
+    public void BackgroundParallaxEffect()
     {
 
         if (Raylib.IsKeyReleased(KeyboardKey.KEY_D) && Variable.isMoving == true || (Raylib.IsKeyDown(KeyboardKey.KEY_D) && Variable.isMoving == true))

@@ -16,7 +16,7 @@ public class CraftingSystem
     woodPickaxe woodPickaxe = new();
     stoneAxe stoneAxe = new();
 
-    public void craftingSyst()
+    public void CraftingSyst()
     {
 
         //foreach (var item in inventory.InventorySlots)
