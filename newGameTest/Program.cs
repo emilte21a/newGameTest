@@ -39,7 +39,7 @@ while (!Raylib.WindowShouldClose())
     Vector2 characterPos = new Vector2(PlayerAssets.characterRec.x, PlayerAssets.characterRec.y);
 
     //Bakgrundens vektorer
-    Vector2 skyPos = new Vector2(parallaxPos, -100);
+    Vector2 skyPos = new Vector2(0, -100);
     Vector2 mountainPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 4f);
     Vector2 hillsPos = new Vector2(-Variable.screenWidth / 2, Variable.screenHeight / 2);
 
@@ -124,7 +124,7 @@ while (!Raylib.WindowShouldClose())
         int pickaxeFrame = Variable.pickaxeFrame;
         int charVariable = Player.jumpAnimation();
         //Bakgrundens texturers source rektanglar
-        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
+        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4+parallaxPos, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX / 2, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[1].height);
         Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[2].height);
 
