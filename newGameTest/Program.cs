@@ -17,6 +17,7 @@ TreeObject TreeObject = new();
 rockObject rockObject = new();
 CraftingSystem craftingSystem = new();
 AnimationClass animationClass = new();
+
 //Instanser av varje item
 wood wood = new();
 stone stone = new();
@@ -103,7 +104,7 @@ while (!Raylib.WindowShouldClose())
 
     else if (currentScene == "game")
     {
-         parallaxPos += 0.05f;
+        parallaxPos += 0.05f;
         //Sätt karaktärrektangelns höjd till 180
         PlayerAssets.characterRec.height = 180;
         Player.GravityPhysics();
@@ -123,7 +124,7 @@ while (!Raylib.WindowShouldClose())
         int pickaxeFrame = Variable.pickaxeFrame;
         int charVariable = animationClass.jumpAnimation();
         //Bakgrundens texturers source rektanglar
-        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4+parallaxPos*2, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
+        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4 + parallaxPos * 2, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX / 2, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[1].height);
         Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[2].height);
 
@@ -257,7 +258,7 @@ while (!Raylib.WindowShouldClose())
             if (Variable.currentActiveItem == "woodPickaxe")
             {
                 animationClass.swingingAnimation();
-                
+
                 if (Variable.FacingDirection == -1)
                 {
                     characterPos.X -= 60;
@@ -275,7 +276,7 @@ while (!Raylib.WindowShouldClose())
             }
             else
             {
-                
+
                 Raylib.DrawTextureRec(TextureClass.charTextures[4], punchRec, characterPos, Color.WHITE);
             }
             //Om variabeln whilePunching är större än 0
@@ -319,7 +320,7 @@ while (!Raylib.WindowShouldClose())
             {
                 if (item.Value != "Empty" && inventoryManager.ItemsInInventory.ContainsKey(item.Value))
                 {
-                   
+
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
                     Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), 50 + 120 * itemPos, 70, Color.WHITE);
                     Raylib.DrawText($"{item1.stacks}", 110 + 120 * itemPos, 130, 20, Color.WHITE);
@@ -380,68 +381,75 @@ while (!Raylib.WindowShouldClose())
 
         craftingSystem.CraftingSyst();
         //Starta craftingSyst funktionen som kollar kontroller och skriver ut texter
-        if (Variable.whichItem == 0)
-        {
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(stick))
-            {
-                inventoryManager.CraftItem(stick);
-            }
-            Raylib.DrawText($"Wood:{wood.stacks}", 700, 420, 20, Color.WHITE);
-            Raylib.DrawText($"{stick.name}", 240, 300, 20, Color.WHITE);
-            Raylib.DrawText($"{stick.stacks}", 350, 340, 20, Color.WHITE);
-        }
-        //Om variabeln whichItem är lika med 0
-        //Om SPACE knappen trycks
-        //Crafta itemet stick
-        //Rita ut mängden trä som du har
-        //Rita ut itemet sticks namn
-        //Rita ut mängden sticks som du har i inventoryt
 
-        else if (Variable.whichItem == 1)
+        //Switch case för det item som du vill skapa
+        switch (Variable.whichItem)
         {
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(woodPickaxe))
-            {
-                inventoryManager.CraftItem(woodPickaxe);
-            }
-            Raylib.DrawText($"Stick:{stick.stacks}", 700, 420, 20, Color.WHITE);
-            Raylib.DrawText($"Wood:{wood.stacks}", 700, 440, 20, Color.WHITE);
-            Raylib.DrawText($"{woodPickaxe.name}", 240, 300, 20, Color.WHITE);
-            Raylib.DrawText($"{woodPickaxe.stacks}", 350, 340, 20, Color.WHITE);
-        }
-        //Om variabeln whichItem är lika med 1
-        //Om SPACE knappen trycks
-        //Crafta itemet woodPickaxe
-        //Rita ut mängden pinnar som du har
-        //Rita ut mängden trä som du har
-        //Rita ut itemet woodPickaxe namn
-        //Rita ut mängden woodPickaxes som du har i inventoryt
 
-        else if (Variable.whichItem == 2)
-        {
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(stoneAxe))
-            {
-                inventoryManager.CraftItem(stoneAxe);
-            }
-            Raylib.DrawText($"Stick:{stick.stacks}", 700, 420, 20, Color.WHITE);
-            Raylib.DrawText($"Stone:{stone.stacks}", 700, 440, 20, Color.WHITE);
-            Raylib.DrawText($"{stoneAxe.name}", 240, 300, 20, Color.WHITE);
-            Raylib.DrawText($"{stoneAxe.stacks}", 350, 340, 20, Color.WHITE);
+            case 0:
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(stick))
+                {
+                    inventoryManager.CraftItem(stick);
+                }
+                Raylib.DrawText($"Wood:{wood.stacks}", 700, 420, 20, Color.WHITE);
+                Raylib.DrawText($"{stick.name}", 240, 300, 20, Color.WHITE);
+                Raylib.DrawText($"{stick.stacks}", 350, 340, 20, Color.WHITE);
+                //Om variabeln whichItem är lika med 0
+                //Om SPACE knappen trycks
+                //Crafta itemet stick
+                //Rita ut mängden trä som du har
+                //Rita ut itemet sticks namn
+                //Rita ut mängden sticks som du har i inventoryt
+                break;
+
+            case 1:
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(woodPickaxe))
+                {
+                    inventoryManager.CraftItem(woodPickaxe);
+                }
+                Raylib.DrawText($"Stick:{stick.stacks}", 700, 420, 20, Color.WHITE);
+                Raylib.DrawText($"Wood:{wood.stacks}", 700, 440, 20, Color.WHITE);
+                Raylib.DrawText($"{woodPickaxe.name}", 240, 300, 20, Color.WHITE);
+                Raylib.DrawText($"{woodPickaxe.stacks}", 350, 340, 20, Color.WHITE);
+
+                //Om variabeln whichItem är lika med 1
+                //Om SPACE knappen trycks
+                //Crafta itemet woodPickaxe
+                //Rita ut mängden pinnar som du har
+                //Rita ut mängden trä som du har
+                //Rita ut itemet woodPickaxe namn
+                //Rita ut mängden woodPickaxes som du har i inventoryt
+
+                break;
+
+            case 2:
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) && inventoryManager.CanCraft(stoneAxe))
+                {
+                    inventoryManager.CraftItem(stoneAxe);
+                }
+                Raylib.DrawText($"Stick:{stick.stacks}", 700, 420, 20, Color.WHITE);
+                Raylib.DrawText($"Stone:{stone.stacks}", 700, 440, 20, Color.WHITE);
+                Raylib.DrawText($"{stoneAxe.name}", 240, 300, 20, Color.WHITE);
+                Raylib.DrawText($"{stoneAxe.stacks}", 350, 340, 20, Color.WHITE);
+
+
+                //Om variabeln whichItem är lika med 2
+                //Om SPACE knappen trycks
+                //Crafta itemet stoneAxe
+                //Rita ut mängden pinnar som du har
+                //Rita ut mängden sten som du har
+                //Rita ut itemet stoneAxe namn
+                //Rita ut mängden stoneAxe som du har i inventoryt
+                break;
         }
 
-        //Om variabeln whichItem är lika med 2
-        //Om SPACE knappen trycks
-        //Crafta itemet stoneAxe
-        //Rita ut mängden pinnar som du har
-        //Rita ut mängden sten som du har
-        //Rita ut itemet stoneAxe namn
-        //Rita ut mängden stoneAxe som du har i inventoryt
 
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
         {
             currentScene = "game";
         }
         //Om C knappen trycks
-        //Gör currentscene till game
+        //Gör currentscene tillbaka till game
     }
 
     else if (currentScene == "dead")
