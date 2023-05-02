@@ -14,9 +14,6 @@ public class PlayerAssets
 public class Player
 {
     BlockObject BlockObject = new();
-    //PlayerAssets playerAssets = new();
-    //AnimationClass animationClass = new();
-    
     public void GravityPhysics()
     {
         //Lokala variabler
@@ -36,11 +33,7 @@ public class Player
                 Variable.gravity.Y = maxFallSpeed;
             }
         }  
-        //Om karaktärens rektangel inte kolliderar med marken
-        //Variabeln gravitys(Vector) Y-värde ska öka med gravity
-        //Karaktärens Y-värde ska adderas med vektorn gravitys Y-värde
-        //Om gravitys Y-värde är större än MaxFallSpeed så är den lika med MaxFallSpeed 
-
+        
         else
         {
             Variable.gravity.Y = 0;
@@ -56,13 +49,7 @@ public class Player
                 Variable.touchFloor = false;
             }
         }
-        //Annars är gravitys Y-värde är detsamma som 0
-        //Om gravitys Y-värde är mindre än MinFallSpeed så är den lika med MinFallSpeed
-        //Om SPACE knappen trycks och variabeln touchfloor är sann
-        //Gör gravitys Y-värde till -15
-        //Addera karaktärens y värde med gravitys Y-värde
-        //Kör funktionen jump mechanics
-        //Variabeln toucfloor är lika med falsk
+      
     }
 
     public void isColliding()
@@ -81,12 +68,6 @@ public class Player
                 break;
             }
         }
-        //För varje block i listan BlockObject.floors
-        //Om karaktärens hitbox inte kolliderar med något av objekten i listan Floors
-        //Variabeln touchfloor är lika med falsk
-        //Om karaktärens hitbox kolliderar med något av objekten i listan Floors
-        //Variabeln touchfloor är lika med sann
-        //Bryt sedan loopen
     }
 
     public void jumpMechanics()
@@ -156,10 +137,5 @@ public class Player
         {
             Variable.bothButtonsPressed = false;
         }
-
-        //Om D-knappen är nere samtidigt som A-knappen är nere
-        //Variabeln bothButtonsPressed är sann
-        //Variabeln isMoving är falsk
-        //Annars är variabeln bothbuttonspressed falsk
     }
 }

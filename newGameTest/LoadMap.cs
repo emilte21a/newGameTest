@@ -1,7 +1,6 @@
 using System;
 using Raylib_cs;
 
-//Entity är vad varje objekt ska ha för egenskaper som t.ex HP osv
 public class TreeEntity
 {
     public int treeHealth = 100;
@@ -51,14 +50,6 @@ public class TreeObject
 
     }
 }
-
-/*
-För varje variabel i som är mindre än amountOfTrees
-skapa en ny random
-gör trädets position till en random inom intervallet -1000 till 1000
-Lägg till en ny trädentity rektangel i listan Trees
-*/
-
 public class rockObject
 {
     int rockpos;

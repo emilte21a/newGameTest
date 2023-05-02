@@ -57,26 +57,26 @@ public class AnimationClass{
 
     public int jumpAnimation()
     {
-        if (Variable.touchFloor == true)  //Om variabeln touchfloor är sann. Returnera 0
+        if (Variable.touchFloor == true)  
         {
             return 0;
         }
-        else if (Variable.touchFloor == false) //Om den är falsk
+        else if (Variable.touchFloor == false) 
         {
 
             if (Variable.gravity.Y > 0)
             {
-                return 1; //om gravitationens y-värde är större än 0 så returnas 1, vilket är ett index för falling texture
+                return 1; 
             }
 
             else
             {
-                return 2; //Annars så returneras 2 vilket är ett annat index för jumping texturen
+                return 2; 
             }
         }
         else
         {
-            return 4; //Annars returnera 4
+            return 4; 
         } 
     }
 }

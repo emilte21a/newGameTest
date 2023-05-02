@@ -18,10 +18,6 @@ public class CraftingSystem
 
     public void CraftingSyst()
     {
-
-        //foreach (var item in inventory.InventorySlots)
-        //{
-
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_LEFT))
             {
                 Variable.whichItem--;
@@ -58,7 +54,6 @@ public class CraftingSystem
                 Raylib.DrawText("Stick: 2", 700, 320, 20, Color.WHITE);
                 Raylib.DrawText("Stone: 3", 700, 340, 20, Color.WHITE);
             }
-        //}
 
         Raylib.DrawText("Press left arrow for previous item", 470, 750, 20, Color.WHITE);
         Raylib.DrawText("Press right arrow for next item", 484, 800, 20, Color.WHITE);
