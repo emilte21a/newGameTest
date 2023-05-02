@@ -1,0 +1,206 @@
+
+Program.cs pseudokod==========================
+
+För varje block i listan BlockObject.floors så ska gräs texturen ritas ut 
+Grästexturen ritas ut på varje cellBlocks position
+
+Rita ut alla dirtblocks som bara är texturer
+
+För varje träd i treeCollection.Trees så ska en trätextur ritas ut
+
+Om man trycker på F och karaktärens rektangel kolliderar med trädets Rektangel
+Starta då breakTreeMethod
+Om trädets HP är detsamma som 0 så ska spelarens mängd trä att öka med 3
+
+Om trädets liv är mindre än 100
+Rita ut trädets mängd liv kvar bredvid
+
+Rita ut stenar
+Om man trycker på F och karaktärens rektangel kolliderar med stenens Rektangel
+Starta då breakStoneMethod
+Om stenens HP är detsamma som 0 så ska spelarens mängd trä att öka med 10
+
+Om stenens liv är mindre än 100
+Rita ut stenens mängd liv kvar bredvid
+
+Om knappen D eller A är nedtryckt och touchFloor är sann och om både A och D inte trycks så ska spring texturen ritas ut
+
+Om variabeln whilePunching är större än 0
+Om det aktiva itemet är woodPickaxe
+rita ut träpickaxe animationen
+Om det aktiva itemet är stoneAxe
+rita ut stenyx animationen
+Annars rita ut normala slag animationen
+Annars om gubben inte rör på sig så ska idle animationen ritas ut
+
+För varje item i InventorySlots
+Om Itempositionen är mindre än mängden inventorySlots
+Om itemets value inte är Empty och om inventoryt innehåller itemet
+Itemet i inventoryt är lika med valutan i dictionaryt ItemsInInventory
+Rita ut itemets textur
+Rita ut varje items mängd med deras variabel int Stacks
+Öka itempos med 1 
+Om itempos är större eller lika med mängden inventorySlots
+Gör itempositionen till den första tomma platsen i inventoryt
+
+För varje item i InventorySlots
+Om Itempositionen är mindre än mängden inventorySlots
+Om itemets value inte är Empty och om inventoryt innehåller itemet
+Itemet i inventoryt är lika med valutan i dictionaryt ItemsInInventory
+Öka itempos med 1 
+Om itempos är större eller lika med mängden inventorySlots
+Gör itempositionen till den första toma platsen i inventoryt
+
+Om variabeln whichItem är lika med 0
+Om SPACE knappen trycks
+Crafta itemet stick
+Rita ut mängden trä som du har
+Rita ut itemet sticks namn
+Rita ut mängden sticks som du har i inventoryt
+
+
+Om variabeln whichItem är lika med 1
+Om SPACE knappen trycks
+Crafta itemet woodPickaxe
+Rita ut mängden pinnar som du har
+Rita ut mängden trä som du har
+Rita ut itemet woodPickaxe namn
+Rita ut mängden woodPickaxes som du har i inventoryt
+
+Om variabeln whichItem är lika med 2
+Om SPACE knappen trycks
+Crafta itemet stoneAxe
+Rita ut mängden pinnar som du har
+Rita ut mängden sten som du har
+Rita ut itemet stoneAxe namn
+Rita ut mängden stoneAxe som du har i inventoryt
+
+
+Startskärmen
+
+En rörande bakgrund där man kan starta spelet när man trycker på Enter¨
+Instruktioner vid sidan om som berättar "grund" funktionerna i spelet
+
+Spelet
+
+2D survival-i spel där man kan gå höger, vänster och hoppa
+Man ska kunna skapa en träpickaxe med trä
+Kunna hugga träd samt hacka sten med yxa respektive pickaxe
+Inventorysystem som fungerar korrekt eller delvis korrekt
+Crafting system som fungerar korrekt eller delvis korrekt
+Det ska vara ett enkelt pixelerat gränssnitt som är simpelt men tydligt
+Man ska kunna gå in i crafting table när man trycker på C
+
+Crafting table
+
+I crafting tablet så ska man kunna se vilket item man ska skapa, vad som krävs för att skapa det och hur många av det itemet man har i inventoryt
+Det ska även stå hur mycket av de items som krävs som du har i ditt inventory 
+
+Slutskärmen
+Om man går av spelets gräns så ska man dö och spelet startas om
+
+
+AnimationClass pseudokod===================
+
+Om variabeln touchfloor är sann. Returnera 0
+Om den är falsk, 
+Om gravitationens y-värde är större än 0 så returnas 1, vilket är ett index för falling texture
+Annars så returneras 2 vilket är ett annat index för jumping texturen
+Annars returnera 4 
+
+Inventory pseudokod==============================
+
+Dictionary med key: string och value: IntentoryItem. 
+Detta gör det möjligt att "kalla" på valutan som är InventoryItem med en string.
+
+En dictionary med key: int och value: string
+Den gör det möjligt att lägga till en ny "empty" string för varje inventoryslot
+
+Hotbaren är 5 stycken slots
+För varje int invSlot i InventoryLength
+Lägg till en ny tom inventoryslot
+
+Funktion för att lägga till nytt item i inventoryt
+Om dictionaryn ItemsInInventory redan innehåller nyckeln item
+OCH Om det föremålet får stackas
+Lägg till i stacks med amount vilket anges när man kallar på funktionen
+
+Annars så är usableSlot funktionen findFirstEmptySlot som ser vilken inventoryslot som är ledig
+Om itemet redan finns i inventoryt, så ta bort en tom usableSlot
+Och lägg istället till ett nytt item i samma usableSlot
+Lägg till itemet i inventoryt och dess data
+Om amount inte är 0
+Lägg till amount till stacks om det får stackas
+
+För varje integer I som är mindre än InventoryLength
+Om inventorySloten I är tom, så returna I
+Fortsätt att kolla vilka inventoryslots som är lediga tills funktionen körts klart
+
+Om föremålet på samma plats som itemIndex har i inventoryt
+Om inventoryt innehåller item 
+Gör currentActiveItem till den indexet man har.
+Detta betyder att om du trycker på knapp 1, så är första itemet currentActiveItem
+
+Varje item har olika egenskaper.
+en träpickaxe har 20 damage och kan ta sönder sten med inte trä
+en stenyxa har 25 damage och kan ta sönder trä men inte sten
+resterande items har 10 damage och kan endast ta sönder trä
+
+För varje Key & Value par vid namn ingredient som finns i receptet för varje InventoryItem
+Om inventoryt inte innehåller ingredienten
+Eller om mängden ingredienser är mindre än "hur mycket" det kostar att skapa det itemet man vill skapa
+Returnera falsk
+Annars returnera sant
+
+Om man kan skapa det item man vill skapa, och det går att stacka
+För varje Key & Value par ingredient som finns i dictionaryt recipe för varje Inventoryitem
+Minska de ingredienser som användes vid skapandet med hur mycket som behövdes för receptet
+Om ingrediensens värde blir lika med 0, så ta bort ingrediensen från inventoryt
+Lägg till ett av det nya InventoryItem som man skapat
+
+TextureManager pseudokod================================================================
+
+Om TexturesList dictionaryt innehåller parametern filename
+returnera värdet på Textureslist med nyckeln filename
+
+Annars 
+Gör Texture2D texture detsamma som att ladda upp texturen med parametern filename som inmatning
+Texturlistan med nyckeln filename är lika med texture
+returnera texture
+
+CharacterClass pseudokod======================================================00
+
+Om karaktärens rektangel inte kolliderar med marken
+Variabeln gravitys(Vector) Y-värde ska öka med gravity
+Karaktärens Y-värde ska adderas med vektorn gravitys Y-värde
+Om gravitys Y-värde är större än MaxFallSpeed så är den lika med MaxFallSpeed 
+
+Annars är gravitys Y-värde är detsamma som 0
+Om gravitys Y-värde är mindre än MinFallSpeed så är den lika med MinFallSpeed
+Om SPACE knappen trycks och variabeln touchfloor är sann
+Gör gravitys Y-värde till -15
+Addera karaktärens y värde med gravitys Y-värde
+Kör funktionen jump mechanics
+Variabeln toucfloor är lika med falsk
+
+För varje block i listan BlockObject.floors
+Om karaktärens hitbox inte kolliderar med något av objekten i listan Floors
+Variabeln touchfloor är lika med falsk
+Om karaktärens hitbox kolliderar med något av objekten i listan Floors
+Variabeln touchfloor är lika med sann
+Bryt sedan loopen
+
+Om D-knappen är nere samtidigt som A-knappen är nere
+Variabeln bothButtonsPressed är sann
+Variabeln isMoving är falsk
+Annars är variabeln bothbuttonspressed falsk
+
+Loadmap pseudokod====================================================================
+
+Entity är vad varje objekt ska ha för egenskaper som t.ex HP osv
+
+För varje variabel i som är mindre än amountOfTrees
+skapa en ny random
+gör trädets position till en random inom intervallet -1000 till 1000
+Lägg till en ny trädentity rektangel i listan Trees
+
