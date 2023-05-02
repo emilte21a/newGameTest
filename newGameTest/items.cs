@@ -288,7 +288,7 @@ public class inventory
         
     }
     //Om man kan skapa det item man vill skapa, och det går att stacka
-    //För varje Key & Value par vid namn ingredient som finns i receptet för varje Inventoryitem
+    //För varje Key & Value par ingredient som finns i dictionaryt recipe för varje Inventoryitem
     //Minska de ingredienser som användes vid skapandet med hur mycket som behövdes för receptet
     //Om ingrediensens värde blir lika med 0, så ta bort ingrediensen från inventoryt
     //Lägg till ett av det nya InventoryItem som man skapat

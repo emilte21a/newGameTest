@@ -5,7 +5,7 @@ using System.Numerics;
 public class Methods
 {
   
-    Player Player = new();
+    AnimationClass animationClass = new();
     
     public static void MeleeMethod()
     {
@@ -40,7 +40,7 @@ public class Methods
         if (Variable.whilePunching > 0)
         {
             Variable.whilePunching--;
-            Player.punchAnimation();
+            animationClass.punchAnimation();
            
         }
     }

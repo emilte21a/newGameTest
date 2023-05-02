@@ -16,8 +16,7 @@ BlockObject BlockObject = new();
 TreeObject TreeObject = new();
 rockObject rockObject = new();
 CraftingSystem craftingSystem = new();
-
-
+AnimationClass animationClass = new();
 //Instanser av varje item
 wood wood = new();
 stone stone = new();
@@ -120,11 +119,11 @@ while (!Raylib.WindowShouldClose())
         //Lokala variabler inom Game
         int activeItem = 1;
         int punchFrame = Variable.punchFrame;
-        int runningFrame = Player.runningAnimation();
+        int runningFrame = animationClass.runningAnimation();
         int pickaxeFrame = Variable.pickaxeFrame;
-        int charVariable = Player.jumpAnimation();
+        int charVariable = animationClass.jumpAnimation();
         //Bakgrundens texturers source rektanglar
-        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4+parallaxPos, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
+        Rectangle skyRec = new Rectangle(Variable.skyPlacementX / 4+parallaxPos*2, 0, TextureClass.backgroundTextures[3].width, TextureClass.backgroundTextures[3].height);
         Rectangle mountainRec = new Rectangle(Variable.skyPlacementX / 2, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[1].height);
         Rectangle hillsRec = new Rectangle(Variable.skyPlacementX, 0, TextureClass.backgroundTextures[0].width, TextureClass.backgroundTextures[2].height);
 
@@ -257,7 +256,7 @@ while (!Raylib.WindowShouldClose())
         {
             if (Variable.currentActiveItem == "woodPickaxe")
             {
-                Player.swingingAnimation();
+                animationClass.swingingAnimation();
                 
                 if (Variable.FacingDirection == -1)
                 {
@@ -267,7 +266,7 @@ while (!Raylib.WindowShouldClose())
             }
             else if (Variable.currentActiveItem == "stoneAxe")
             {
-                Player.swingingAnimation();
+                animationClass.swingingAnimation();
                 if (Variable.FacingDirection == -1)
                 {
                     characterPos.X -= 60;
@@ -312,14 +311,6 @@ while (!Raylib.WindowShouldClose())
         Raylib.DrawText("C", 680, 140, 70, Color.BLACK);
 
         //INVENTORY========================================
-        Console.WriteLine(Variable.currentActiveItem);
-        bool tab = false;
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_TAB))
-        {
-            tab = true;
-        }
-        //Om tab = true
-
         int itemPos = 0;
 
         foreach (var item in inventoryManager.InventorySlots)
@@ -328,7 +319,7 @@ while (!Raylib.WindowShouldClose())
             {
                 if (item.Value != "Empty" && inventoryManager.ItemsInInventory.ContainsKey(item.Value))
                 {
-                    //Console.WriteLine(item.Value);
+                   
                     InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
                     Raylib.DrawTexture(textureManager.LoadTexture(item1.Texture), 50 + 120 * itemPos, 70, Color.WHITE);
                     Raylib.DrawText($"{item1.stacks}", 110 + 120 * itemPos, 130, 20, Color.WHITE);
@@ -339,7 +330,6 @@ while (!Raylib.WindowShouldClose())
             if (itemPos >= inventoryManager.InventorySlots.Count())
             {
                 //itemPos = inventoryManager.findFirstEmptySlot();
-                Console.WriteLine(itemPos);
             }
             //För varje item i InventorySlots
             //Om Itempositionen är mindre än mängden inventorySlots
@@ -371,7 +361,6 @@ while (!Raylib.WindowShouldClose())
             if (item.Value != "Empty" && inventoryManager.ItemsInInventory.ContainsKey(item.Value))
             {
                 InventoryItem item1 = inventoryManager.ItemsInInventory[item.Value];
-                //Console.WriteLine("item.Value: " + item.Value);
             }
             itemPos++;
             if (itemPos >= inventoryManager.InventorySlots.Count())
@@ -385,7 +374,7 @@ while (!Raylib.WindowShouldClose())
         //Itemet i inventoryt är lika med valutan i dictionaryt ItemsInInventory
         //Öka itempos med 1 
         //Om itempos är större eller lika med mängden inventorySlots
-        //Gör itempositionen till 0
+        //Gör itempositionen till den första toma platsen i inventoryt
 
         Raylib.DrawTexture(textureManager.LoadTexture("IMG/craftingTable.png"), 0, 0, Color.WHITE);
 
